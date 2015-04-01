@@ -5,6 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -12,22 +19,32 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+        // MenuBar setup
+        final Menu menu1 = new Menu("File");
+        final Menu menu2 = new Menu("Ship");
+        final Menu menu3 = new Menu("Port");
+        final Menu menu4 = new Menu("Sea Monster");
+        final Menu menu5 = new Menu("About");
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(menu1, menu2, menu3, menu4, menu5);
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        // MapView Setup
+        ImageView mapView = new ImageView();
+        Image image = new Image("image.png");
+        mapView.setImage(image);
         
-        Scene scene = new Scene(root, 300, 250);
+        // TextLabel Setup
+        Label textLabel = new Label("Woof!");
         
-        primaryStage.setTitle("Hello World!");
+        // Create Scene
+        BorderPane root = new BorderPane();
+        root.setTop(menuBar);
+        root.setCenter(mapView);
+        root.setBottom(textLabel);
+        
+        Scene scene = new Scene(root, 300, 300);
+        
+        primaryStage.setTitle("CompSci GUI - JavaFX!");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
