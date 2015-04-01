@@ -111,7 +111,7 @@ public class Main extends Application {
         gc.fillRect(0,0,300,200);
         
         // TextLabel Setup
-        Label textLabel = new Label("Woof!!");
+        Label textLabel = new Label("Woof!!!");
         
         // Create Scene
         BorderPane root = new BorderPane();
