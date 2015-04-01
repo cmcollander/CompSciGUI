@@ -1,18 +1,19 @@
 /*
-    Chris Collander
-    Abdul Rafey Khan
-    Clint Wetzel
+ Chris Collander
+ Abdul Rafey Khan
+ Clint Wetzel
 
-    CSE 1325-002
-    Semester Project
-*/
+ CSE 1325-002
+ Semester Project
+ */
 package main;
 
 /**
- * The Cargo class is used to create Cargo objects consisting of a tonnage
- * and a description
+ * The Cargo class is used to create Cargo objects consisting of a tonnage and a
+ * description
  */
 public class Cargo {
+
     protected double tonnage;
     protected String description;
 
@@ -23,9 +24,10 @@ public class Cargo {
         this.tonnage = 10.0;
         this.description = "Bananas!";
     }
-    
+
     /**
      * Custom Constructor of the Cargo class
+     *
      * @param tonnage the tonnage to set
      * @param description the description to set
      */
@@ -33,9 +35,10 @@ public class Cargo {
         this.tonnage = tonnage;
         this.description = description;
     }
-    
+
     /**
      * String Constructor of the Cargo class
+     *
      * @param line String input
      */
     public Cargo(String line) {
@@ -43,9 +46,10 @@ public class Cargo {
         this.description = parts[0].trim();
         this.tonnage = Double.parseDouble(parts[1].trim());
     }
-    
+
     /**
      * toString function for Cargo
+     *
      * @return String
      */
     @Override
@@ -55,9 +59,10 @@ public class Cargo {
         str += Double.toString(this.tonnage);
         return str;
     }
-    
+
     /**
-     * Get method for the Cargo's tonnage 
+     * Get method for the Cargo's tonnage
+     *
      * @return the tonnage
      */
     public double getTonnage() {
@@ -66,6 +71,7 @@ public class Cargo {
 
     /**
      * Set method for the Cargo's tonnage
+     *
      * @param tonnage the tonnage to set
      */
     public void setTonnage(double tonnage) {
@@ -74,6 +80,7 @@ public class Cargo {
 
     /**
      * Get method for the Cargo's description
+     *
      * @return the description
      */
     public String getDescription() {
@@ -82,16 +89,17 @@ public class Cargo {
 
     /**
      * Set method for the Cargo's description
+     *
      * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
      * Display the tonnage and description of the cargo
      */
     public void display() {
-        System.out.println(tonnage+" tons of "+description);
+        System.out.println(tonnage + " tons of " + description);
     }
 }

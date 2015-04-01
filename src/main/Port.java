@@ -1,12 +1,11 @@
 /*
-    Chris Collander
-    Abdul Rafey Khan
-    Clint Wetzel
+ Chris Collander
+ Abdul Rafey Khan
+ Clint Wetzel
 
-    CSE 1325-002
-    Semester Project
-*/
-
+ CSE 1325-002
+ Semester Project
+ */
 package main;
 
 import java.util.ArrayList;
@@ -15,10 +14,11 @@ import java.util.ArrayList;
  * The Port class represents a port containing multiple docks and a cargo supply
  */
 public class Port {
+
     private String name;
     private ArrayList<Dock> docks;
     private ArrayList<Cargo> cargos;
-    
+
     /**
      * Constructor for Port
      */
@@ -27,20 +27,22 @@ public class Port {
         this.docks = new ArrayList<>();
         this.cargos = new ArrayList<>();
     }
-    
+
     /**
-     * Unload a CargoShip into a dock
- Check for safety before running this method!
+     * Unload a CargoShip into a dock Check for safety before running this
+     * method!
+     *
      * @param ship The CargoShip to unload
      */
     public void unloadShip(CargoShip ship) throws NullPointerException {
         // If there is no cargo on the ship, return without doing anything else.
-        if(ship.getCargo() == null)
+        if (ship.getCargo() == null) {
             return;
-        
+        }
+
         // Find the corresponding Dock for the ship (if no dock found, will just return)
-        for(Dock dock : docks) {
-            if(MapConverter.lat2row(ship.getLatitude()) == MapConverter.lat2row(dock.getLatitude()) && MapConverter.lon2col(ship.getLongitude()) == MapConverter.lon2col(dock.getLongitude())) {
+        for (Dock dock : docks) {
+            if (MapConverter.lat2row(ship.getLatitude()) == MapConverter.lat2row(dock.getLatitude()) && MapConverter.lon2col(ship.getLongitude()) == MapConverter.lon2col(dock.getLongitude())) {
                 // Add the ship's cargo to the port's cargo array, remove from ship.
                 cargos.add(ship.getCargo());
                 ship.setCargo(null);
@@ -48,21 +50,22 @@ public class Port {
             }
         }
     }
-    
+
     /**
      * Display all docks and cargos in this port
      */
     public void display() {
-        for(Dock dock : this.docks) {
+        for (Dock dock : this.docks) {
             dock.display();
         }
-        for(Cargo cargo : this.cargos) {
+        for (Cargo cargo : this.cargos) {
             cargo.display();
         }
     }
 
     /**
      * Get method for the port's name
+     *
      * @return the name
      */
     public String getName() {
@@ -71,6 +74,7 @@ public class Port {
 
     /**
      * Set method for the port's name
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -79,6 +83,7 @@ public class Port {
 
     /**
      * Get method for the port's docks
+     *
      * @return the docks
      */
     public ArrayList<Dock> getDocks() {
@@ -87,6 +92,7 @@ public class Port {
 
     /**
      * Set method for the port's docks
+     *
      * @param docks the docks to set
      */
     public void setDocks(ArrayList<Dock> docks) {
@@ -95,6 +101,7 @@ public class Port {
 
     /**
      * Get method for the port's cargos
+     *
      * @return the cargos
      */
     public ArrayList<Cargo> getCargos() {
@@ -103,6 +110,7 @@ public class Port {
 
     /**
      * Set method for the port's cargos
+     *
      * @param cargos the cargos to set
      */
     public void setCargos(ArrayList<Cargo> cargos) {

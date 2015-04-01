@@ -1,18 +1,18 @@
 /*
-    Chris Collander
-    Abdul Rafey Khan
-    Clint Wetzel
+ Chris Collander
+ Abdul Rafey Khan
+ Clint Wetzel
 
-    CSE 1325-002
-    Semester Project
-*/
-
+ CSE 1325-002
+ Semester Project
+ */
 package main;
 
 /**
  * OilTanker is a type of CargoShip
  */
-public class OilTanker extends CargoShip{
+public class OilTanker extends CargoShip {
+
     /**
      * Default Constructor
      */
@@ -21,10 +21,11 @@ public class OilTanker extends CargoShip{
         this.cargo = new Oil();
         this.shipSymbol = 'T';
     }
-    
+
     /**
      * String Constructor
-     * @param line 
+     *
+     * @param line
      */
     public OilTanker(String line) {
         String[] parts = line.split(",");
@@ -37,21 +38,22 @@ public class OilTanker extends CargoShip{
         this.draft = Double.parseDouble(parts[6].trim());
         this.longitude = Double.parseDouble(parts[7].trim());
         this.latitude = Double.parseDouble(parts[8].trim());
-            
+
         Oil newOil = null;
-            
-        if(parts.length > 9) {
+
+        if (parts.length > 9) {
             newOil = new Oil();
             newOil.setDescription(parts[9].trim());
             newOil.setBarrels(Integer.parseInt(parts[10].trim()));
         }
         this.cargo = newOil;
-            
+
         this.shipSymbol = 'T';
     }
-    
+
     /**
      * Convert data to csv based string
+     *
      * @return string of OilTanker
      */
     @Override
@@ -67,28 +69,29 @@ public class OilTanker extends CargoShip{
         str += Double.toString(this.draft) + ",";
         str += Double.toString(this.longitude) + ",";
         str += Double.toString(this.latitude);
-        if(this.cargo != null)
+        if (this.cargo != null) {
             str += "," + this.cargo.toString();
+        }
         return str;
     }
-    
+
     /**
      * Display the OilTanker in a console format
      */
     @Override
     public void display() {
-        System.out.println("Tanker: "+this.name);
-        System.out.println("Country of Origin: "+this.countryOfRegistration);
-        System.out.println("Transponder: "+this.transponderNumber);
-        System.out.println("Length: "+this.length+" metres");
-        System.out.println("Beam: "+this.beam+" metres");
-        System.out.println("Draft: "+this.draft+" metres");
-        System.out.println("Location: ("+this.longitude+","+this.latitude+")");
-        if(this.cargo != null) {
+        System.out.println("Tanker: " + this.name);
+        System.out.println("Country of Origin: " + this.countryOfRegistration);
+        System.out.println("Transponder: " + this.transponderNumber);
+        System.out.println("Length: " + this.length + " metres");
+        System.out.println("Beam: " + this.beam + " metres");
+        System.out.println("Draft: " + this.draft + " metres");
+        System.out.println("Location: (" + this.longitude + "," + this.latitude + ")");
+        if (this.cargo != null) {
             System.out.print("Cargo: ");
             cargo.display();
         }
         System.out.println();
-        
+
     }
 }

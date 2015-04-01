@@ -1,19 +1,18 @@
 /*
-    Chris Collander
-    Abdul Rafey Khan
-    Clint Wetzel
+ Chris Collander
+ Abdul Rafey Khan
+ Clint Wetzel
 
-    CSE 1325-002
-    Semester Project
-*/
-
+ CSE 1325-002
+ Semester Project
+ */
 package main;
 
 /**
  * The Pier class is a subclass of Dock
  */
+public class Pier extends Dock {
 
-public class Pier extends Dock{
     /**
      * Default Constructor
      */
@@ -21,9 +20,10 @@ public class Pier extends Dock{
         super();
         this.dockSymbol = 'P';
     }
-    
+
     /**
      * CSV String based Constructor
+     *
      * @param csv CSV String
      */
     public Pier(String csv) {
@@ -38,9 +38,10 @@ public class Pier extends Dock{
         this.latitude = Double.parseDouble(parts[7].trim());
         this.dockSymbol = 'P';
     }
-    
+
     /**
      * Return CSV String of the object
+     *
      * @return CSV String
      */
     public String toString() {
@@ -53,16 +54,17 @@ public class Pier extends Dock{
         ret += depth + ",";
         ret += longitude + ",";
         ret += latitude;
-        
+
         return ret;
     }
+
     /**
      * Display the object in a console format
      */
     public void display() {
-        System.out.println("Name: "+this.name);
-        System.out.println("Pier Number: "+this.section+this.getDockNumber());
-        System.out.println("Size: "+this.length+"x"+this.depth+"x"+this.width+" metres");
-        System.out.println("Location ("+this.longitude+","+this.latitude+")");        
+        System.out.println("Name: " + this.name);
+        System.out.println("Pier Number: " + this.section + this.getDockNumber());
+        System.out.println("Size: " + this.length + "x" + this.depth + "x" + this.width + " metres");
+        System.out.println("Location (" + this.longitude + "," + this.latitude + ")");
     }
 }

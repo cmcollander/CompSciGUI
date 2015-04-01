@@ -1,41 +1,42 @@
 /*
-    Chris Collander
-    Abdul Rafey Khan
-    Clint Wetzel
+ Chris Collander
+ Abdul Rafey Khan
+ Clint Wetzel
 
-    CSE 1325-002
-    Semester Project
-*/
-
+ CSE 1325-002
+ Semester Project
+ */
 package main;
 
 /**
  * The Box class is a type of Cargo
  */
-
 public class Box extends Cargo {
-   private int teus;
-   
-   /**
-    * Default Constructor
-    */
+
+    private int teus;
+
+    /**
+     * Default Constructor
+     */
     public Box() {
         this.description = "Marble";
         this.teus = 10000;
     }
-    
+
     /**
      * Parameter based constructor
+     *
      * @param teus
-     * @param description 
+     * @param description
      */
     public Box(int teus, String description) {
         this.teus = teus;
         this.description = description;
     }
-    
+
     /**
      * CSV String based constructor
+     *
      * @param csv CSV String
      */
     public Box(String csv) {
@@ -43,22 +44,23 @@ public class Box extends Cargo {
         this.description = parts[0].trim();
         this.teus = Integer.parseInt(parts[1].trim());
     }
-    
+
     /**
      * Display object in console format
      */
-   @Override
+    @Override
     public void display() {
         System.out.println(teus + " teus of " + description);
     }
-    
+
     /**
      * Convert object into a CSV based String
+     *
      * @return CSV String
      */
-   @Override
+    @Override
     public String toString() {
-        return description+","+teus;
+        return description + "," + teus;
     }
 
     /**

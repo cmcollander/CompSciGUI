@@ -32,30 +32,29 @@ public class MapConverter {
     private static final double lon2colSlope = difCol / difLon;
     private static final double lat2rowSlope = difRow / difLat;
 
-    public static int lat2row(double lat) 
-    {
+    public static int lat2row(double lat) {
         int row = 0;
-        double temp3=( (lat-minLat)*lat2rowSlope+minRow);
-        row=(int) Math.floor(temp3+0.5);
+        double temp3 = ((lat - minLat) * lat2rowSlope + minRow);
+        row = (int) Math.floor(temp3 + 0.5);
         return row;
     }
 
     public static int lon2col(double lon) {
         int col = 0;
-        double temp3= ((lon-minLon)*lon2colSlope+minCol);
-        col=(int) Math.floor(temp3+0.5);
+        double temp3 = ((lon - minLon) * lon2colSlope + minCol);
+        col = (int) Math.floor(temp3 + 0.5);
         return col;
     }
 
     public static double row2lat(int row) {
         double lat = 0.0;
-        lat=row*row2latSlope+minLat;
+        lat = row * row2latSlope + minLat;
         return lat;
     }
 
     public static double col2lon(int col) {
         double lon = 0.0;
-        lon=col*col2lonSlope+minLon;
+        lon = col * col2lonSlope + minLon;
         return lon;
     }
 

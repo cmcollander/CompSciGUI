@@ -1,18 +1,18 @@
 /*
-    Chris Collander
-    Abdul Rafey Khan
-    Clint Wetzel
+ Chris Collander
+ Abdul Rafey Khan
+ Clint Wetzel
 
-    CSE 1325-002
-    Semester Project
-*/
-
+ CSE 1325-002
+ Semester Project
+ */
 package main;
 
 /**
  * The Crane class is a subclass of Dock
  */
-public class Crane extends Dock{
+public class Crane extends Dock {
+
     /**
      * Default Constructor
      */
@@ -20,10 +20,11 @@ public class Crane extends Dock{
         super();
         this.dockSymbol = 'C';
     }
-    
+
     /**
      * CSV String based constructor
-     * @param csv 
+     *
+     * @param csv
      */
     public Crane(String csv) {
         String[] parts = csv.split(",");
@@ -37,9 +38,10 @@ public class Crane extends Dock{
         this.latitude = Double.parseDouble(parts[7].trim());
         this.dockSymbol = 'C';
     }
-    
+
     /**
      * Convert object to a CSV based String
+     *
      * @return CSV String
      */
     public String toString() {
@@ -52,18 +54,18 @@ public class Crane extends Dock{
         ret += depth + ",";
         ret += longitude + ",";
         ret += latitude;
-        
+
         return ret;
     }
-    
+
     /**
      * Display the Crane in a console based format
      */
     @Override
     public void display() {
-        System.out.println("Name: "+this.name);
-        System.out.println("Crane Number: "+this.section+this.getDockNumber());
-        System.out.println("Size: "+this.length+"x"+this.depth+"x"+this.width+" metres");
-        System.out.println("Location ("+this.longitude+","+this.latitude+")");        
+        System.out.println("Name: " + this.name);
+        System.out.println("Crane Number: " + this.section + this.getDockNumber());
+        System.out.println("Size: " + this.length + "x" + this.depth + "x" + this.width + " metres");
+        System.out.println("Location (" + this.longitude + "," + this.latitude + ")");
     }
 }

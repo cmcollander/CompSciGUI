@@ -1,18 +1,18 @@
 /*
-    Chris Collander
-    Abdul Rafey Khan
-    Clint Wetzel
+ Chris Collander
+ Abdul Rafey Khan
+ Clint Wetzel
 
-    CSE 1325-002
-    Semester Project
-*/
-
+ CSE 1325-002
+ Semester Project
+ */
 package main;
 
 /**
  * The Dock class is used to create Dock objects
  */
 public class Dock {
+
     protected String name;
     protected char section;
     protected int dockNumber;
@@ -37,9 +37,10 @@ public class Dock {
         this.latitude = 53.410777;
         this.dockSymbol = 'D';
     }
-    
+
     /**
      * String Constructor for the Dock class
+     *
      * @param line String input
      */
     public Dock(String line) {
@@ -54,9 +55,10 @@ public class Dock {
         this.latitude = Double.parseDouble(parts[7].trim());
         this.dockSymbol = 'D';
     }
-    
+
     /**
      * turn the Dock object into a string
+     *
      * @return the string representation of the dock
      */
     @Override
@@ -70,22 +72,23 @@ public class Dock {
         ret += depth + ",";
         ret += longitude + ",";
         ret += latitude;
-        
+
         return ret;
     }
-    
+
     /**
      * Display information for the Dock object
      */
     public void display() {
-        System.out.println("Name: "+this.name);
-        System.out.println("Dock Number: "+this.section+this.dockNumber);
-        System.out.println("Size: "+this.length+"x"+this.depth+"x"+this.width+" metres");
-        System.out.println("Location ("+this.longitude+","+this.latitude+")");
+        System.out.println("Name: " + this.name);
+        System.out.println("Dock Number: " + this.section + this.dockNumber);
+        System.out.println("Size: " + this.length + "x" + this.depth + "x" + this.width + " metres");
+        System.out.println("Location (" + this.longitude + "," + this.latitude + ")");
     }
-    
+
     /**
      * Get method for the Dock's number
+     *
      * @return the dockNumber
      */
     public int getDockNumber() {
@@ -94,6 +97,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's number
+     *
      * @param dockNumber the dockNumber to set
      */
     public void setDockNumber(int dockNumber) {
@@ -102,6 +106,7 @@ public class Dock {
 
     /**
      * Get method for the Dock's depth
+     *
      * @return the depth
      */
     public double getDepth() {
@@ -110,6 +115,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's depth
+     *
      * @param depth the depth to set
      */
     public void setDepth(double depth) {
@@ -118,6 +124,7 @@ public class Dock {
 
     /**
      * Get method for the Dock's length
+     *
      * @return the length
      */
     public double getLength() {
@@ -126,6 +133,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's length
+     *
      * @param length the length to set
      */
     public void setLength(double length) {
@@ -134,6 +142,7 @@ public class Dock {
 
     /**
      * Get method for the Dock's width
+     *
      * @return the width
      */
     public double getWidth() {
@@ -142,6 +151,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's width
+     *
      * @param width the width to set
      */
     public void setWidth(double width) {
@@ -150,6 +160,7 @@ public class Dock {
 
     /**
      * Get method for the Dock's Longitude
+     *
      * @return the longitude
      */
     public double getLongitude() {
@@ -158,6 +169,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's Longitude
+     *
      * @param longitude the longitude to set
      */
     public void setLongitude(double longitude) {
@@ -166,6 +178,7 @@ public class Dock {
 
     /**
      * Get method for the Dock's Latitude
+     *
      * @return the latitude
      */
     public double getLatitude() {
@@ -174,6 +187,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's Latitude
+     *
      * @param latitude the latitude to set
      */
     public void setLatitude(double latitude) {
@@ -182,6 +196,7 @@ public class Dock {
 
     /**
      * Get method for the Dock's Name
+     *
      * @return the name
      */
     public String getName() {
@@ -190,6 +205,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's Name
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -198,6 +214,7 @@ public class Dock {
 
     /**
      * Get method for the Dock's Section
+     *
      * @return the section
      */
     public char getSection() {
@@ -206,6 +223,7 @@ public class Dock {
 
     /**
      * Set method for the Dock's Section
+     *
      * @param section the section to set
      */
     public void setSection(char section) {
@@ -225,5 +243,5 @@ public class Dock {
     public void setDockSymbol(char dockSymbol) {
         this.dockSymbol = dockSymbol;
     }
-    
+
 }
