@@ -16,6 +16,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -29,11 +31,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     
-    public static Map map;
+    private static Map map;
+    private static Canvas canvas;
     
     @Override
     public void start(Stage primaryStage) {
@@ -101,9 +105,10 @@ public class Main extends Application {
         //TODO: Find a way to add a MenuItem to menuBar without a Menu in between, for the About button
         
         // MapView Setup
-        ImageView mapView = new ImageView();
-        Image image = new Image("image.png");
-        mapView.setImage(image);
+        Canvas mapView = new Canvas(300,200);
+        GraphicsContext gc = mapView.getGraphicsContext2D();
+        gc.setFill(Color.BLUE);
+        gc.fillRect(0,0,300,200);
         
         // TextLabel Setup
         Label textLabel = new Label("Woof!");
@@ -115,8 +120,8 @@ public class Main extends Application {
         root.setBottom(textLabel);
         Scene scene = new Scene(root, 300, 300);
         primaryStage.setTitle("CompSci GUI - JavaFX!");
-        
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
