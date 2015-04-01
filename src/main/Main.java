@@ -16,16 +16,21 @@ import java.util.Optional;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -33,6 +38,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class Main extends Application {
 
@@ -294,7 +300,32 @@ public class Main extends Application {
         alert.showAndWait();
     }
 
+    //THIS METHOD DOES NOT YET WORK!
     private static void updateShip(CargoShip ship) {
-        //TODO:
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Update Ship");
+        dialog.setHeaderText("Update Ship");
+
+        // Can set a ship icon here, if we want
+        ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
+
+        // Create the info fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField name = new TextField(ship.getName());
+        // ADD MORE FIELDS HERE!
+        grid.add(new Label("Name:"), 0, 0);
+        grid.add(name, 1, 0);
+
+        dialog.getDialogPane().setContent(grid);
+        Optional<Void> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            // UPDATE THE SHIP HERE!
+        }
+
     }
 }
