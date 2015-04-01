@@ -1,15 +1,16 @@
 /*
     Chris Collander
-    1001101078
-    Homework #3
-    03/23/2015
+    Abdul Rafey Khan
+    Clint Wetzel
+
+    CSE 1325-002
+    Semester Project
 */
 
 package main;
 
 /**
  * The Crane class is a subclass of Dock
- * @author Chris Collander
  */
 public class Crane extends Dock{
     /**

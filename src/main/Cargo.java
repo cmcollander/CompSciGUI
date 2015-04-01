@@ -1,16 +1,16 @@
 /*
     Chris Collander
-    1001101078
-    Homework #3
-    03/23/2015
-*/
+    Abdul Rafey Khan
+    Clint Wetzel
 
+    CSE 1325-002
+    Semester Project
+*/
 package main;
 
 /**
  * The Cargo class is used to create Cargo objects consisting of a tonnage
  * and a description
- * @author Chris Collander 1001101078
  */
 public class Cargo {
     protected double tonnage;

@@ -1,8 +1,10 @@
 /*
     Chris Collander
-    1001101078
-    Homework #3
-    03/23/2015
+    Abdul Rafey Khan
+    Clint Wetzel
+
+    CSE 1325-002
+    Semester Project
 */
 
 package main;
@@ -10,8 +12,7 @@ package main;
 import java.util.ArrayList;
 
 /**
- * The Port class represents a port containing multiple docks and a cargo suppy
- * @author Chris Collander
+ * The Port class represents a port containing multiple docks and a cargo supply
  */
 public class Port {
     private String name;

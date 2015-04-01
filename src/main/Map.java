@@ -1,8 +1,10 @@
 /*
     Chris Collander
-    1001101078
-    Homework #3
-    03/23/2015
+    Abdul Rafey Khan
+    Clint Wetzel
+
+    CSE 1325-002
+    Semester Project
 */
 
 package main;
@@ -12,7 +14,6 @@ import java.util.Random;
 
 /**
  * The Map class is used to create Map objects
- * @author Chris Collander 1001101078
  */
 public class Map {
     private char[][] matrix;

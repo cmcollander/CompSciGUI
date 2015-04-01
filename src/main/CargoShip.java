@@ -1,15 +1,16 @@
 /*
     Chris Collander
-    1001101078
-    Homework #3
-    03/23/2015
+    Abdul Rafey Khan
+    Clint Wetzel
+
+    CSE 1325-002
+    Semester Project
 */
 
 package main;
 
 /**
  * The CargoShip class is used to create CargoShip objects
- * @author Chris Collander 1001101078
  */
 public class CargoShip {
     protected String name;
