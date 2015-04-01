@@ -37,6 +37,7 @@ public class Main extends Application {
     private static Stage stage;
     private static Map map;
     private static Canvas canvas;
+    private static TextArea textArea;
 
     @Override
     public void start(Stage primaryStage) {
@@ -111,15 +112,26 @@ public class Main extends Application {
         gc.setFill(Color.BLUE);
         gc.fillRect(0, 0, 300, 200);
 
-        // TextLabel Setup
-        Label textLabel = new Label("Woof!!!");
+        // TextArea Setup
+        textArea = new TextArea();
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(textArea, 0, 1);
 
         // Create Scene
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
         root.setCenter(mapView);
-        root.setBottom(textLabel);
-        Scene scene = new Scene(root, 300, 300);
+        root.setBottom(expContent);
+        Scene scene = new Scene(root, 300, 500);
         primaryStage.setTitle("CompSci GUI - JavaFX!");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -175,9 +187,54 @@ public class Main extends Application {
                 if ("Exit".equalsIgnoreCase(text)) {
                     System.exit(0);
                 }
-                // Place other MenuItems here
+
+                // Ship Menu
+                // Generate Ships MenuItem
+                if ("Generate Ships".equalsIgnoreCase(text)) {
+                    int numShips = 0;
+
+                    TextInputDialog openDialog = new TextInputDialog("10");
+                    openDialog.setTitle("Generate Ships");
+                    openDialog.setHeaderText("Generate a Number of Ships");
+                    openDialog.setContentText("Please enter the number of ships:");
+
+                    Optional<String> result = openDialog.showAndWait();
+                    if (result.isPresent()) {
+                        try {
+                            numShips = Integer.parseInt(result.get());
+                        } catch (Exception ex) {
+                            if (ex instanceof NumberFormatException) {
+                                incorrectInput();
+                            } else {
+                                displayStackTrace(ex);
+                            }
+                        }
+                    }
+                    map.generateShips(numShips);
+                }
+                // Display All Ships MenuItem
+                if ("Display All Ships".equalsIgnoreCase(text)) {
+                    String output = "";
+                    for (CargoShip ship : map.getShips()) {
+                        output += ship.display();
+                    }
+                    textArea.setText(output);
+                }
+
+                // Remove All Ships MenuItem
+                if ("Remove All Ships".equalsIgnoreCase(text)) {
+                    map.getShips().clear();
+                }
             }
         };
+    }
+
+    public static void incorrectInput() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Incorrect Input");
+        alert.setHeaderText("Incorrect Input");
+        alert.setContentText("Please Enter a Correct Value");
+        alert.showAndWait();
     }
 
     public static void displayStackTrace(Exception ex) {

@@ -47,10 +47,12 @@ public class Box extends Cargo {
 
     /**
      * Display object in console format
+     *
+     * @return String to Display
      */
     @Override
-    public void display() {
-        System.out.println(teus + " teus of " + description);
+    public String display() {
+        return teus + " teus of " + description + "\n";
     }
 
     /**

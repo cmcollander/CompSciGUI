@@ -99,7 +99,7 @@ public class Cargo {
     /**
      * Display the tonnage and description of the cargo
      */
-    public void display() {
-        System.out.println(tonnage + " tons of " + description);
+    public String display() {
+        return tonnage + " tons of " + description + "\n";
     }
 }

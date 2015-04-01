@@ -79,19 +79,21 @@ public class OilTanker extends CargoShip {
      * Display the OilTanker in a console format
      */
     @Override
-    public void display() {
-        System.out.println("Tanker: " + this.name);
-        System.out.println("Country of Origin: " + this.countryOfRegistration);
-        System.out.println("Transponder: " + this.transponderNumber);
-        System.out.println("Length: " + this.length + " metres");
-        System.out.println("Beam: " + this.beam + " metres");
-        System.out.println("Draft: " + this.draft + " metres");
-        System.out.println("Location: (" + this.longitude + "," + this.latitude + ")");
+    public String display() {
+        String ret = "";
+        ret += "Tanker: " + this.name + "\n";
+        ret += "Country of Origin: " + this.countryOfRegistration + "\n";
+        ret += "Transponder: " + this.transponderNumber + "\n";
+        ret += "Length: " + this.length + " metres\n";
+        ret += "Beam: " + this.beam + " metres\n";
+        ret += "Draft: " + this.draft + " metres\n";
+        ret += "Location: (" + this.longitude + "," + this.latitude + ")\n";
         if (this.cargo != null) {
-            System.out.print("Cargo: ");
-            cargo.display();
+            ret += "Cargo: ";
+            ret += cargo.display();
         }
-        System.out.println();
+        ret += "\n\n";
+        return ret;
 
     }
 }

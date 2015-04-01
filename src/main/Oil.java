@@ -49,8 +49,8 @@ public class Oil extends Cargo {
      * Display the object in a console format
      */
     @Override
-    public void display() {
-        System.out.println(barrels + " barrels of " + description);
+    public String display() {
+        return barrels + " barrels of " + description + "\n";
     }
 
     /**

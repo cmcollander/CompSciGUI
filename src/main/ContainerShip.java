@@ -77,20 +77,21 @@ public class ContainerShip extends CargoShip {
      * Display the ContainerShip in a console based format
      */
     @Override
-    public void display() {
-        System.out.println("Container Ship: " + this.name);
-        System.out.println("Country of Origin: " + this.countryOfRegistration);
-        System.out.println("Transponder: " + this.transponderNumber);
-        System.out.println("Length: " + this.length + " metres");
-        System.out.println("Beam: " + this.beam + " metres");
-        System.out.println("Draft: " + this.draft + " metres");
-        System.out.println("Capacity: " + this.cargoCapacity + " tons");
-        System.out.println("Location: (" + this.longitude + "," + this.latitude + ")");
+    public String display() {
+        String ret = "";
+        ret += "Container Ship: " + this.name + "\n";
+        ret += "Country of Origin: " + this.countryOfRegistration + "\n";
+        ret += "Transponder: " + this.transponderNumber + "\n";
+        ret += "Length: " + this.length + " metres\n";
+        ret += "Beam: " + this.beam + " metres\n";
+        ret += "Draft: " + this.draft + " metres\n";
+        ret += "Capacity: " + this.cargoCapacity + " tons\n";
+        ret += "Location: (" + this.longitude + "," + this.latitude + ")\n";
         if (this.cargo != null) {
-            System.out.print("Cargo: ");
-            this.cargo.display();
+            ret += "Cargo: ";
+            ret += this.cargo.display();
         }
-        System.out.println();
-
+        ret += "\n\n";
+        return ret;
     }
 }
