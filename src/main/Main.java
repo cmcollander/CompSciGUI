@@ -11,6 +11,7 @@ package main;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -212,6 +214,29 @@ public class Main extends Application {
                     }
                     map.generateShips(numShips);
                 }
+                // Update Ships MenuItem
+                if ("Update Ships".equalsIgnoreCase(text)) {
+                    ArrayList<String> choices = new ArrayList<>();
+                    for (CargoShip ship : map.getShips()) {
+                        choices.add(ship.getName());
+                    }
+
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                    dialog.setTitle("Update Ship");
+                    dialog.setHeaderText("Update Ship");
+                    dialog.setContentText("Choose a ship:");
+
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        // Find which ship is being updated and pass it to the updateShip function
+                        for (CargoShip ship : map.getShips()) {
+                            if (ship.getName().equals(result)) {
+                                updateShip(ship);
+                            }
+                        }
+                    }
+                }
+
                 // Display All Ships MenuItem
                 if ("Display All Ships".equalsIgnoreCase(text)) {
                     String output = "";
@@ -267,5 +292,9 @@ public class Main extends Application {
         alert.getDialogPane().setExpandableContent(expContent);
 
         alert.showAndWait();
+    }
+
+    private static void updateShip(CargoShip ship) {
+        //TODO:
     }
 }
