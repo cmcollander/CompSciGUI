@@ -18,7 +18,6 @@ import javafx.scene.media.AudioClip;
 public class SoundManager {
 
     public static void growl() throws Exception {
-        //final URL resource = getClass().getResource("resources/growl.mp3");
         URL resource = new File("media\\growl.mp3").toURI().toURL();
         AudioClip growlSound = new AudioClip(resource.toString());
         growlSound.play();

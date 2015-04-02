@@ -11,6 +11,7 @@ package main;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Application;
@@ -32,6 +33,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -117,8 +119,7 @@ public class Main extends Application {
         
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu1, menu2, menu3, menu4, menu5);
-        //TODO: Find a way to add a MenuItem to menuBar without a Menu in between, for the About button
-
+        
         // MapView Setup
         mapView = new Canvas(canvasWidth, canvasHeight);
         refreshMap();
@@ -232,6 +233,14 @@ public class Main extends Application {
                     ArrayList<String> choices = new ArrayList<>();
                     for (CargoShip ship : map.getShips()) {
                         choices.add(ship.getName());
+                    }
+                    
+                    if(choices.size()==0) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("No Ships have been generated");
+                        alert.setHeaderText("No Ships have been generated");
+                        alert.setContentText("Please generate ships before attempting to update");
+                        alert.showAndWait();
                     }
 
                     ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
@@ -365,20 +374,18 @@ public class Main extends Application {
     }
 
     private static void updateShip(CargoShip ship) {
-        if (map == null || map.getShips() == null || map.getShips().size() < 1) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Ships Initialized");
-            alert.setHeaderText("No Ships Initialized");
-            alert.setContentText("Please run Generate Ships before calling this command!");
-            alert.showAndWait();
-            return;
-        }
-
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Update Ship");
         dialog.setHeaderText("Update Ship");
-
-        // Can set a ship icon here, if we want
+        
+        // Ship Icon *DOESNT WORK YET*
+        try {
+            URL resource = new File("media\\ship_icon.png").toURI().toURL();
+            dialog.setGraphic(new ImageView(resource.toString()));
+        } catch(Exception ex) {
+            displayStackTrace(ex);
+        }
+        
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         ButtonType cargoButtonType = new ButtonType("Cargo", ButtonData.OTHER);
         ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
@@ -396,7 +403,7 @@ public class Main extends Application {
         TextField length = new TextField(Double.toString(ship.getLength()));
         TextField beam = new TextField(Double.toString(ship.getBeam()));
         TextField draft = new TextField(Double.toString(ship.getDraft()));
-        // ADD MORE FIELDS HERE!
+        
         grid.add(new Label("Name:"), 0, 0);
         grid.add(name, 1, 0);
         grid.add(new Label("Country of Registration:"), 0, 1);
@@ -430,15 +437,6 @@ public class Main extends Application {
     }
     
     private static void updateDock(Dock dock) {
-        if (map == null || map.getPort()==null || map.getPort().getDocks() == null || map.getPort().getDocks().size() < 1) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Docks Initialized");
-            alert.setHeaderText("No Docks Initialized");
-            alert.setContentText("This map has no docks!");
-            alert.showAndWait();
-            return;
-        }
-
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Update Dock");
         dialog.setHeaderText("Update Dock");
