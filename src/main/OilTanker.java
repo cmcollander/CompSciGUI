@@ -36,9 +36,10 @@ public class OilTanker extends CargoShip {
         this.length = Double.parseDouble(parts[4].trim());
         this.beam = Double.parseDouble(parts[5].trim());
         this.draft = Double.parseDouble(parts[6].trim());
-        this.longitude = Double.parseDouble(parts[7].trim());
-        this.latitude = Double.parseDouble(parts[8].trim());
-
+        double longitude = Double.parseDouble(parts[7].trim());
+        double latitude = Double.parseDouble(parts[8].trim());
+        position = new Position(latitude, longitude);
+        
         Oil newOil = null;
 
         if (parts.length > 9) {
@@ -67,8 +68,8 @@ public class OilTanker extends CargoShip {
         str += Double.toString(this.length) + ",";
         str += Double.toString(this.beam) + ",";
         str += Double.toString(this.draft) + ",";
-        str += Double.toString(this.longitude) + ",";
-        str += Double.toString(this.latitude);
+        str += Double.toString(this.getLongitude()) + ",";
+        str += Double.toString(this.getLatitude());
         if (this.cargo != null) {
             str += "," + this.cargo.toString();
         }
@@ -87,7 +88,7 @@ public class OilTanker extends CargoShip {
         ret += "Length: " + this.length + " metres\n";
         ret += "Beam: " + this.beam + " metres\n";
         ret += "Draft: " + this.draft + " metres\n";
-        ret += "Location: (" + this.longitude + "," + this.latitude + ")\n";
+        ret += "Location: (" + this.getLongitude() + "," + this.getLatitude() + ")\n";
         if (this.cargo != null) {
             ret += "Cargo: ";
             ret += cargo.display();

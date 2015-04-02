@@ -20,8 +20,7 @@ public class CargoShip {
     protected double length;
     protected double beam;
     protected double draft;
-    protected double longitude;
-    protected double latitude;
+    protected Position position;
     protected Cargo cargo;
     protected char shipSymbol;
 
@@ -36,8 +35,7 @@ public class CargoShip {
         this.length = 90;
         this.beam = 10;
         this.draft = 5;
-        this.longitude = -2.977838;
-        this.latitude = 53.410777;
+        position = new Position(53.410777,-2.977838);
         this.shipSymbol = 'S';
         cargo = new Cargo();
     }
@@ -56,8 +54,10 @@ public class CargoShip {
         this.length = Double.parseDouble(parts[4].trim());
         this.beam = Double.parseDouble(parts[5].trim());
         this.draft = Double.parseDouble(parts[6].trim());
-        this.longitude = Double.parseDouble(parts[7].trim());
-        this.latitude = Double.parseDouble(parts[8].trim());
+        
+        double longitude = Double.parseDouble(parts[7].trim());
+        double latitude = Double.parseDouble(parts[8].trim());
+        position = new Position(latitude, longitude);
 
         Cargo newCargo = null;
 
@@ -86,8 +86,8 @@ public class CargoShip {
         str += Double.toString(this.length) + ",";
         str += Double.toString(this.beam) + ",";
         str += Double.toString(this.draft) + ",";
-        str += Double.toString(this.longitude) + ",";
-        str += Double.toString(this.latitude);
+        str += Double.toString(this.getLongitude()) + ",";
+        str += Double.toString(this.getLatitude());
         if (this.cargo != null) {
             str += "," + this.cargo.toString();
         }
@@ -106,7 +106,7 @@ public class CargoShip {
         ret += "Beam: " + this.beam + " metres\n";
         ret += "Draft: " + this.draft + " metres\n";
         ret += "Capacity: " + this.cargoCapacity + " tons\n";
-        ret += "Location: (" + this.longitude + "," + this.latitude + ")\n";
+        ret += "Location: (" + this.getLongitude() + "," + this.getLatitude() + ")\n";
         if (this.cargo != null) {
             ret += "Cargo: ";
             ret += cargo.display();
@@ -248,7 +248,7 @@ public class CargoShip {
      * @return the longitude
      */
     public double getLongitude() {
-        return longitude;
+        return position.getLongitude();
     }
 
     /**
@@ -257,7 +257,7 @@ public class CargoShip {
      * @param longitude the longitude to set
      */
     public void setLongitude(double longitude) {
-        this.longitude = longitude;
+        position.setLongitude(longitude);
     }
 
     /**
@@ -266,7 +266,7 @@ public class CargoShip {
      * @return the latitude
      */
     public double getLatitude() {
-        return latitude;
+        return position.getLatitude();
     }
 
     /**
@@ -275,7 +275,7 @@ public class CargoShip {
      * @param latitude the latitude to set
      */
     public void setLatitude(double latitude) {
-        this.latitude = latitude;
+        position.setLatitude(latitude);
     }
 
     /**
@@ -308,5 +308,21 @@ public class CargoShip {
      */
     public void setShipSymbol(char shipSymbol) {
         this.shipSymbol = shipSymbol;
+    }
+    
+    public void setRow(int row) {
+        position.setRow(row);
+    }
+    
+    public void setCol(int col) {
+        position.setCol(col);
+    }
+    
+    public int getRow() {
+        return position.getRow();
+    }
+    
+    public int getCol() {
+        return position.getCol();
     }
 }
