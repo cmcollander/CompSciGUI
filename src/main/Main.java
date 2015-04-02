@@ -288,6 +288,14 @@ public class Main extends Application {
                     for (Dock dock : map.getPort().getDocks()) {
                         choices.add(dock.getName());
                     }
+                    
+                    if(choices.isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("No docks yet created");
+                        alert.setHeaderText("No docks yet created");
+                        alert.setContentText("Please create docks before attempting to update one");
+                        alert.showAndWait();
+                    }
 
                     ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
                     dialog.setTitle("Update Dock");
@@ -443,9 +451,8 @@ public class Main extends Application {
 
         // Can set a ship icon here, if we want
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
-        ButtonType cargoButtonType = new ButtonType("Cargo", ButtonData.OTHER);
         ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
-        dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, cargoButtonType, updateButtonType, ButtonType.CANCEL);
+        dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, updateButtonType, ButtonType.CANCEL);
 
         // Create the info fields
         GridPane grid = new GridPane();
@@ -490,6 +497,96 @@ public class Main extends Application {
             }
         }
 
+    }
+    
+    private static void updateCargo(Cargo cargo) {
+        if(cargo==null)
+            incorrectInput();
+        
+        int cargoType = 0; // Plain Cargo
+        if(cargo instanceof Oil)
+            cargoType = 1; // Oil
+        if(cargo instanceof Box)
+            cargoType = 2; // Box
+        
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Update Cargo");
+        dialog.setHeaderText("Update Cargo");
+
+        ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
+
+        // Create the info fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField description = new TextField(cargo.getDescription());
+        
+        String currTonString;
+        switch(cargoType) {
+            case 0:
+                currTonString = Double.toString(cargo.getTonnage());
+                break;
+            case 1:
+                currTonString = Integer.toString(((Oil)cargo).getBarrels());
+                break;
+            case 2:
+                currTonString = Integer.toString(((Box)cargo).getTeus());
+                break;
+            default:
+                currTonString = "ERROR";
+                break;
+        }
+        
+        TextField tonnage = new TextField(currTonString);
+        
+        String tonString;
+        switch(cargoType) {
+            case 0:
+                tonString = "Tonnage:";
+                break;
+            case 1:
+                tonString = "Barrels:";
+                break;
+            case 2:
+                tonString = "TEUs:";
+                break;
+            default:
+                tonString = "ERROR";
+                break;
+        }
+        
+        grid.add(new Label("Description:"), 0, 0);
+        grid.add(description, 1, 0);
+        grid.add(new Label(tonString), 0, 1);
+        grid.add(tonnage, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<Void> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            try {
+                cargo.setDescription(description.getText());
+                switch(cargoType) {
+                    case 0:
+                        cargo.setTonnage(Double.parseDouble(tonnage.getText()));
+                        break;
+                    case 1:
+                        ((Oil)cargo).setBarrels(Integer.parseInt(tonnage.getText()));
+                        break;
+                    case 2:
+                        ((Box)cargo).setTeus(Integer.parseInt(tonnage.getText()));
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception ex) {
+                incorrectInput();
+            }
+        }
     }
 
     private static void refreshMap() {
