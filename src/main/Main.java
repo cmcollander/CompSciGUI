@@ -53,8 +53,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
-        canvasWidth = 53 * 10;
-        canvasHeight = 35 * 10;
+        canvasWidth = 54 * 10;
+        canvasHeight = 36 * 10;
         mapLoaded = false;
 
         // Initialize Map
@@ -185,6 +185,7 @@ public class Main extends Application {
                 // Close MenuItem
                 if ("Close".equalsIgnoreCase(text)) {
                     map = new Map(); // This should reset absolutely everything
+                    refreshMap();
                 }
                 // Snap Shot MenuItem
                 if ("Snap Shot".equalsIgnoreCase(text)) {
@@ -225,6 +226,7 @@ public class Main extends Application {
                         }
                     }
                     map.generateShips(numShips);
+                    refreshMap();
                 }
                 // Update Ships MenuItem
                 if ("Update Ships".equalsIgnoreCase(text)) {
@@ -253,6 +255,7 @@ public class Main extends Application {
                             incorrectInput();
                         }
                     }
+                    refreshMap();
                 }
 
                 // Display All Ships MenuItem
@@ -267,6 +270,7 @@ public class Main extends Application {
                 // Remove All Ships MenuItem
                 if ("Remove All Ships".equalsIgnoreCase(text)) {
                     map.getShips().clear();
+                    refreshMap();
                 }
 
                 //Port Menu
@@ -418,8 +422,8 @@ public class Main extends Application {
         char currentChar;
         gc.setFill(Color.GREEN);
 
-        for (int row = 0; row < 35; row++) {
-            for (int col = 0; col < 53; col++) {
+        for (int row = 0; row < 36; row++) {
+            for (int col = 0; col < 54; col++) {
                 currentChar = matrix[row][col];
                 if (currentChar == '*') {
                     gc.fillRect(col * 10, row * 10, 10, 10);
@@ -427,5 +431,61 @@ public class Main extends Application {
             }
         }
 
+        // Iterate through the ships. THIS DOES NOT YET CHECK SAFETY
+        for (CargoShip ship : map.getShips()) {
+            int shipType = 0;
+            if (ship instanceof ContainerShip) {
+                shipType = 1;
+            }
+            if (ship instanceof OilTanker) {
+                shipType = 2;
+            }
+
+            int row = 10 * MapConverter.lat2row(ship.getLatitude()) + 10;
+            int col = 10 * MapConverter.lon2col(ship.getLongitude());
+
+            switch (shipType) {
+                case 0:
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("S", col, row);
+                    break;
+                case 1:
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("B", col, row);
+                    break;
+                case 2:
+                    gc.setFill(Color.RED);
+                    gc.fillText("T", col, row);
+                    break;
+            }
+        }
+
+        //Iterate through the docks
+        for (Dock dock : map.getPort().getDocks()) {
+            int dockType = 0;
+            if (dock instanceof Crane) {
+                dockType = 1;
+            }
+            if (dock instanceof Pier) {
+                dockType = 2;
+            }
+
+            int row = 10 * MapConverter.lat2row(dock.getLatitude()) + 10;
+            int col = 10 * MapConverter.lon2col(dock.getLongitude());
+
+            gc.setFill(Color.BLACK);
+
+            switch (dockType) {
+                case 0:
+                    gc.fillText("D", col, row);
+                    break;
+                case 1:
+                    gc.fillText("C", col, row);
+                    break;
+                case 2:
+                    gc.fillText("P", col, row);
+                    break;
+            }
+        }
     }
 }
