@@ -382,7 +382,7 @@ public class Main extends Application {
     }
 
     private static void updateShip(CargoShip ship) {
-        Dialog<Void> dialog = new Dialog<>();
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Ship");
         dialog.setHeaderText("Update Ship");
 
@@ -427,18 +427,33 @@ public class Main extends Application {
 
         dialog.getDialogPane().setContent(grid);
 
-        Optional<Void> result = dialog.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent()) {
-            try {
-                ship.setName(name.getText());
-                ship.setCountryOfRegistration(country.getText());
-                ship.setTransponderNumber(Long.parseLong(transponder.getText()));
-                ship.setLength(Double.parseDouble(length.getText()));
-                ship.setBeam(Double.parseDouble(beam.getText()));
-                ship.setDraft(Double.parseDouble(draft.getText()));
-            } catch (Exception ex) {
-                incorrectInput();
+            ButtonType bt = result.get();
+            
+            // Update Button Hit
+            if(bt.getText().equalsIgnoreCase("Update")) {
+                try {
+                    ship.setName(name.getText());
+                    ship.setCountryOfRegistration(country.getText());
+                    ship.setTransponderNumber(Long.parseLong(transponder.getText()));
+                    ship.setLength(Double.parseDouble(length.getText()));
+                    ship.setBeam(Double.parseDouble(beam.getText()));
+                    ship.setDraft(Double.parseDouble(draft.getText()));
+                } catch (Exception ex) {
+                    incorrectInput();
+                }
+            }
+            
+            // Cargo Button Hit
+            if(bt.getText().equalsIgnoreCase("Cargo")) {
+                updateCargo(ship.getCargo());
+            }
+            
+            // Location Button Hit
+            if(bt.getText().equalsIgnoreCase("Location")) {
+                // updateLocation(ship);
             }
         }
 
