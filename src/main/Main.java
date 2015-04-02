@@ -116,10 +116,10 @@ public class Main extends Application {
         MenuItem menu45 = new MenuItem("Summon Godzilla");
         menu45.setOnAction(menuAction);
         menu4.getItems().addAll(menu41, menu42, menu43, menu44, menu45);
-        
+
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu1, menu2, menu3, menu4, menu5);
-        
+
         // MapView Setup
         mapView = new Canvas(canvasWidth, canvasHeight);
         refreshMap();
@@ -234,8 +234,8 @@ public class Main extends Application {
                     for (CargoShip ship : map.getShips()) {
                         choices.add(ship.getName());
                     }
-                    
-                    if(choices.size()==0) {
+
+                    if (choices.size() == 0) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("No Ships have been generated");
                         alert.setHeaderText("No Ships have been generated");
@@ -288,8 +288,8 @@ public class Main extends Application {
                     for (Dock dock : map.getPort().getDocks()) {
                         choices.add(dock.getName());
                     }
-                    
-                    if(choices.isEmpty()) {
+
+                    if (choices.isEmpty()) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("No docks yet created");
                         alert.setHeaderText("No docks yet created");
@@ -319,7 +319,7 @@ public class Main extends Application {
                     }
                     refreshMap();
                 }
-                
+
                 //Display All Docks MenuItem
                 if ("Display All Docks".equalsIgnoreCase(text)) {
                     String output = "";
@@ -385,15 +385,15 @@ public class Main extends Application {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Update Ship");
         dialog.setHeaderText("Update Ship");
-        
+
         // Ship Icon *DOESNT WORK YET*
         try {
             URL resource = new File("media\\ship_icon.png").toURI().toURL();
             dialog.setGraphic(new ImageView(resource.toString()));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             displayStackTrace(ex);
         }
-        
+
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         ButtonType cargoButtonType = new ButtonType("Cargo", ButtonData.OTHER);
         ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
@@ -411,7 +411,7 @@ public class Main extends Application {
         TextField length = new TextField(Double.toString(ship.getLength()));
         TextField beam = new TextField(Double.toString(ship.getBeam()));
         TextField draft = new TextField(Double.toString(ship.getDraft()));
-        
+
         grid.add(new Label("Name:"), 0, 0);
         grid.add(name, 1, 0);
         grid.add(new Label("Country of Registration:"), 0, 1);
@@ -443,7 +443,7 @@ public class Main extends Application {
         }
 
     }
-    
+
     private static void updateDock(Dock dock) {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Update Dock");
@@ -498,17 +498,19 @@ public class Main extends Application {
         }
 
     }
-    
+
     private static void updateCargo(Cargo cargo) {
-        if(cargo==null)
+        if (cargo == null) {
             incorrectInput();
-        
+        }
+
         int cargoType = 0; // Plain Cargo
-        if(cargo instanceof Oil)
+        if (cargo instanceof Oil) {
             cargoType = 1; // Oil
-        if(cargo instanceof Box)
+        }
+        if (cargo instanceof Box) {
             cargoType = 2; // Box
-        
+        }
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Update Cargo");
         dialog.setHeaderText("Update Cargo");
@@ -523,27 +525,27 @@ public class Main extends Application {
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextField description = new TextField(cargo.getDescription());
-        
+
         String currTonString;
-        switch(cargoType) {
+        switch (cargoType) {
             case 0:
                 currTonString = Double.toString(cargo.getTonnage());
                 break;
             case 1:
-                currTonString = Integer.toString(((Oil)cargo).getBarrels());
+                currTonString = Integer.toString(((Oil) cargo).getBarrels());
                 break;
             case 2:
-                currTonString = Integer.toString(((Box)cargo).getTeus());
+                currTonString = Integer.toString(((Box) cargo).getTeus());
                 break;
             default:
                 currTonString = "ERROR";
                 break;
         }
-        
+
         TextField tonnage = new TextField(currTonString);
-        
+
         String tonString;
-        switch(cargoType) {
+        switch (cargoType) {
             case 0:
                 tonString = "Tonnage:";
                 break;
@@ -557,7 +559,7 @@ public class Main extends Application {
                 tonString = "ERROR";
                 break;
         }
-        
+
         grid.add(new Label("Description:"), 0, 0);
         grid.add(description, 1, 0);
         grid.add(new Label(tonString), 0, 1);
@@ -570,15 +572,15 @@ public class Main extends Application {
         if (result.isPresent()) {
             try {
                 cargo.setDescription(description.getText());
-                switch(cargoType) {
+                switch (cargoType) {
                     case 0:
                         cargo.setTonnage(Double.parseDouble(tonnage.getText()));
                         break;
                     case 1:
-                        ((Oil)cargo).setBarrels(Integer.parseInt(tonnage.getText()));
+                        ((Oil) cargo).setBarrels(Integer.parseInt(tonnage.getText()));
                         break;
                     case 2:
-                        ((Box)cargo).setTeus(Integer.parseInt(tonnage.getText()));
+                        ((Box) cargo).setTeus(Integer.parseInt(tonnage.getText()));
                         break;
                     default:
                         break;
