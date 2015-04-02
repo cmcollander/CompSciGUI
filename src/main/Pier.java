@@ -61,10 +61,13 @@ public class Pier extends Dock {
     /**
      * Display the object in a console format
      */
-    public void display() {
-        System.out.println("Name: " + this.name);
-        System.out.println("Pier Number: " + this.section + this.getDockNumber());
-        System.out.println("Size: " + this.length + "x" + this.depth + "x" + this.width + " metres");
-        System.out.println("Location (" + this.longitude + "," + this.latitude + ")");
+    public String display() {
+        String ret = "";
+        ret += "Name: " + this.name + "\n";
+        ret += "Pier Number: " + this.section + this.getDockNumber() + "\n";
+        ret += "Size: " + this.length + "x" + this.depth + "x" + this.width + " metres\n";
+        ret += "Location (" + this.longitude + "," + this.latitude + ")\n";
+        ret += "\n\n";
+        return ret;
     }
 }

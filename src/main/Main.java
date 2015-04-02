@@ -262,6 +262,25 @@ public class Main extends Application {
                 if ("Remove All Ships".equalsIgnoreCase(text)) {
                     map.getShips().clear();
                 }
+
+                //Port Menu
+                //Display All Docks MenuItem
+                if ("Display All Docks".equalsIgnoreCase(text)) {
+                    String output = "";
+                    for (Dock dock : map.getPort().getDocks()) {
+                        output += dock.display();
+                    }
+                    textArea.setText(output);
+                }
+
+                //Display All Cargos MenuItem
+                if ("Display All Cargos".equalsIgnoreCase(text)) {
+                    String output = "";
+                    for (Cargo cargo : map.getPort().getCargos()) {
+                        output += cargo.display();
+                    }
+                    textArea.setText(output);
+                }
             }
         };
     }

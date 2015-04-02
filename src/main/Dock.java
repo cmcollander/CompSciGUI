@@ -78,12 +78,17 @@ public class Dock {
 
     /**
      * Display information for the Dock object
+     *
+     * @return
      */
-    public void display() {
-        System.out.println("Name: " + this.name);
-        System.out.println("Dock Number: " + this.section + this.dockNumber);
-        System.out.println("Size: " + this.length + "x" + this.depth + "x" + this.width + " metres");
-        System.out.println("Location (" + this.longitude + "," + this.latitude + ")");
+    public String display() {
+        String ret = "";
+        ret += "Name: " + this.name + "\n";
+        ret += "Dock Number: " + this.section + this.dockNumber + "\n";
+        ret += "Size: " + this.length + "x" + this.depth + "x" + this.width + " metres\n";
+        ret += "Location (" + this.longitude + "," + this.latitude + ")\n";
+        ret += "\n\n";
+        return ret;
     }
 
     /**
