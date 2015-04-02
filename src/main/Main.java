@@ -235,10 +235,16 @@ public class Main extends Application {
                     Optional<String> result = dialog.showAndWait();
                     if (result.isPresent()) {
                         // Find which ship is being updated and pass it to the updateShip function
+                        boolean found = false;
                         for (CargoShip ship : map.getShips()) {
-                            if (ship.getName().equals(result)) {
+                            if (ship.getName().equals(result.get())) {
+                                found = true;
                                 updateShip(ship);
                             }
+                        }
+                        if (!found) {
+                            // This shouldn't happen anymore, just a precaution
+                            incorrectInput();
                         }
                     }
                 }
@@ -300,8 +306,16 @@ public class Main extends Application {
         alert.showAndWait();
     }
 
-    //THIS METHOD DOES NOT YET WORK!
     private static void updateShip(CargoShip ship) {
+        if (map == null || map.getShips() == null || map.getShips().size() < 1) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Ships Initialized");
+            alert.setHeaderText("No Ships Initialized");
+            alert.setContentText("Please run Generate Ships before calling this command!");
+            alert.showAndWait();
+            return;
+        }
+
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("Update Ship");
         dialog.setHeaderText("Update Ship");
@@ -317,14 +331,48 @@ public class Main extends Application {
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextField name = new TextField(ship.getName());
+        TextField country = new TextField(ship.getCountryOfRegistration());
+        TextField transponder = new TextField(Long.toString(ship.getTransponderNumber()));
+        TextField length = new TextField(Double.toString(ship.getLength()));
+        TextField beam = new TextField(Double.toString(ship.getBeam()));
+        TextField draft = new TextField(Double.toString(ship.getDraft()));
+        TextField longitude = new TextField(Double.toString(ship.getLongitude()));
+        TextField latitude = new TextField(Double.toString(ship.getLatitude()));
         // ADD MORE FIELDS HERE!
         grid.add(new Label("Name:"), 0, 0);
         grid.add(name, 1, 0);
+        grid.add(new Label("Country of Registration:"), 0, 1);
+        grid.add(country, 1, 1);
+        grid.add(new Label("Transponder:"), 0, 2);
+        grid.add(transponder, 1, 2);
+        grid.add(new Label("Length:"), 0, 3);
+        grid.add(length, 1, 3);
+        grid.add(new Label("Beam:"), 0, 4);
+        grid.add(beam, 1, 4);
+        grid.add(new Label("Draft:"), 0, 5);
+        grid.add(draft, 1, 5);
+        grid.add(new Label("Longitude:"), 0, 6);
+        grid.add(longitude, 1, 6);
+        grid.add(new Label("Latitude:"), 0, 7);
+        grid.add(latitude, 1, 7);
 
         dialog.getDialogPane().setContent(grid);
+
         Optional<Void> result = dialog.showAndWait();
+
         if (result.isPresent()) {
-            // UPDATE THE SHIP HERE!
+            try {
+                ship.setName(name.getText());
+                ship.setCountryOfRegistration(country.getText());
+                ship.setTransponderNumber(Long.parseLong(transponder.getText()));
+                ship.setLength(Double.parseDouble(length.getText()));
+                ship.setBeam(Double.parseDouble(beam.getText()));
+                ship.setDraft(Double.parseDouble(draft.getText()));
+                ship.setLongitude(Double.parseDouble(longitude.getText()));
+                ship.setLatitude(Double.parseDouble(latitude.getText()));
+            } catch (Exception ex) {
+                incorrectInput();
+            }
         }
 
     }
