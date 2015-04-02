@@ -38,42 +38,7 @@ public class Map {
         port.display();
         for (CargoShip ship : ships) {
             ship.display();
-            System.out.println("Safety: " + isShipSafe(MapConverter.lat2row(ship.getLatitude()), MapConverter.lon2col(ship.getLongitude())) + "\n");
-        }
-    }
-
-    /**
-     * Display the Map in Visual form
-     */
-    public void showMap() {
-        /*
-         Start out by rounding all the ships to the correct rows, fixing any incompatible values.
-         */
-        for (CargoShip ship : ships) {
-            ship.setLatitude(MapConverter.row2lat(MapConverter.lat2row(ship.getLatitude())));
-            ship.setLongitude(MapConverter.col2lon(MapConverter.lon2col(ship.getLongitude())));
-        }
-
-        int row, col;
-        for (row = 0; row < matrix.length; row++) {
-            for (col = 0; col < matrix[0].length; col++) {
-                char currentChar = matrix[row][col];
-                if (isShip(row, col)) {
-                    if (!isShipSafe(row, col)) {
-                        currentChar = 'X';
-                    } else if (isDock(row, col)) {
-                        currentChar = '$';
-                    } else {
-                        currentChar = getShipAt(row, col).getShipSymbol();
-                    }
-                } else {
-                    if (isDock(row, col)) {
-                        currentChar = getDockAt(row, col).getDockSymbol();
-                    }
-                }
-                System.out.print(currentChar);
-            }
-            System.out.println();
+            System.out.println("Safety: " + isShipSafe(ship.getRow(), ship.getCol()) + "\n");
         }
     }
 
@@ -85,15 +50,13 @@ public class Map {
      * @return true if there is a dock at row/col, false otherwise
      */
     private boolean isDock(int row, int col) {
-        double lat = MapConverter.row2lat(row);
-        double lon = MapConverter.col2lon(col);
 
         if (port.getDocks().isEmpty()) {
             return false;
         }
 
         for (Dock dock : port.getDocks()) {
-            if (row == MapConverter.lat2row(dock.getLatitude()) && col == MapConverter.lon2col(dock.getLongitude())) {
+            if (row == dock.getRow() && col == dock.getCol()) {
                 return true;
             }
         }
@@ -114,7 +77,7 @@ public class Map {
         }
 
         for (CargoShip ship : ships) {
-            if (row == MapConverter.lat2row(ship.getLatitude()) && col == MapConverter.lon2col(ship.getLongitude())) {
+            if (row == ship.getRow() && col == ship.getCol()) {
                 return true;
             }
         }
@@ -137,7 +100,7 @@ public class Map {
         // Get a count of the number of ships at this location. If more than one, return FALSE
         int count = 0;
         for (CargoShip ship : ships) {
-            if (MapConverter.lat2row(ship.getLatitude()) == row && MapConverter.lon2col(ship.getLongitude()) == col) {
+            if (ship.getRow() == row && ship.getCol() == col) {
                 count++;
             }
         }
@@ -178,11 +141,8 @@ public class Map {
      * @return The ship at the requested location
      */
     public CargoShip getShipAt(int row, int col) {
-        double lat = MapConverter.row2lat(row);
-        double lon = MapConverter.col2lon(col);
-
         for (CargoShip ship : ships) {
-            if (row == MapConverter.lat2row(ship.getLatitude()) && col == MapConverter.lon2col(ship.getLongitude())) {
+            if (row == ship.getRow() && col == ship.getCol()) {
                 return ship;
             }
         }
@@ -198,7 +158,7 @@ public class Map {
      */
     private Dock getDockAt(int row, int col) {
         for (Dock dock : port.getDocks()) {
-            if (row == MapConverter.lat2row(dock.getLatitude()) && col == MapConverter.lon2col(dock.getLongitude())) {
+            if (row == dock.getRow() && col == dock.getCol()) {
                 return dock;
             }
         }
@@ -279,7 +239,7 @@ public class Map {
 
             boolean validLocation = false;
 
-            int row, col;
+            int row=0, col=0;
             double randLat = 0, randLong = 0;
 
             //Make sure the matrix is initialized
@@ -290,17 +250,15 @@ public class Map {
             // Keep generating locations until a valid location is found
             while (!validLocation) {
                 row = randomGenerator.nextInt(matrix.length);
-                randLat = MapConverter.row2lat(row);
                 col = randomGenerator.nextInt(matrix[0].length);
-                randLong = MapConverter.col2lon(col);
 
                 if (!isShip(row, col) && (matrix[row][col] == '.' || isDock(row, col))) {
                     validLocation = true;
                 }
             }
 
-            currShip.setLatitude(randLat);
-            currShip.setLongitude(randLong);
+            currShip.setRow(row);
+            currShip.setCol(col);
 
             // Randomly generate a first and last name for the ship
             String firstName;

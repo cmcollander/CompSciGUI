@@ -18,7 +18,6 @@ public class Crane extends Dock {
      */
     public Crane() {
         super();
-        this.dockSymbol = 'C';
     }
 
     /**
@@ -34,9 +33,9 @@ public class Crane extends Dock {
         this.length = Double.parseDouble(parts[3].trim());
         this.width = Double.parseDouble(parts[4].trim());
         this.depth = Double.parseDouble(parts[5].trim());
-        this.longitude = Double.parseDouble(parts[6].trim());
-        this.latitude = Double.parseDouble(parts[7].trim());
-        this.dockSymbol = 'C';
+        double longitude = Double.parseDouble(parts[6].trim());
+        double latitude = Double.parseDouble(parts[7].trim());
+        position = new Position(latitude, longitude);
     }
 
     /**
@@ -52,8 +51,8 @@ public class Crane extends Dock {
         ret += length + ",";
         ret += width + ",";
         ret += depth + ",";
-        ret += longitude + ",";
-        ret += latitude;
+        ret += this.getLongitude() + ",";
+        ret += this.getLatitude();
 
         return ret;
     }
@@ -67,7 +66,7 @@ public class Crane extends Dock {
         ret += "Name: " + this.name + "\n";
         ret += "Crane Number: " + this.getSection() + this.getDockNumber() + "\n";
         ret += "Size: " + this.length + "x" + this.depth + "x" + this.width + " metres\n";
-        ret += "Location (" + this.longitude + "," + this.latitude + ")\n";
+        ret += "Location (" + this.getLongitude() + "," + this.getLatitude() + ")\n";
         ret += "\n\n";
         return ret;
     }

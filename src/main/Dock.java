@@ -19,9 +19,7 @@ public class Dock {
     protected double depth;
     protected double length;
     protected double width;
-    protected double longitude;
-    protected double latitude;
-    protected char dockSymbol;
+    protected Position position;
 
     /**
      * Constructor for the Dock class
@@ -33,9 +31,9 @@ public class Dock {
         this.depth = 15;
         this.length = 100;
         this.width = 6;
-        this.longitude = -2.977838;
-        this.latitude = 53.410777;
-        this.dockSymbol = 'D';
+        double longitude = -2.977838;
+        double latitude = 53.410777;
+        position = new Position(latitude, longitude);
     }
 
     /**
@@ -51,9 +49,9 @@ public class Dock {
         this.length = Double.parseDouble(parts[3].trim());
         this.width = Double.parseDouble(parts[4].trim());
         this.depth = Double.parseDouble(parts[5].trim());
-        this.longitude = Double.parseDouble(parts[6].trim());
-        this.latitude = Double.parseDouble(parts[7].trim());
-        this.dockSymbol = 'D';
+        double longitude = Double.parseDouble(parts[6].trim());
+        double latitude = Double.parseDouble(parts[7].trim());
+        position = new Position(latitude, longitude);
     }
 
     /**
@@ -70,8 +68,8 @@ public class Dock {
         ret += length + ",";
         ret += width + ",";
         ret += depth + ",";
-        ret += longitude + ",";
-        ret += latitude;
+        ret += this.getLongitude() + ",";
+        ret += this.getLatitude();
 
         return ret;
     }
@@ -86,7 +84,7 @@ public class Dock {
         ret += "Name: " + this.name + "\n";
         ret += "Dock Number: " + this.getSection() + this.dockNumber + "\n";
         ret += "Size: " + this.length + "x" + this.depth + "x" + this.width + " metres\n";
-        ret += "Location (" + this.longitude + "," + this.latitude + ")\n";
+        ret += "Location (" + this.getLongitude() + "," + this.getLatitude() + ")\n";
         ret += "\n\n";
         return ret;
     }
@@ -169,7 +167,7 @@ public class Dock {
      * @return the longitude
      */
     public double getLongitude() {
-        return longitude;
+        return position.getLongitude();
     }
 
     /**
@@ -178,7 +176,7 @@ public class Dock {
      * @param longitude the longitude to set
      */
     public void setLongitude(double longitude) {
-        this.longitude = longitude;
+        position.setLongitude(longitude);
     }
 
     /**
@@ -187,7 +185,7 @@ public class Dock {
      * @return the latitude
      */
     public double getLatitude() {
-        return latitude;
+        return position.getLatitude();
     }
 
     /**
@@ -196,7 +194,7 @@ public class Dock {
      * @param latitude the latitude to set
      */
     public void setLatitude(double latitude) {
-        this.latitude = latitude;
+        position.setLatitude(latitude);
     }
 
     /**
@@ -234,19 +232,21 @@ public class Dock {
     public void setSection(char section) {
         this.section = section;
     }
-
-    /**
-     * @return the dockSymbol
-     */
-    public char getDockSymbol() {
-        return dockSymbol;
+    
+    public void setRow(int row) {
+        position.setRow(row);
     }
-
-    /**
-     * @param dockSymbol the dockSymbol to set
-     */
-    public void setDockSymbol(char dockSymbol) {
-        this.dockSymbol = dockSymbol;
+    
+    public void setCol(int col) {
+        position.setCol(col);
+    }
+    
+    public int getRow() {
+        return position.getRow();
+    }
+    
+    public int getCol() {
+        return position.getCol();
     }
 
 }
