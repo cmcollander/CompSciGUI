@@ -38,7 +38,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 public class Main extends Application {
 
@@ -351,7 +350,9 @@ public class Main extends Application {
 
         // Can set a ship icon here, if we want
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
+        ButtonType cargoButtonType = new ButtonType("Cargo", ButtonData.OTHER);
+        ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
+        dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, cargoButtonType, updateButtonType, ButtonType.CANCEL);
 
         // Create the info fields
         GridPane grid = new GridPane();
@@ -365,8 +366,6 @@ public class Main extends Application {
         TextField length = new TextField(Double.toString(ship.getLength()));
         TextField beam = new TextField(Double.toString(ship.getBeam()));
         TextField draft = new TextField(Double.toString(ship.getDraft()));
-        TextField longitude = new TextField(Double.toString(ship.getLongitude()));
-        TextField latitude = new TextField(Double.toString(ship.getLatitude()));
         // ADD MORE FIELDS HERE!
         grid.add(new Label("Name:"), 0, 0);
         grid.add(name, 1, 0);
@@ -380,10 +379,6 @@ public class Main extends Application {
         grid.add(beam, 1, 4);
         grid.add(new Label("Draft:"), 0, 5);
         grid.add(draft, 1, 5);
-        grid.add(new Label("Longitude:"), 0, 6);
-        grid.add(longitude, 1, 6);
-        grid.add(new Label("Latitude:"), 0, 7);
-        grid.add(latitude, 1, 7);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -397,8 +392,6 @@ public class Main extends Application {
                 ship.setLength(Double.parseDouble(length.getText()));
                 ship.setBeam(Double.parseDouble(beam.getText()));
                 ship.setDraft(Double.parseDouble(draft.getText()));
-                ship.setLongitude(Double.parseDouble(longitude.getText()));
-                ship.setLatitude(Double.parseDouble(latitude.getText()));
             } catch (Exception ex) {
                 incorrectInput();
             }
