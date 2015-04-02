@@ -44,12 +44,18 @@ public class Main extends Application {
 
     private static Stage stage;
     private static Map map;
-    private static Canvas canvas;
+    private static Canvas mapView;
     private static TextArea textArea;
+    private static int canvasWidth;
+    private static int canvasHeight;
+    private static boolean mapLoaded;
 
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
+        canvasWidth = 53 * 10;
+        canvasHeight = 35 * 10;
+        mapLoaded = false;
 
         // Initialize Map
         map = new Map();
@@ -115,10 +121,8 @@ public class Main extends Application {
         //TODO: Find a way to add a MenuItem to menuBar without a Menu in between, for the About button
 
         // MapView Setup
-        Canvas mapView = new Canvas(300, 200);
-        GraphicsContext gc = mapView.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillRect(0, 0, 300, 200);
+        mapView = new Canvas(canvasWidth, canvasHeight);
+        refreshMap();
 
         // TextArea Setup
         textArea = new TextArea();
@@ -139,7 +143,7 @@ public class Main extends Application {
         root.setTop(menuBar);
         root.setCenter(mapView);
         root.setBottom(expContent);
-        Scene scene = new Scene(root, 300, 500);
+        Scene scene = new Scene(root, canvasWidth, canvasHeight + 200);
         primaryStage.setTitle("CompSci GUI - JavaFX!");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -171,6 +175,8 @@ public class Main extends Application {
                         try {
                             map = FileHandler.getMapFile(result.get() + ".map.txt");
                             map.setPort(FileHandler.getPortFile(result.get() + ".port.txt"));
+                            mapLoaded = true;
+                            refreshMap();
                         } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
@@ -391,6 +397,33 @@ public class Main extends Application {
                 ship.setLatitude(Double.parseDouble(latitude.getText()));
             } catch (Exception ex) {
                 incorrectInput();
+            }
+        }
+
+    }
+
+    private static void refreshMap() {
+        // Base ocean
+        GraphicsContext gc = mapView.getGraphicsContext2D();
+        gc.setFill(Color.BLUE);
+        gc.fillRect(0, 0, canvasWidth, canvasHeight);
+
+        // If no map has been loaded, just exit here
+        if (!mapLoaded) {
+            return;
+        }
+
+        // Iterate through the matrix, getting all land placed
+        char[][] matrix = map.getMatrix();
+        char currentChar;
+        gc.setFill(Color.GREEN);
+
+        for (int row = 0; row < 35; row++) {
+            for (int col = 0; col < 53; col++) {
+                currentChar = matrix[row][col];
+                if (currentChar == '*') {
+                    gc.fillRect(col * 10, row * 10, 10, 10);
+                }
             }
         }
 
