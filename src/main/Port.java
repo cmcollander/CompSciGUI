@@ -42,7 +42,7 @@ public class Port {
 
         // Find the corresponding Dock for the ship (if no dock found, will just return)
         for (Dock dock : docks) {
-            if (ship.getRow() == dock.getRow() && ship.getCol()==dock.getCol()) {
+            if (ship.getRow() == dock.getRow() && ship.getCol() == dock.getCol()) {
                 // Add the ship's cargo to the port's cargo array, remove from ship.
                 cargos.add(ship.getCargo());
                 ship.setCargo(null);

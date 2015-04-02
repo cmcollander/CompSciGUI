@@ -239,7 +239,7 @@ public class Map {
 
             boolean validLocation = false;
 
-            int row=0, col=0;
+            int row = 0, col = 0;
             double randLat = 0, randLong = 0;
 
             //Make sure the matrix is initialized

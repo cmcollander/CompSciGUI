@@ -38,9 +38,9 @@ public class ContainerShip extends CargoShip {
         this.draft = Double.parseDouble(parts[6].trim());
         double longitude = Double.parseDouble(parts[7].trim());
         double latitude = Double.parseDouble(parts[8].trim());
-        
+
         position = new Position(latitude, longitude);
-        
+
         Box newBox = new Box();
 
         if (parts.length > 9) {

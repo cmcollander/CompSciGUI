@@ -39,7 +39,7 @@ public class OilTanker extends CargoShip {
         double longitude = Double.parseDouble(parts[7].trim());
         double latitude = Double.parseDouble(parts[8].trim());
         position = new Position(latitude, longitude);
-        
+
         Oil newOil = null;
 
         if (parts.length > 9) {

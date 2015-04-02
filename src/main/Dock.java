@@ -232,19 +232,19 @@ public class Dock {
     public void setSection(char section) {
         this.section = section;
     }
-    
+
     public void setRow(int row) {
         position.setRow(row);
     }
-    
+
     public void setCol(int col) {
         position.setCol(col);
     }
-    
+
     public int getRow() {
         return position.getRow();
     }
-    
+
     public int getCol() {
         return position.getCol();
     }
