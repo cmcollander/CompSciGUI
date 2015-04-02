@@ -500,17 +500,26 @@ public class Main extends Application {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent()) {
-            // find out type of button here!!!
-           try {
-                dock.setName(name.getText());
-                dock.setSection(section.getText().charAt(0));
-                dock.setDockNumber(Integer.parseInt(dockNumber.getText()));
-                dock.setLength(Double.parseDouble(length.getText()));
-                dock.setWidth(Double.parseDouble(width.getText()));
-                dock.setDepth(Double.parseDouble(depth.getText()));
-            } catch (Exception ex) {
-                incorrectInput();
-            }
+           ButtonType bt = result.get();
+           
+           // If Update Button Hit
+           if(bt.getText().equalsIgnoreCase("Update")) {
+               try {
+                    dock.setName(name.getText());
+                    dock.setSection(section.getText().charAt(0));
+                    dock.setDockNumber(Integer.parseInt(dockNumber.getText()));
+                    dock.setLength(Double.parseDouble(length.getText()));
+                    dock.setWidth(Double.parseDouble(width.getText()));
+                    dock.setDepth(Double.parseDouble(depth.getText()));
+                } catch (Exception ex) {
+                    incorrectInput();
+                }
+           }
+           
+           // If Location Button Hit
+           if(bt.getText().equalsIgnoreCase("Location")) {
+               // updateLocation(dock);
+           }
         }
 
     }
@@ -527,7 +536,7 @@ public class Main extends Application {
         if (cargo instanceof Box) {
             cargoType = 2; // Box
         }
-        Dialog<Void> dialog = new Dialog<>();
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Cargo");
         dialog.setHeaderText("Update Cargo");
 
@@ -583,9 +592,9 @@ public class Main extends Application {
 
         dialog.getDialogPane().setContent(grid);
 
-        Optional<Void> result = dialog.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
 
-        if (result.isPresent()) {
+        if (result.isPresent() && result.get().getText().equalsIgnoreCase("Update")) {
             try {
                 cargo.setDescription(description.getText());
                 switch (cargoType) {
