@@ -47,7 +47,7 @@ public class Pier extends Dock {
     public String toString() {
         String ret = new String();
         ret += name + ",";
-        ret += section + ",";
+        ret += getSection() + ",";
         ret += getDockNumber() + ",";
         ret += length + ",";
         ret += width + ",";
@@ -64,7 +64,7 @@ public class Pier extends Dock {
     public String display() {
         String ret = "";
         ret += "Name: " + this.name + "\n";
-        ret += "Pier Number: " + this.section + this.getDockNumber() + "\n";
+        ret += "Pier Number: " + this.getSection() + this.getDockNumber() + "\n";
         ret += "Size: " + this.length + "x" + this.depth + "x" + this.width + " metres\n";
         ret += "Location (" + this.longitude + "," + this.latitude + ")\n";
         ret += "\n\n";

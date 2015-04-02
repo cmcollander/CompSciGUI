@@ -65,7 +65,7 @@ public class Dock {
     public String toString() {
         String ret = new String();
         ret += name + ",";
-        ret += section + ",";
+        ret += getSection() + ",";
         ret += dockNumber + ",";
         ret += length + ",";
         ret += width + ",";
@@ -84,7 +84,7 @@ public class Dock {
     public String display() {
         String ret = "";
         ret += "Name: " + this.name + "\n";
-        ret += "Dock Number: " + this.section + this.dockNumber + "\n";
+        ret += "Dock Number: " + this.getSection() + this.dockNumber + "\n";
         ret += "Size: " + this.length + "x" + this.depth + "x" + this.width + " metres\n";
         ret += "Location (" + this.longitude + "," + this.latitude + ")\n";
         ret += "\n\n";

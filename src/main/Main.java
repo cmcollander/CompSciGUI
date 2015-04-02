@@ -67,7 +67,7 @@ public class Main extends Application {
         final Menu menu2 = new Menu("Ship");
         final Menu menu3 = new Menu("Port");
         final Menu menu4 = new Menu("Sea Monster");
-        final MenuItem menu5 = new MenuItem("About");
+        final Menu menu5 = new Menu("About");
 
         // File Menu
         MenuItem menu11 = new MenuItem("Open");
@@ -114,9 +114,9 @@ public class Main extends Application {
         MenuItem menu45 = new MenuItem("Summon Godzilla");
         menu45.setOnAction(menuAction);
         menu4.getItems().addAll(menu41, menu42, menu43, menu44, menu45);
-
+        
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(menu1, menu2, menu3, menu4);
+        menuBar.getMenus().addAll(menu1, menu2, menu3, menu4, menu5);
         //TODO: Find a way to add a MenuItem to menuBar without a Menu in between, for the About button
 
         // MapView Setup
@@ -273,6 +273,36 @@ public class Main extends Application {
                 }
 
                 //Port Menu
+                // Update Docks MenuItem
+                if ("Update Docks".equalsIgnoreCase(text)) {
+                    ArrayList<String> choices = new ArrayList<>();
+                    for (Dock dock : map.getPort().getDocks()) {
+                        choices.add(dock.getName());
+                    }
+
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                    dialog.setTitle("Update Dock");
+                    dialog.setHeaderText("Update Dock");
+                    dialog.setContentText("Choose a dock:");
+
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        // Find which dock is being updated and pass it to the updateDock function
+                        boolean found = false;
+                        for (Dock dock : map.getPort().getDocks()) {
+                            if (dock.getName().equals(result.get())) {
+                                found = true;
+                                updateDock(dock);
+                            }
+                        }
+                        if (!found) {
+                            // This shouldn't happen anymore, just a precaution
+                            incorrectInput();
+                        }
+                    }
+                    refreshMap();
+                }
+                
                 //Display All Docks MenuItem
                 if ("Display All Docks".equalsIgnoreCase(text)) {
                     String output = "";
@@ -392,6 +422,71 @@ public class Main extends Application {
                 ship.setLength(Double.parseDouble(length.getText()));
                 ship.setBeam(Double.parseDouble(beam.getText()));
                 ship.setDraft(Double.parseDouble(draft.getText()));
+            } catch (Exception ex) {
+                incorrectInput();
+            }
+        }
+
+    }
+    
+    private static void updateDock(Dock dock) {
+        if (map == null || map.getPort()==null || map.getPort().getDocks() == null || map.getPort().getDocks().size() < 1) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Docks Initialized");
+            alert.setHeaderText("No Docks Initialized");
+            alert.setContentText("This map has no docks!");
+            alert.showAndWait();
+            return;
+        }
+
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Update Dock");
+        dialog.setHeaderText("Update Dock");
+
+        // Can set a ship icon here, if we want
+        ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
+        ButtonType cargoButtonType = new ButtonType("Cargo", ButtonData.OTHER);
+        ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
+        dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, cargoButtonType, updateButtonType, ButtonType.CANCEL);
+
+        // Create the info fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField name = new TextField(dock.getName());
+        TextField section = new TextField(Character.toString(dock.getSection()));
+        TextField dockNumber = new TextField(Integer.toString(dock.getDockNumber()));
+        TextField length = new TextField(Double.toString(dock.getLength()));
+        TextField width = new TextField(Double.toString(dock.getWidth()));
+        TextField depth = new TextField(Double.toString(dock.getDepth()));
+        // ADD MORE FIELDS HERE!
+        grid.add(new Label("Name:"), 0, 0);
+        grid.add(name, 1, 0);
+        grid.add(new Label("Section Number:"), 0, 1);
+        grid.add(section, 1, 1);
+        grid.add(new Label("Dock Number:"), 0, 2);
+        grid.add(dockNumber, 1, 2);
+        grid.add(new Label("Length:"), 0, 3);
+        grid.add(length, 1, 3);
+        grid.add(new Label("Width:"), 0, 4);
+        grid.add(width, 1, 4);
+        grid.add(new Label("Depth:"), 0, 5);
+        grid.add(depth, 1, 5);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<Void> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            try {
+                dock.setName(name.getText());
+                dock.setSection(section.getText().charAt(0));
+                dock.setDockNumber(Integer.parseInt(dockNumber.getText()));
+                dock.setLength(Double.parseDouble(length.getText()));
+                dock.setWidth(Double.parseDouble(width.getText()));
+                dock.setDepth(Double.parseDouble(depth.getText()));
             } catch (Exception ex) {
                 incorrectInput();
             }
