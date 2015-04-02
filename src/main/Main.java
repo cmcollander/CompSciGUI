@@ -445,7 +445,7 @@ public class Main extends Application {
     }
 
     private static void updateDock(Dock dock) {
-        Dialog<Void> dialog = new Dialog<>();
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Dock");
         dialog.setHeaderText("Update Dock");
 
@@ -482,10 +482,11 @@ public class Main extends Application {
 
         dialog.getDialogPane().setContent(grid);
 
-        Optional<Void> result = dialog.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent()) {
-            try {
+            // find out type of button here!!!
+           try {
                 dock.setName(name.getText());
                 dock.setSection(section.getText().charAt(0));
                 dock.setDockNumber(Integer.parseInt(dockNumber.getText()));
