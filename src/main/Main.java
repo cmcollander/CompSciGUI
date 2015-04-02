@@ -407,6 +407,7 @@ public class Main extends Application {
     }
 
     private static void refreshMap() {
+
         // Base ocean
         GraphicsContext gc = mapView.getGraphicsContext2D();
         gc.setFill(Color.BLUE);
@@ -460,7 +461,8 @@ public class Main extends Application {
             }
         }
 
-        //Iterate through the docks
+        //Iterate through the docks, ALSO CREATING LAND UNDERNEATH
+        // *Not all docks are placed on land. Some are on land, some are on water, at least in 'complex'
         for (Dock dock : map.getPort().getDocks()) {
             int dockType = 0;
             if (dock instanceof Crane) {
@@ -470,20 +472,26 @@ public class Main extends Application {
                 dockType = 2;
             }
 
-            int row = 10 * MapConverter.lat2row(dock.getLatitude()) + 10;
-            int col = 10 * MapConverter.lon2col(dock.getLongitude());
+            int rowP = 10 * MapConverter.lat2row(dock.getLatitude()) + 10;
+            int colP = 10 * MapConverter.lon2col(dock.getLongitude());
+            int row = MapConverter.lat2row(dock.getLatitude());
+            int col = MapConverter.lon2col(dock.getLongitude());
+
+            // Add LAND under Dock
+            gc.setFill(Color.GREEN);
+            gc.fillRect(col * 10, row * 10, 10, 10);
 
             gc.setFill(Color.BLACK);
 
             switch (dockType) {
                 case 0:
-                    gc.fillText("D", col, row);
+                    gc.fillText("D", colP, rowP);
                     break;
                 case 1:
-                    gc.fillText("C", col, row);
+                    gc.fillText("C", colP, rowP);
                     break;
                 case 2:
-                    gc.fillText("P", col, row);
+                    gc.fillText("P", colP, rowP);
                     break;
             }
         }
