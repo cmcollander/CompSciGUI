@@ -656,8 +656,8 @@ public class Main extends Application {
                 shipType = 2;
             }
             
-            int row = 10 * MapConverter.lat2row(ship.getLatitude()) + 10;
-            int col = 10 * MapConverter.lon2col(ship.getLongitude());
+            int row = 10 * ship.getRow() + 10;
+            int col = 10 * ship.getCol();
             
             switch (shipType) {
                 case 0:
@@ -686,10 +686,10 @@ public class Main extends Application {
                 dockType = 2;
             }
             
-            int rowP = 10 * MapConverter.lat2row(dock.getLatitude()) + 10;
-            int colP = 10 * MapConverter.lon2col(dock.getLongitude());
-            int row = MapConverter.lat2row(dock.getLatitude());
-            int col = MapConverter.lon2col(dock.getLongitude());
+            int rowP = 10 * dock.getRow() + 10;
+            int colP = 10 * dock.getCol();
+            int row = dock.getRow();
+            int col = dock.getCol();
 
             // Add LAND under Dock
             gc.setFill(Color.GREEN);
