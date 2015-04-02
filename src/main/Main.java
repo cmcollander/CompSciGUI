@@ -94,7 +94,7 @@ public class Main extends Application {
         // Port Menu
         MenuItem menu31 = new MenuItem("Unload Ship");
         menu31.setOnAction(menuAction);
-        MenuItem menu32 = new MenuItem("Update Dock");
+        MenuItem menu32 = new MenuItem("Update Docks");
         menu32.setOnAction(menuAction);
         MenuItem menu33 = new MenuItem("Display All Docks");
         menu33.setOnAction(menuAction);
