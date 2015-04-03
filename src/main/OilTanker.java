@@ -19,7 +19,6 @@ public class OilTanker extends CargoShip {
     public OilTanker() {
         super();
         this.cargo = new Oil();
-        this.shipSymbol = 'T';
     }
 
     /**
@@ -48,8 +47,6 @@ public class OilTanker extends CargoShip {
             newOil.setBarrels(Integer.parseInt(parts[10].trim()));
         }
         this.cargo = newOil;
-
-        this.shipSymbol = 'T';
     }
 
     /**

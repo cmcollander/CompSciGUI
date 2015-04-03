@@ -167,7 +167,7 @@ public class Dock {
      * @return the longitude
      */
     public double getLongitude() {
-        return position.getLongitude();
+        return getPosition().getLongitude();
     }
 
     /**
@@ -176,7 +176,7 @@ public class Dock {
      * @param longitude the longitude to set
      */
     public void setLongitude(double longitude) {
-        position.setLongitude(longitude);
+        getPosition().setLongitude(longitude);
     }
 
     /**
@@ -185,7 +185,7 @@ public class Dock {
      * @return the latitude
      */
     public double getLatitude() {
-        return position.getLatitude();
+        return getPosition().getLatitude();
     }
 
     /**
@@ -194,7 +194,7 @@ public class Dock {
      * @param latitude the latitude to set
      */
     public void setLatitude(double latitude) {
-        position.setLatitude(latitude);
+        getPosition().setLatitude(latitude);
     }
 
     /**
@@ -234,19 +234,33 @@ public class Dock {
     }
 
     public void setRow(int row) {
-        position.setRow(row);
+        getPosition().setRow(row);
     }
 
     public void setCol(int col) {
-        position.setCol(col);
+        getPosition().setCol(col);
     }
 
     public int getRow() {
-        return position.getRow();
+        return getPosition().getRow();
     }
 
     public int getCol() {
-        return position.getCol();
+        return getPosition().getCol();
+    }
+
+    /**
+     * @return the position
+     */
+    public Position getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position the position to set
+     */
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
 }

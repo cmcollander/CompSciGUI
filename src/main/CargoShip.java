@@ -22,7 +22,6 @@ public class CargoShip {
     protected double draft;
     protected Position position;
     protected Cargo cargo;
-    protected char shipSymbol;
 
     /**
      * Default Constructor for the Ship class
@@ -36,7 +35,6 @@ public class CargoShip {
         this.beam = 10;
         this.draft = 5;
         position = new Position(53.410777, -2.977838);
-        this.shipSymbol = 'S';
         cargo = new Cargo();
     }
 
@@ -66,8 +64,6 @@ public class CargoShip {
             newCargo.setDescription(parts[9].trim());
             newCargo.setTonnage(Double.parseDouble(parts[10].trim()));
         }
-
-        this.shipSymbol = 'S';
     }
 
     /**
@@ -248,7 +244,7 @@ public class CargoShip {
      * @return the longitude
      */
     public double getLongitude() {
-        return position.getLongitude();
+        return getPosition().getLongitude();
     }
 
     /**
@@ -257,7 +253,7 @@ public class CargoShip {
      * @param longitude the longitude to set
      */
     public void setLongitude(double longitude) {
-        position.setLongitude(longitude);
+        getPosition().setLongitude(longitude);
     }
 
     /**
@@ -266,7 +262,7 @@ public class CargoShip {
      * @return the latitude
      */
     public double getLatitude() {
-        return position.getLatitude();
+        return getPosition().getLatitude();
     }
 
     /**
@@ -275,7 +271,7 @@ public class CargoShip {
      * @param latitude the latitude to set
      */
     public void setLatitude(double latitude) {
-        position.setLatitude(latitude);
+        getPosition().setLatitude(latitude);
     }
 
     /**
@@ -296,33 +292,33 @@ public class CargoShip {
         this.cargo = cargo;
     }
 
-    /**
-     * @return the shipSymbol
-     */
-    public char getShipSymbol() {
-        return shipSymbol;
-    }
-
-    /**
-     * @param shipSymbol the shipSymbol to set
-     */
-    public void setShipSymbol(char shipSymbol) {
-        this.shipSymbol = shipSymbol;
-    }
-
     public void setRow(int row) {
-        position.setRow(row);
+        getPosition().setRow(row);
     }
 
     public void setCol(int col) {
-        position.setCol(col);
+        getPosition().setCol(col);
     }
 
     public int getRow() {
-        return position.getRow();
+        return getPosition().getRow();
     }
 
     public int getCol() {
-        return position.getCol();
+        return getPosition().getCol();
+    }
+
+    /**
+     * @return the position
+     */
+    public Position getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position the position to set
+     */
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

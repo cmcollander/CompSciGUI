@@ -453,7 +453,7 @@ public class Main extends Application {
 
             // Location Button Hit
             if (bt.getText().equalsIgnoreCase("Location")) {
-                // updateLocation(ship);
+                updateLocation(ship.getPosition());
             }
         }
 
@@ -481,7 +481,7 @@ public class Main extends Application {
         TextField length = new TextField(Double.toString(dock.getLength()));
         TextField width = new TextField(Double.toString(dock.getWidth()));
         TextField depth = new TextField(Double.toString(dock.getDepth()));
-        // ADD MORE FIELDS HERE!
+        
         grid.add(new Label("Name:"), 0, 0);
         grid.add(name, 1, 0);
         grid.add(new Label("Section Number:"), 0, 1);
@@ -518,14 +518,78 @@ public class Main extends Application {
 
             // If Location Button Hit
             if (bt.getText().equalsIgnoreCase("Location")) {
-                // updateLocation(dock);
+                updateLocation(dock.getPosition());
             }
         }
 
     }
 
     private static void updateLocation(Position pos) {
-        // TODO!
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Update Location");
+        dialog.setHeaderText("Update Location");
+        
+        ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
+        
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField row = new TextField(Integer.toString(pos.getRow()));
+        TextField col = new TextField(Integer.toString(pos.getCol()));
+        TextField latitude = new TextField(Double.toString(pos.getLatitude()));
+        TextField longitude = new TextField(Double.toString(pos.getLongitude()));
+        
+        grid.add(new Label("Row:"), 0, 0);
+        grid.add(row, 1, 0);
+        grid.add(new Label("Column:"), 0, 1);
+        grid.add(col, 1, 1);
+        grid.add(new Label("Latitude:"), 0, 2);
+        grid.add(latitude, 1, 2);
+        grid.add(new Label("Longitude:"), 0, 3);
+        grid.add(longitude, 1, 3);
+        
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            ButtonType bt = result.get();
+
+            // If Update Button Hit
+            if (bt.getText().equalsIgnoreCase("Update")) {
+                try {
+                    // Find out which values were changed
+                    boolean rowChanged, colChanged, latChanged, lonChanged;
+                    
+                    rowChanged = Integer.parseInt(row.getText())!=pos.getRow();
+                    colChanged = Integer.parseInt(col.getText())!=pos.getCol();
+                    lonChanged = Double.parseDouble(longitude.getText())!=pos.getLongitude();
+                    latChanged = Double.parseDouble(latitude.getText())!=pos.getLatitude();
+                    
+                    if((rowChanged && latChanged) || (colChanged && lonChanged)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Incorrect Values");
+                        alert.setHeaderText("Incorrect Values");
+                        alert.setContentText("Cannot adjust row and latitude or column and longitude at the same time");
+                        alert.showAndWait();
+                    } else {
+                        if(rowChanged)
+                            pos.setRow(Integer.parseInt(row.getText()));
+                        if(colChanged)
+                            pos.setCol(Integer.parseInt(col.getText()));
+                        if(latChanged)
+                            pos.setLatitude(Integer.parseInt(latitude.getText()));
+                        if(lonChanged)
+                            pos.setLongitude(Integer.parseInt(longitude.getText()));
+                    }
+                } catch (Exception ex) {
+                    incorrectInput();
+                }
+            }
+        }
     }
 
     private static void updateCargo(Cargo cargo) {

@@ -19,7 +19,6 @@ public class ContainerShip extends CargoShip {
     public ContainerShip() {
         super();
         this.cargo = new Box();
-        this.shipSymbol = 'B';
     }
 
     /**
@@ -48,8 +47,6 @@ public class ContainerShip extends CargoShip {
             newBox.setTeus(Integer.parseInt(parts[10].trim()));
         }
         this.cargo = newBox;
-
-        this.shipSymbol = 'B';
     }
 
     /**
