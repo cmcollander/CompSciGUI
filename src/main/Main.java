@@ -1286,11 +1286,7 @@ public class Main extends Application {
 
     public void start3D() {
         // Lets hope this works!
-        Group root = new Group();
-        Stage stage = new Stage();
-        stage.setTitle("3D Port Simulation");
-        stage.setScene(new Scene(root,800,600,Color.BLACK));
-        stage.setMaximized(true);
-        stage.show();
+        PortSimulation portSim = new PortSimulation(map);
+        portSim.run();
     }
 }
