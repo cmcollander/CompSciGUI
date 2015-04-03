@@ -14,7 +14,6 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -169,12 +168,14 @@ public class Main extends Application {
                     int row = (int) (event.getY() / 10);
                     if (map.isShip(row, col)) {
                         updateShip(map.getShipAt(row, col));
+                        checkMonsterCollision(map.getShipAt(row, col));
                     }
                     if (map.isDock(row, col)) {
                         updateDock(map.getDockAt(row, col));
                     }
                     if (map.isMonster(new Position(row, col))) {
                         updateMonster(map.getMonsterAt(row, col));
+                        checkMonsterCollision(map.getMonsterAt(row, col));
                     }
                 }
             }
@@ -212,12 +213,14 @@ public class Main extends Application {
                     if (draggedShip != null) {
                         draggedShip.setRow(row);
                         draggedShip.setCol(col);
+                        checkMonsterCollision(draggedShip);
                         draggedShip = null;
                         refreshMap();
                     }
                     if (draggedMonster != null) {
                         draggedMonster.setRow(row);
                         draggedMonster.setCol(col);
+                        checkMonsterCollision(draggedMonster);
                         draggedMonster = null;
                         refreshMap();
                     }
@@ -327,6 +330,8 @@ public class Main extends Application {
                         }
                     }
                     map.generateShips(numShips);
+                    checkMonsterCollision();
+                    
                     refreshMap();
                 }
                 // Update Ships MenuItem
@@ -357,6 +362,7 @@ public class Main extends Application {
                             if (ship.getName().equals(result.get())) {
                                 found = true;
                                 updateShip(ship);
+                                checkMonsterCollision();
                             }
                         }
                         if (!found) {
@@ -467,6 +473,7 @@ public class Main extends Application {
                         }
                     }
                     map.generateMonsters(numMonsters);
+                    checkMonsterCollision();
                     refreshMap();
                 }
 
@@ -498,6 +505,7 @@ public class Main extends Application {
                             if (monster.getType().equals(result.get())) {
                                 found = true;
                                 updateMonster(monster);
+                                checkMonsterCollision(monster);
                             }
                         }
                         if (!found) {
@@ -537,6 +545,7 @@ public class Main extends Application {
                     updateLocationGodzilla(pos);
                     g.setPosition(pos);
                     map.getMonsters().add(g);
+                    checkMonsterCollision(g);
                     refreshMap();
                 }
             }
@@ -1230,5 +1239,32 @@ public class Main extends Application {
             }
         }
 
+    }
+    
+    public void checkMonsterCollision() {
+        for(SeaMonster monster : map.getMonsters())
+            checkMonsterCollision(monster);
+    }
+    
+    public void checkMonsterCollision(SeaMonster monster) {
+        if(map.isShip(monster.getRow(), monster.getCol())) {
+            try {
+                SoundManager.growl();
+            } catch(Exception ex) {
+                displayStackTrace(ex);
+            }
+            textArea.setText(monster.battleCry());
+        }
+    }
+    
+    public void checkMonsterCollision(CargoShip ship) {
+        if(map.isMonster(new Position(ship.getRow(),ship.getCol()))) {
+            try {
+                SoundManager.growl();
+            } catch(Exception ex) {
+                displayStackTrace(ex);
+            }
+            textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
+        }
     }
 }
