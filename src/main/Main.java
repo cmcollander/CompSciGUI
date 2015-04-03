@@ -18,6 +18,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -1285,6 +1286,11 @@ public class Main extends Application {
 
     public void start3D() {
         // Lets hope this works!
-        aboutDialog();
+        Group root = new Group();
+        Stage stage = new Stage();
+        stage.setTitle("3D Port Simulation");
+        stage.setScene(new Scene(root,800,600,Color.BLACK));
+        stage.setMaximized(true);
+        stage.show();
     }
 }
