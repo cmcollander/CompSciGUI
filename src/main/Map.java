@@ -120,6 +120,11 @@ public class Map {
             return false;
         }
 
+        // Is the ship on land
+        if (matrix[row][col] == '*' && !isDock(row, col)) {
+            return false;
+        }
+
         // Get a count of the number of ships at this location. If more than one, return FALSE
         int count = 0;
         for (CargoShip ship : ships) {
@@ -231,12 +236,16 @@ public class Map {
     }
 
     /**
-     * Generate a number of ships between 1 and 10, randomly, and placing them
-     * in ArrayList Ships
+     * Generate a number of ships randomly, and placing them in ArrayList Ships
      *
      * @param numShips The number of ships to generate
      */
     public void generateShips(int numShips) throws NullPointerException {
+
+        // First things first, make sure we don't overload our names!
+        if ((numShips + ships.size()) > 100) {
+            numShips = 100 - ships.size();
+        }
 
         int lcv;
 
@@ -284,80 +293,94 @@ public class Map {
             currShip.setCol(col);
 
             // Randomly generate a first and last name for the ship
-            String firstName;
-            String lastName;
-            int firstNum = randomGenerator.nextInt(10);
-            int lastNum = randomGenerator.nextInt(10);
+            String firstName = "ERROR";
+            String lastName = "ERROR";
+            boolean nameUsed = true;
 
-            switch (firstNum) {
-                case 0:
-                    firstName = "Red";
-                    break;
-                case 1:
-                    firstName = "Green";
-                    break;
-                case 2:
-                    firstName = "Dark";
-                    break;
-                case 3:
-                    firstName = "Light";
-                    break;
-                case 4:
-                    firstName = "Day";
-                    break;
-                case 5:
-                    firstName = "Night";
-                    break;
-                case 6:
-                    firstName = "Savanah";
-                    break;
-                case 7:
-                    firstName = "Mountain";
-                    break;
-                case 8:
-                    firstName = "Captain's";
-                    break;
-                case 9:
-                    firstName = "Admiral's";
-                    break;
-                default:
-                    firstName = "ERROR";
-            }
+            while (nameUsed) {
+                int firstNum = randomGenerator.nextInt(10);
+                int lastNum = randomGenerator.nextInt(10);
 
-            switch (lastNum) {
-                case 0:
-                    lastName = "Buffalo";
-                    break;
-                case 1:
-                    lastName = "Pastures";
-                    break;
-                case 2:
-                    lastName = "Knight";
-                    break;
-                case 3:
-                    lastName = "Wave";
-                    break;
-                case 4:
-                    lastName = "Star";
-                    break;
-                case 5:
-                    lastName = "Moon";
-                    break;
-                case 6:
-                    lastName = "Lion";
-                    break;
-                case 7:
-                    lastName = "Goat";
-                    break;
-                case 8:
-                    lastName = "Pride";
-                    break;
-                case 9:
-                    lastName = "Joy";
-                    break;
-                default:
-                    lastName = "ERROR";
-                    break;
+                switch (firstNum) {
+                    case 0:
+                        firstName = "Red";
+                        break;
+                    case 1:
+                        firstName = "Green";
+                        break;
+                    case 2:
+                        firstName = "Dark";
+                        break;
+                    case 3:
+                        firstName = "Light";
+                        break;
+                    case 4:
+                        firstName = "Day";
+                        break;
+                    case 5:
+                        firstName = "Night";
+                        break;
+                    case 6:
+                        firstName = "Savanah";
+                        break;
+                    case 7:
+                        firstName = "Mountain";
+                        break;
+                    case 8:
+                        firstName = "Captain's";
+                        break;
+                    case 9:
+                        firstName = "Admiral's";
+                        break;
+                    default:
+                        firstName = "ERROR";
+                }
+
+                switch (lastNum) {
+                    case 0:
+                        lastName = "Buffalo";
+                        break;
+                    case 1:
+                        lastName = "Pastures";
+                        break;
+                    case 2:
+                        lastName = "Knight";
+                        break;
+                    case 3:
+                        lastName = "Wave";
+                        break;
+                    case 4:
+                        lastName = "Star";
+                        break;
+                    case 5:
+                        lastName = "Moon";
+                        break;
+                    case 6:
+                        lastName = "Lion";
+                        break;
+                    case 7:
+                        lastName = "Goat";
+                        break;
+                    case 8:
+                        lastName = "Pride";
+                        break;
+                    case 9:
+                        lastName = "Joy";
+                        break;
+                    default:
+                        lastName = "ERROR";
+                        break;
+                }
+                String shipName = firstName + " " + lastName;
+                boolean found = false;
+                for (CargoShip ship : ships) {
+                    if (shipName.equalsIgnoreCase(ship.getName())) {
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    nameUsed = false;
+                }
             }
 
             currShip.setName(firstName + " " + lastName);

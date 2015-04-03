@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
@@ -134,9 +135,27 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu1, menu2, menu3, menu4, menu5);
 
+        //Center Pane of mapView and another gridpane with buttons
+        GridPane mainView = new GridPane();
+        mainView.setHgap(0);
+        mainView.setVgap(0);
+        mainView.setPadding(new Insets(0, 0, 0, 0));
+
+        GridPane buttonView = new GridPane();
+        buttonView.setHgap(10);
+        buttonView.setVgap(0);
+        buttonView.setPadding(new Insets(0, 0, 0, 0));
+
+        Button crankButton = new Button("Crank To 11!");
+        Button runButton = new Button("Run");
+        buttonView.add(crankButton, 0, 0);
+        buttonView.add(runButton, 1, 0);
+
         // MapView Setup
         mapView = new Canvas(canvasWidth, canvasHeight);
         refreshMap();
+        mainView.add(mapView, 0, 0);
+        mainView.add(buttonView, 0, 1);
 
         // mapView Mouse Event Handler
         mapView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -207,9 +226,9 @@ public class Main extends Application {
         // Create Scene
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
-        root.setCenter(mapView);
+        root.setCenter(mainView);
         root.setBottom(expContent);
-        Scene scene = new Scene(root, canvasWidth, canvasHeight + 200);
+        Scene scene = new Scene(root, canvasWidth - 10, canvasHeight + 220);
         primaryStage.setTitle("CompSci GUI - JavaFX!");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -348,6 +367,11 @@ public class Main extends Application {
                 }
 
                 //Port Menu
+                // Unload Ship MenuItem
+                if ("Unload Ship".equalsIgnoreCase(text)) {
+                    unloadShip();
+                }
+
                 // Update Docks MenuItem
                 if ("Update Docks".equalsIgnoreCase(text)) {
                     ArrayList<String> choices = new ArrayList<>();
@@ -781,35 +805,6 @@ public class Main extends Application {
             }
         }
 
-        // Iterate through the ships. THIS DOES NOT YET CHECK SAFETY
-        for (CargoShip ship : map.getShips()) {
-            int shipType = 0;
-            if (ship instanceof ContainerShip) {
-                shipType = 1;
-            }
-            if (ship instanceof OilTanker) {
-                shipType = 2;
-            }
-
-            int row = 10 * ship.getRow() + 10;
-            int col = 10 * ship.getCol();
-
-            switch (shipType) {
-                case 0:
-                    gc.setFill(Color.WHITE);
-                    gc.fillText("S", col, row);
-                    break;
-                case 1:
-                    gc.setFill(Color.WHITE);
-                    gc.fillText("B", col, row);
-                    break;
-                case 2:
-                    gc.setFill(Color.RED);
-                    gc.fillText("T", col, row);
-                    break;
-            }
-        }
-
         //Iterate through the docks, ALSO CREATING LAND UNDERNEATH
         // *Not all docks are placed on land. Some are on land, some are on water, at least in 'complex'
         for (Dock dock : map.getPort().getDocks()) {
@@ -844,6 +839,53 @@ public class Main extends Application {
                     break;
             }
         }
+
+        // Iterate through the ships
+        for (CargoShip ship : map.getShips()) {
+            int shipType = 0;
+            if (ship instanceof ContainerShip) {
+                shipType = 1;
+            }
+            if (ship instanceof OilTanker) {
+                shipType = 2;
+            }
+
+            int row = 10 * ship.getRow() + 10;
+            int col = 10 * ship.getCol();
+
+            switch (shipType) {
+                case 0:
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("S", col, row);
+                    break;
+                case 1:
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("B", col, row);
+                    break;
+                case 2:
+                    gc.setFill(Color.RED);
+                    gc.fillText("T", col, row);
+                    break;
+            }
+
+            if (map.isDock(ship.getRow(), ship.getCol())) {
+                if (map.isShipSafe(ship.getRow(), ship.getCol())) {
+                    // Safely Docked
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(col, row - 10, 10, 10);
+                    gc.setFill(Color.GREEN);
+                    gc.fillText("$", col, row);
+                }
+            }
+            if (!map.isShipSafe(ship.getRow(), ship.getCol())) {
+                // Ship is Unsafe
+                // Safely Docked
+                gc.setFill(Color.YELLOW);
+                gc.fillRect(col, row - 10, 10, 10);
+                gc.setFill(Color.RED);
+                gc.fillText("X", col, row);
+            }
+        }
     }
 
     private static void aboutDialog() {
@@ -874,5 +916,41 @@ public class Main extends Application {
             return max;
         }
         return val;
+    }
+
+    private static void unloadShip() {
+        ArrayList<String> choices = new ArrayList<>();
+        for (CargoShip ship : map.getShips()) {
+            if (map.isShipSafe(ship.getRow(), ship.getCol()) && map.isDock(ship.getRow(), ship.getCol()) && ship.getCargo() != null) {
+                choices.add(ship.getName());
+            }
+        }
+
+        // If no safe ships
+        if (choices.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Safe Ships");
+            alert.setHeaderText("No Safe Ships");
+            alert.setContentText("There are no safe ships with cargo parked at a dock to unload");
+            alert.showAndWait();
+            return;
+        }
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+        dialog.setTitle("Unload Ship");
+        dialog.setHeaderText("Unload Ship");
+        dialog.setContentText("Which Ship would you like to unload?");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            for (CargoShip ship : map.getShips()) {
+                if (ship.getName().equalsIgnoreCase(result.get())) {
+                    map.getPort().getCargos().add(ship.getCargo());
+                    ship.setCargo(null);
+                    return;
+                }
+            }
+        }
+
     }
 }
