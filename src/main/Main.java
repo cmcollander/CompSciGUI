@@ -153,6 +153,16 @@ public class Main extends Application {
         buttonView.add(crankButton, 0, 0);
         buttonView.add(runButton, 1, 0);
 
+        // Start 3D Button
+        crankButton.setOnMouseClicked((MouseEvent event) -> {
+            start3D();
+        });
+
+        // PredatorPrey Button
+        runButton.setOnMouseClicked((MouseEvent event) -> {
+            startPredatorPrey();
+        });
+
         // MapView Setup
         mapView = new Canvas(canvasWidth, canvasHeight);
         refreshMap();
@@ -331,7 +341,7 @@ public class Main extends Application {
                     }
                     map.generateShips(numShips);
                     checkMonsterCollision();
-                    
+
                     refreshMap();
                 }
                 // Update Ships MenuItem
@@ -1240,31 +1250,41 @@ public class Main extends Application {
         }
 
     }
-    
+
     public void checkMonsterCollision() {
-        for(SeaMonster monster : map.getMonsters())
+        for (SeaMonster monster : map.getMonsters()) {
             checkMonsterCollision(monster);
+        }
     }
-    
+
     public void checkMonsterCollision(SeaMonster monster) {
-        if(map.isShip(monster.getRow(), monster.getCol())) {
+        if (map.isShip(monster.getRow(), monster.getCol())) {
             try {
                 SoundManager.growl();
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 displayStackTrace(ex);
             }
             textArea.setText(monster.battleCry());
         }
     }
-    
+
     public void checkMonsterCollision(CargoShip ship) {
-        if(map.isMonster(new Position(ship.getRow(),ship.getCol()))) {
+        if (map.isMonster(new Position(ship.getRow(), ship.getCol()))) {
             try {
                 SoundManager.growl();
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 displayStackTrace(ex);
             }
             textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
         }
+    }
+
+    public void startPredatorPrey() {
+        aboutDialog();
+    }
+
+    public void start3D() {
+        // Lets hope this works!
+        aboutDialog();
     }
 }

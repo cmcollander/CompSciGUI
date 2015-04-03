@@ -393,17 +393,20 @@ public class Map {
         int numK = 0;
         int numL = 0;
         int numS = 0;
-        
+
         // Count how many we have of what types so far
-        for(SeaMonster monster : monsters) {
-            if(monster instanceof Kraken)
+        for (SeaMonster monster : monsters) {
+            if (monster instanceof Kraken) {
                 numK++;
-            if(monster instanceof Leviathan)
+            }
+            if (monster instanceof Leviathan) {
                 numL++;
-            if(monster instanceof SeaSerpent)
+            }
+            if (monster instanceof SeaSerpent) {
                 numS++;
+            }
         }
-        
+
         int index;
 
         for (index = 0; index < numMonsters; index++) {
@@ -416,17 +419,17 @@ public class Map {
                 case 0:
                     currMonster = new Kraken();
                     numK++;
-                    currMonster.setType(currMonster.getType()+" "+numK);
+                    currMonster.setType(currMonster.getType() + " " + numK);
                     break;
                 case 1:
                     currMonster = new Leviathan();
                     numL++;
-                    currMonster.setType(currMonster.getType()+" "+numL);
+                    currMonster.setType(currMonster.getType() + " " + numL);
                     break;
                 default:
                     currMonster = new SeaSerpent();
                     numS++;
-                    currMonster.setType(currMonster.getType()+" "+numS);
+                    currMonster.setType(currMonster.getType() + " " + numS);
                     break;
             }
 
