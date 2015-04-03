@@ -81,4 +81,13 @@ public abstract class SeaMonster {
     public void setLatitude(double lat) {
         position.setLatitude(lat);
     }
+    
+    public String display() {
+        String ret = "";
+        ret += "Monster Type: " + type + "\n";
+        ret += "Location: (" + String.format("%.6f", getLongitude()) + "," + String.format("%.6f", getLatitude()) + ")\n";
+        ret += "\n\n";
+
+        return ret;
+    }
 }
