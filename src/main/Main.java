@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
@@ -134,9 +135,27 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu1, menu2, menu3, menu4, menu5);
 
+        //Center Pane of mapView and another gridpane with buttons
+        GridPane mainView = new GridPane();
+        mainView.setHgap(0);
+        mainView.setVgap(0);
+        mainView.setPadding(new Insets(0, 0, 0, 0));
+
+        GridPane buttonView = new GridPane();
+        buttonView.setHgap(10);
+        buttonView.setVgap(0);
+        buttonView.setPadding(new Insets(0, 0, 0, 0));
+
+        Button crankButton = new Button("Crank To 11!");
+        Button runButton = new Button("Run");
+        buttonView.add(crankButton, 0, 0);
+        buttonView.add(runButton, 1, 0);
+
         // MapView Setup
         mapView = new Canvas(canvasWidth, canvasHeight);
         refreshMap();
+        mainView.add(mapView, 0, 0);
+        mainView.add(buttonView, 0, 1);
 
         // mapView Mouse Event Handler
         mapView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -207,9 +226,9 @@ public class Main extends Application {
         // Create Scene
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
-        root.setCenter(mapView);
+        root.setCenter(mainView);
         root.setBottom(expContent);
-        Scene scene = new Scene(root, canvasWidth, canvasHeight + 200);
+        Scene scene = new Scene(root, canvasWidth - 10, canvasHeight + 220);
         primaryStage.setTitle("CompSci GUI - JavaFX!");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
