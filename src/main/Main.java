@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -451,6 +452,31 @@ public class Main extends Application {
                         }
                     }
                     map.generateMonsters(numMonsters);
+                    refreshMap();
+                }
+                
+                //Display All Monsters
+                if("Display All Monsters".equalsIgnoreCase(text)) {
+                    String output = new String();
+                    for(SeaMonster monster : map.getMonsters()) {
+                        output += monster.display();
+                    }
+                    textArea.setText(output);
+                }
+                
+                //Remove All Monsters
+                if("Remove All Monsters".equalsIgnoreCase(text)) {
+                    map.getMonsters().clear();
+                    refreshMap();
+                }
+                
+                //Summon Godzilla
+                if("Summon Godzilla".equalsIgnoreCase(text)) {
+                    Random randomGenerator = new Random();
+                    Godzilla g = new Godzilla();
+                    Position pos = new Position(randomGenerator.nextInt(53), randomGenerator.nextInt(35));
+                    g.setPosition(pos);
+                    map.getMonsters().add(g);
                     refreshMap();
                 }
             }

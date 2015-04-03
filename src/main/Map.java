@@ -33,17 +33,6 @@ public class Map {
         port = new Port();
     }
 
-    /**
-     * Display the Map's Components
-     */
-    public void display() {
-        port.display();
-        for (CargoShip ship : ships) {
-            ship.display();
-            System.out.println("Safety: " + isShipSafe(ship.getRow(), ship.getCol()) + "\n");
-        }
-    }
-
     /*
      * Method to determin if there is a monster at a specific grid position
      *
