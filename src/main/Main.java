@@ -781,35 +781,6 @@ public class Main extends Application {
             }
         }
 
-        // Iterate through the ships. THIS DOES NOT YET CHECK SAFETY
-        for (CargoShip ship : map.getShips()) {
-            int shipType = 0;
-            if (ship instanceof ContainerShip) {
-                shipType = 1;
-            }
-            if (ship instanceof OilTanker) {
-                shipType = 2;
-            }
-
-            int row = 10 * ship.getRow() + 10;
-            int col = 10 * ship.getCol();
-
-            switch (shipType) {
-                case 0:
-                    gc.setFill(Color.WHITE);
-                    gc.fillText("S", col, row);
-                    break;
-                case 1:
-                    gc.setFill(Color.WHITE);
-                    gc.fillText("B", col, row);
-                    break;
-                case 2:
-                    gc.setFill(Color.RED);
-                    gc.fillText("T", col, row);
-                    break;
-            }
-        }
-
         //Iterate through the docks, ALSO CREATING LAND UNDERNEATH
         // *Not all docks are placed on land. Some are on land, some are on water, at least in 'complex'
         for (Dock dock : map.getPort().getDocks()) {
@@ -842,6 +813,53 @@ public class Main extends Application {
                 case 2:
                     gc.fillText("P", colP, rowP);
                     break;
+            }
+        }
+        
+        // Iterate through the ships
+        for (CargoShip ship : map.getShips()) {
+            int shipType = 0;
+            if (ship instanceof ContainerShip) {
+                shipType = 1;
+            }
+            if (ship instanceof OilTanker) {
+                shipType = 2;
+            }
+
+            int row = 10 * ship.getRow() + 10;
+            int col = 10 * ship.getCol();
+
+            switch (shipType) {
+                case 0:
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("S", col, row);
+                    break;
+                case 1:
+                    gc.setFill(Color.WHITE);
+                    gc.fillText("B", col, row);
+                    break;
+                case 2:
+                    gc.setFill(Color.RED);
+                    gc.fillText("T", col, row);
+                    break;
+            }
+            
+            if(map.isDock(ship.getRow(), ship.getCol())) {
+                if(map.isShipSafe(ship.getRow(), ship.getCol())) {
+                    // Safely Docked
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(col, row-10, 10, 10);
+                    gc.setFill(Color.GREEN);
+                    gc.fillText("$", col, row);
+                }
+            }
+            if(!map.isShipSafe(ship.getRow(), ship.getCol())) {
+                // Ship is Unsafe
+                // Safely Docked
+                gc.setFill(Color.YELLOW);
+                gc.fillRect(col, row-10, 10, 10);
+                gc.setFill(Color.RED);
+                gc.fillText("X", col, row);
             }
         }
     }
