@@ -157,15 +157,14 @@ public class Main extends Application {
         mapView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(event.getButton() == MouseButton.PRIMARY) {
+                if (event.getButton() == MouseButton.PRIMARY) {
                     int col = (int) (event.getX() / 10);
                     int row = (int) (event.getY() / 10);
-                    
-                    if(draggedShip != null) {
+
+                    if (draggedShip != null) {
                         // If a ship is currently in the drag variable, erase it.
                         draggedShip = null;
-                    }
-                    else if(map.isShip(row, col)){
+                    } else if (map.isShip(row, col)) {
                         draggedShip = map.getShipAt(row, col);
                     }
                 }
@@ -174,11 +173,14 @@ public class Main extends Application {
         mapView.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(event.getButton() == MouseButton.PRIMARY) {
+                if (event.getButton() == MouseButton.PRIMARY) {
                     int col = (int) (event.getX() / 10);
                     int row = (int) (event.getY() / 10);
-                    
-                    if(draggedShip != null) {
+
+                    col = constrain(col, 0, 53);
+                    row = constrain(row, 0, 35);
+
+                    if (draggedShip != null) {
                         draggedShip.setRow(row);
                         draggedShip.setCol(col);
                         draggedShip = null;
@@ -862,5 +864,15 @@ public class Main extends Application {
         alert.setHeaderText(null);
         alert.setContentText(aboutMessage);
         alert.showAndWait();
+    }
+
+    private static int constrain(int val, int min, int max) {
+        if (val < min) {
+            return min;
+        }
+        if (val > max) {
+            return max;
+        }
+        return val;
     }
 }
