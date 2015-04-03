@@ -85,7 +85,7 @@ public class ContainerShip extends CargoShip {
         ret += "Beam: " + this.beam + " metres\n";
         ret += "Draft: " + this.draft + " metres\n";
         ret += "Capacity: " + this.cargoCapacity + " tons\n";
-        ret += "Location: (" + this.getLongitude() + "," + this.getLatitude() + ")\n";
+        ret += "Location: (" + String.format("%.6f", this.getLongitude()) + "," + String.format("%.6f", this.getLatitude()) + ")\n";
         if (this.cargo != null) {
             ret += "Cargo: ";
             ret += this.cargo.display();

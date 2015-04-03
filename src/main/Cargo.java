@@ -100,6 +100,6 @@ public class Cargo {
      * Display the tonnage and description of the cargo
      */
     public String display() {
-        return tonnage + " tons of " + description + "\n";
+        return String.format("%.2f", tonnage) + " tons of " + description + "\n";
     }
 }

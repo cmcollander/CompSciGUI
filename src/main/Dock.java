@@ -84,7 +84,7 @@ public class Dock {
         ret += "Name: " + this.name + "\n";
         ret += "Dock Number: " + this.getSection() + this.dockNumber + "\n";
         ret += "Size: " + this.length + "x" + this.depth + "x" + this.width + " metres\n";
-        ret += "Location (" + this.getLongitude() + "," + this.getLatitude() + ")\n";
+        ret += "Location (" + String.format("%.6f", this.getLongitude()) + "," + String.format("%.6f", this.getLatitude()) + ")\n";
         ret += "\n\n";
         return ret;
     }
