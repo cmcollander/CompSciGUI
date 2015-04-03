@@ -454,29 +454,32 @@ public class Main extends Application {
                     map.generateMonsters(numMonsters);
                     refreshMap();
                 }
-                
+
                 //Display All Monsters
-                if("Display All Monsters".equalsIgnoreCase(text)) {
+                if ("Display All Monsters".equalsIgnoreCase(text)) {
                     String output = new String();
-                    for(SeaMonster monster : map.getMonsters()) {
+                    for (SeaMonster monster : map.getMonsters()) {
                         output += monster.display();
                     }
                     textArea.setText(output);
                 }
-                
+
                 //Remove All Monsters
-                if("Remove All Monsters".equalsIgnoreCase(text)) {
+                if ("Remove All Monsters".equalsIgnoreCase(text)) {
                     map.getMonsters().clear();
                     refreshMap();
                 }
-                
+
                 //Summon Godzilla
-                if("Summon Godzilla".equalsIgnoreCase(text)) {
-                    Random randomGenerator = new Random();
+                if ("Summon Godzilla".equalsIgnoreCase(text)) {
                     Godzilla g = new Godzilla();
-                    Position pos = new Position(randomGenerator.nextInt(53), randomGenerator.nextInt(35));
+                    Position pos = new Position(-1, -1);
+                    updateLocationGodzilla(pos);
                     g.setPosition(pos);
-                    map.getMonsters().add(g);
+                    // Only add Godzilla if the user changed the default coordinates
+                    if (pos.getRow() != -1 && pos.getCol() != -1) {
+                        map.getMonsters().add(g);
+                    }
                     refreshMap();
                 }
             }
@@ -702,6 +705,79 @@ public class Main extends Application {
 
             // If Update Button Hit
             if (bt.getText().equalsIgnoreCase("Update")) {
+                try {
+                    // Find out which values were changed
+                    boolean rowChanged, colChanged, latChanged, lonChanged;
+
+                    rowChanged = Integer.parseInt(row.getText()) != pos.getRow();
+                    colChanged = Integer.parseInt(col.getText()) != pos.getCol();
+                    lonChanged = Double.parseDouble(longitude.getText()) != pos.getLongitude();
+                    latChanged = Double.parseDouble(latitude.getText()) != pos.getLatitude();
+
+                    if ((rowChanged && latChanged) || (colChanged && lonChanged)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Incorrect Values");
+                        alert.setHeaderText("Incorrect Values");
+                        alert.setContentText("Cannot adjust row and latitude or column and longitude at the same time");
+                        alert.showAndWait();
+                    } else {
+                        if (rowChanged) {
+                            pos.setRow(Integer.parseInt(row.getText()));
+                        }
+                        if (colChanged) {
+                            pos.setCol(Integer.parseInt(col.getText()));
+                        }
+                        if (latChanged) {
+                            pos.setLatitude(Integer.parseInt(latitude.getText()));
+                        }
+                        if (lonChanged) {
+                            pos.setLongitude(Integer.parseInt(longitude.getText()));
+                        }
+                    }
+                } catch (Exception ex) {
+                    incorrectInput();
+                }
+            }
+        }
+        refreshMap();
+    }
+
+    private static void updateLocationGodzilla(Position pos) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Place Godzilla");
+        dialog.setHeaderText("Place Godzilla");
+
+        ButtonType updateButtonType = new ButtonType("Place", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField row = new TextField(Integer.toString(pos.getRow()));
+        TextField col = new TextField(Integer.toString(pos.getCol()));
+        TextField latitude = new TextField(Double.toString(pos.getLatitude()));
+        TextField longitude = new TextField(Double.toString(pos.getLongitude()));
+
+        grid.add(new Label("Row:"), 0, 0);
+        grid.add(row, 1, 0);
+        grid.add(new Label("Column:"), 0, 1);
+        grid.add(col, 1, 1);
+        grid.add(new Label("Latitude:"), 0, 2);
+        grid.add(latitude, 1, 2);
+        grid.add(new Label("Longitude:"), 0, 3);
+        grid.add(longitude, 1, 3);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            ButtonType bt = result.get();
+
+            // If Update Button Hit
+            if (bt.getText().equalsIgnoreCase("Place")) {
                 try {
                     // Find out which values were changed
                     boolean rowChanged, colChanged, latChanged, lonChanged;
