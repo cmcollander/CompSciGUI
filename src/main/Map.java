@@ -49,7 +49,7 @@ public class Map {
      * @param col The grid column
      * @return true if there is a dock at row/col, false otherwise
      */
-    private boolean isDock(int row, int col) {
+    public boolean isDock(int row, int col) {
 
         if (port.getDocks().isEmpty()) {
             return false;
@@ -70,7 +70,7 @@ public class Map {
      * @param col The grid column
      * @return true if there is a ship at row/col, false otherwise
      */
-    private boolean isShip(int row, int col) {
+    public boolean isShip(int row, int col) {
 
         if (ships.isEmpty()) {
             return false;
@@ -156,7 +156,7 @@ public class Map {
      * @param col The grid row
      * @return The dock at the requested location
      */
-    private Dock getDockAt(int row, int col) {
+    public Dock getDockAt(int row, int col) {
         for (Dock dock : port.getDocks()) {
             if (row == dock.getRow() && col == dock.getCol()) {
                 return dock;

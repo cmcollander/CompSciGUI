@@ -143,8 +143,11 @@ public class Main extends Application {
                 if (event.getButton() == MouseButton.SECONDARY) {
                     int col = (int) (event.getX() / 10);
                     int row = (int) (event.getY() / 10);
-                    if (map.getShipAt(row, col) != null) {
+                    if (map.isShip(row, col)) {
                         updateShip(map.getShipAt(row, col));
+                    }
+                    if (map.isDock(row, col)) {
+                        updateDock(map.getDockAt(row, col));
                     }
                 }
             }
@@ -547,7 +550,7 @@ public class Main extends Application {
                 updateLocation(dock.getPosition());
             }
         }
-
+        refreshMap();
     }
 
     private static void updateLocation(Position pos) {
@@ -620,6 +623,7 @@ public class Main extends Application {
                 }
             }
         }
+        refreshMap();
     }
 
     private static void updateCargo(Cargo cargo) {
