@@ -34,6 +34,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -134,6 +135,20 @@ public class Main extends Application {
         // MapView Setup
         mapView = new Canvas(canvasWidth, canvasHeight);
         refreshMap();
+
+        // mapView Mouse Event Handler
+        mapView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY) {
+                    int col = (int) (event.getX() / 10);
+                    int row = (int) (event.getY() / 10);
+                    if (map.getShipAt(row, col) != null) {
+                        updateShip(map.getShipAt(row, col));
+                    }
+                }
+            }
+        });
 
         // TextArea Setup
         textArea = new TextArea();
