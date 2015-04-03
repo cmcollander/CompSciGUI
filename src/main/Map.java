@@ -52,11 +52,11 @@ public class Map {
      *SHOULD implement position checking correctly
      */
     public boolean isMonster(Position position) {
-        if (monsters.isEmpty()) {
+        if (getMonsters().isEmpty()) {
             return false;
         }
 
-        for (SeaMonster monster : monsters) {
+        for (SeaMonster monster : getMonsters()) {
             if (monster.getPosition().equals(position)) {
                 return true;
             }
@@ -427,13 +427,27 @@ public class Map {
             while (!validLocation) {
                 currPosition = new Position(randomGenerator.nextInt(matrix.length), randomGenerator.nextInt(matrix[0].length));
 
-                if (isMonster(currMonster.getPosition()) && matrix[currPosition.getRow()][currPosition.getCol()] == '.') {
+                if (!isMonster(currMonster.getPosition()) && matrix[currPosition.getRow()][currPosition.getCol()] == '.') {
                     validLocation = true;
                 }
             }
 
             currMonster.setPosition(currPosition);
-            monsters.add(currMonster);
+            getMonsters().add(currMonster);
         }
+    }
+
+    /**
+     * @return the monsters
+     */
+    public ArrayList<SeaMonster> getMonsters() {
+        return monsters;
+    }
+
+    /**
+     * @param monsters the monsters to set
+     */
+    public void setMonsters(ArrayList<SeaMonster> monsters) {
+        this.monsters = monsters;
     }
 }

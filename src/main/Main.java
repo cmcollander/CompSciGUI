@@ -427,6 +427,32 @@ public class Main extends Application {
                     }
                     textArea.setText(output);
                 }
+
+                //Monster Menu
+                //Generate Monsters
+                if ("Generate Monsters".equalsIgnoreCase(text)) {
+                    int numMonsters = 0;
+
+                    TextInputDialog openDialog = new TextInputDialog("10");
+                    openDialog.setTitle("Generate Monsters");
+                    openDialog.setHeaderText("Generate a Number of Monsters");
+                    openDialog.setContentText("Please enter the number of monsters:");
+
+                    Optional<String> result = openDialog.showAndWait();
+                    if (result.isPresent()) {
+                        try {
+                            numMonsters = Integer.parseInt(result.get());
+                        } catch (Exception ex) {
+                            if (ex instanceof NumberFormatException) {
+                                incorrectInput();
+                            } else {
+                                displayStackTrace(ex);
+                            }
+                        }
+                    }
+                    map.generateMonsters(numMonsters);
+                    refreshMap();
+                }
             }
         };
     }
@@ -884,6 +910,49 @@ public class Main extends Application {
                 gc.fillRect(col, row - 10, 10, 10);
                 gc.setFill(Color.RED);
                 gc.fillText("X", col, row);
+            }
+        }
+
+        // Iterate through the Monsters
+        for (SeaMonster monster : map.getMonsters()) {
+            int monsterType = -1;
+
+            if (monster instanceof Leviathan) {
+                monsterType = 0;
+            }
+            if (monster instanceof Kraken) {
+                monsterType = 1;
+            }
+            if (monster instanceof SeaSerpent) {
+                monsterType = 2;
+            }
+            if (monster instanceof Godzilla) {
+                monsterType = 3;
+            }
+
+            int row = 10 * monster.getRow() + 10;
+            int col = 10 * monster.getCol();
+
+            gc.setFill(Color.BLUE);
+            gc.fillRect(col, row - 10, 10, 10);
+
+            switch (monsterType) {
+                case 0:
+                    gc.setFill(Color.YELLOW);
+                    gc.fillText("L", col, row);
+                    break;
+                case 1:
+                    gc.setFill(Color.YELLOW);
+                    gc.fillText("K", col, row);
+                    break;
+                case 2:
+                    gc.setFill(Color.YELLOW);
+                    gc.fillText("S", col, row);
+                    break;
+                case 3:
+                    gc.setFill(Color.YELLOW);
+                    gc.fillText("G", col, row);
+                    break;
             }
         }
     }

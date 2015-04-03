@@ -49,4 +49,36 @@ public abstract class SeaMonster {
     public Position getPosition() {
         return position;
     }
+
+    public int getRow() {
+        return position.getRow();
+    }
+
+    public int getCol() {
+        return position.getCol();
+    }
+
+    public void setRow(int row) {
+        position.setRow(row);
+    }
+
+    public void setCol(int col) {
+        position.setCol(col);
+    }
+
+    public double getLongitude() {
+        return position.getLongitude();
+    }
+
+    public double getLatitude() {
+        return position.getLatitude();
+    }
+
+    public void setLongitude(double lon) {
+        position.setLongitude(lon);
+    }
+
+    public void setLatitude(double lat) {
+        position.setLatitude(lat);
+    }
 }
