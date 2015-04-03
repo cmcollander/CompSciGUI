@@ -42,7 +42,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+    
     private static Stage stage;
     private static Map map;
     private static Canvas mapView;
@@ -50,7 +50,7 @@ public class Main extends Application {
     private static int canvasWidth;
     private static int canvasHeight;
     private static boolean mapLoaded;
-
+    
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
@@ -116,7 +116,7 @@ public class Main extends Application {
         MenuItem menu45 = new MenuItem("Summon Godzilla");
         menu45.setOnAction(menuAction);
         menu4.getItems().addAll(menu41, menu42, menu43, menu44, menu45);
-
+        
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu1, menu2, menu3, menu4, menu5);
 
@@ -128,12 +128,12 @@ public class Main extends Application {
         textArea = new TextArea();
         textArea.setEditable(false);
         textArea.setWrapText(true);
-
+        
         textArea.setMaxWidth(Double.MAX_VALUE);
         textArea.setMaxHeight(Double.MAX_VALUE);
         GridPane.setVgrow(textArea, Priority.ALWAYS);
         GridPane.setHgrow(textArea, Priority.ALWAYS);
-
+        
         GridPane expContent = new GridPane();
         expContent.setMaxWidth(Double.MAX_VALUE);
         expContent.add(textArea, 0, 1);
@@ -149,14 +149,14 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-
+    
     public static void main(String[] args) {
         launch(args);
     }
-
+    
     private EventHandler<ActionEvent> menuItemSelected() {
         return new EventHandler<ActionEvent>() {
-
+            
             @Override
             public void handle(ActionEvent event) {
                 MenuItem mItem = (MenuItem) event.getSource();
@@ -169,7 +169,7 @@ public class Main extends Application {
                     openDialog.setTitle("Open File");
                     openDialog.setHeaderText("Open File");
                     openDialog.setContentText("Please enter the tag for your file:");
-
+                    
                     Optional<String> result = openDialog.showAndWait();
                     if (result.isPresent()) {
                         try {
@@ -207,12 +207,12 @@ public class Main extends Application {
                 // Generate Ships MenuItem
                 if ("Generate Ships".equalsIgnoreCase(text)) {
                     int numShips = 0;
-
+                    
                     TextInputDialog openDialog = new TextInputDialog("10");
                     openDialog.setTitle("Generate Ships");
                     openDialog.setHeaderText("Generate a Number of Ships");
                     openDialog.setContentText("Please enter the number of ships:");
-
+                    
                     Optional<String> result = openDialog.showAndWait();
                     if (result.isPresent()) {
                         try {
@@ -234,7 +234,7 @@ public class Main extends Application {
                     for (CargoShip ship : map.getShips()) {
                         choices.add(ship.getName());
                     }
-
+                    
                     if (choices.size() == 0) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("No Ships have been generated");
@@ -242,12 +242,12 @@ public class Main extends Application {
                         alert.setContentText("Please generate ships before attempting to update");
                         alert.showAndWait();
                     }
-
+                    
                     ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
                     dialog.setTitle("Update Ship");
                     dialog.setHeaderText("Update Ship");
                     dialog.setContentText("Choose a ship:");
-
+                    
                     Optional<String> result = dialog.showAndWait();
                     if (result.isPresent()) {
                         // Find which ship is being updated and pass it to the updateShip function
@@ -288,7 +288,7 @@ public class Main extends Application {
                     for (Dock dock : map.getPort().getDocks()) {
                         choices.add(dock.getName());
                     }
-
+                    
                     if (choices.isEmpty()) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("No docks yet created");
@@ -296,12 +296,12 @@ public class Main extends Application {
                         alert.setContentText("Please create docks before attempting to update one");
                         alert.showAndWait();
                     }
-
+                    
                     ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
                     dialog.setTitle("Update Dock");
                     dialog.setHeaderText("Update Dock");
                     dialog.setContentText("Choose a dock:");
-
+                    
                     Optional<String> result = dialog.showAndWait();
                     if (result.isPresent()) {
                         // Find which dock is being updated and pass it to the updateDock function
@@ -340,7 +340,7 @@ public class Main extends Application {
             }
         };
     }
-
+    
     public static void incorrectInput() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Incorrect Input");
@@ -348,39 +348,39 @@ public class Main extends Application {
         alert.setContentText("Please Enter a Correct Value");
         alert.showAndWait();
     }
-
+    
     public static void displayStackTrace(Exception ex) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Exception");
         alert.setHeaderText("Exception Stacktrace");
         alert.setContentText("The program threw an exception");
-
+        
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         ex.printStackTrace(pw);
         String exceptionText = sw.toString();
-
+        
         Label label = new Label("The exception stacktrace was:");
-
+        
         TextArea textArea = new TextArea(exceptionText);
         textArea.setEditable(false);
         textArea.setWrapText(true);
-
+        
         textArea.setMaxWidth(Double.MAX_VALUE);
         textArea.setMaxHeight(Double.MAX_VALUE);
         GridPane.setVgrow(textArea, Priority.ALWAYS);
         GridPane.setHgrow(textArea, Priority.ALWAYS);
-
+        
         GridPane expContent = new GridPane();
         expContent.setMaxWidth(Double.MAX_VALUE);
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
-
+        
         alert.getDialogPane().setExpandableContent(expContent);
-
+        
         alert.showAndWait();
     }
-
+    
     private static void updateShip(CargoShip ship) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Ship");
@@ -393,7 +393,7 @@ public class Main extends Application {
         } catch (Exception ex) {
             displayStackTrace(ex);
         }
-
+        
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         ButtonType cargoButtonType = new ButtonType("Cargo", ButtonData.OTHER);
         ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
@@ -404,14 +404,14 @@ public class Main extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
-
+        
         TextField name = new TextField(ship.getName());
         TextField country = new TextField(ship.getCountryOfRegistration());
         TextField transponder = new TextField(Long.toString(ship.getTransponderNumber()));
         TextField length = new TextField(Double.toString(ship.getLength()));
         TextField beam = new TextField(Double.toString(ship.getBeam()));
         TextField draft = new TextField(Double.toString(ship.getDraft()));
-
+        
         grid.add(new Label("Name:"), 0, 0);
         grid.add(name, 1, 0);
         grid.add(new Label("Country of Registration:"), 0, 1);
@@ -424,11 +424,11 @@ public class Main extends Application {
         grid.add(beam, 1, 4);
         grid.add(new Label("Draft:"), 0, 5);
         grid.add(draft, 1, 5);
-
+        
         dialog.getDialogPane().setContent(grid);
-
+        
         Optional<ButtonType> result = dialog.showAndWait();
-
+        
         if (result.isPresent()) {
             ButtonType bt = result.get();
 
@@ -456,9 +456,9 @@ public class Main extends Application {
                 updateLocation(ship.getPosition());
             }
         }
-
+        
     }
-
+    
     private static void updateDock(Dock dock) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Dock");
@@ -474,7 +474,7 @@ public class Main extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
-
+        
         TextField name = new TextField(dock.getName());
         TextField section = new TextField(Character.toString(dock.getSection()));
         TextField dockNumber = new TextField(Integer.toString(dock.getDockNumber()));
@@ -494,11 +494,11 @@ public class Main extends Application {
         grid.add(width, 1, 4);
         grid.add(new Label("Depth:"), 0, 5);
         grid.add(depth, 1, 5);
-
+        
         dialog.getDialogPane().setContent(grid);
-
+        
         Optional<ButtonType> result = dialog.showAndWait();
-
+        
         if (result.isPresent()) {
             ButtonType bt = result.get();
 
@@ -521,9 +521,9 @@ public class Main extends Application {
                 updateLocation(dock.getPosition());
             }
         }
-
+        
     }
-
+    
     private static void updateLocation(Position pos) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Location");
@@ -536,7 +536,7 @@ public class Main extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
-
+        
         TextField row = new TextField(Integer.toString(pos.getRow()));
         TextField col = new TextField(Integer.toString(pos.getCol()));
         TextField latitude = new TextField(Double.toString(pos.getLatitude()));
@@ -552,9 +552,9 @@ public class Main extends Application {
         grid.add(longitude, 1, 3);
         
         dialog.getDialogPane().setContent(grid);
-
+        
         Optional<ButtonType> result = dialog.showAndWait();
-
+        
         if (result.isPresent()) {
             ButtonType bt = result.get();
 
@@ -564,26 +564,30 @@ public class Main extends Application {
                     // Find out which values were changed
                     boolean rowChanged, colChanged, latChanged, lonChanged;
                     
-                    rowChanged = Integer.parseInt(row.getText())!=pos.getRow();
-                    colChanged = Integer.parseInt(col.getText())!=pos.getCol();
-                    lonChanged = Double.parseDouble(longitude.getText())!=pos.getLongitude();
-                    latChanged = Double.parseDouble(latitude.getText())!=pos.getLatitude();
+                    rowChanged = Integer.parseInt(row.getText()) != pos.getRow();
+                    colChanged = Integer.parseInt(col.getText()) != pos.getCol();
+                    lonChanged = Double.parseDouble(longitude.getText()) != pos.getLongitude();
+                    latChanged = Double.parseDouble(latitude.getText()) != pos.getLatitude();
                     
-                    if((rowChanged && latChanged) || (colChanged && lonChanged)) {
+                    if ((rowChanged && latChanged) || (colChanged && lonChanged)) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Incorrect Values");
                         alert.setHeaderText("Incorrect Values");
                         alert.setContentText("Cannot adjust row and latitude or column and longitude at the same time");
                         alert.showAndWait();
                     } else {
-                        if(rowChanged)
+                        if (rowChanged) {
                             pos.setRow(Integer.parseInt(row.getText()));
-                        if(colChanged)
+                        }
+                        if (colChanged) {
                             pos.setCol(Integer.parseInt(col.getText()));
-                        if(latChanged)
+                        }
+                        if (latChanged) {
                             pos.setLatitude(Integer.parseInt(latitude.getText()));
-                        if(lonChanged)
+                        }
+                        if (lonChanged) {
                             pos.setLongitude(Integer.parseInt(longitude.getText()));
+                        }
                     }
                 } catch (Exception ex) {
                     incorrectInput();
@@ -591,12 +595,12 @@ public class Main extends Application {
             }
         }
     }
-
+    
     private static void updateCargo(Cargo cargo) {
         if (cargo == null) {
             incorrectInput();
         }
-
+        
         int cargoType = 0; // Plain Cargo
         if (cargo instanceof Oil) {
             cargoType = 1; // Oil
@@ -607,7 +611,7 @@ public class Main extends Application {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Cargo");
         dialog.setHeaderText("Update Cargo");
-
+        
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
 
@@ -616,9 +620,9 @@ public class Main extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
-
+        
         TextField description = new TextField(cargo.getDescription());
-
+        
         String currTonString;
         switch (cargoType) {
             case 0:
@@ -634,9 +638,9 @@ public class Main extends Application {
                 currTonString = "ERROR";
                 break;
         }
-
+        
         TextField tonnage = new TextField(currTonString);
-
+        
         String tonString;
         switch (cargoType) {
             case 0:
@@ -652,16 +656,16 @@ public class Main extends Application {
                 tonString = "ERROR";
                 break;
         }
-
+        
         grid.add(new Label("Description:"), 0, 0);
         grid.add(description, 1, 0);
         grid.add(new Label(tonString), 0, 1);
         grid.add(tonnage, 1, 1);
-
+        
         dialog.getDialogPane().setContent(grid);
-
+        
         Optional<ButtonType> result = dialog.showAndWait();
-
+        
         if (result.isPresent() && result.get().getText().equalsIgnoreCase("Update")) {
             try {
                 cargo.setDescription(description.getText());
@@ -683,7 +687,7 @@ public class Main extends Application {
             }
         }
     }
-
+    
     private static void refreshMap() {
 
         // Base ocean
@@ -700,7 +704,7 @@ public class Main extends Application {
         char[][] matrix = map.getMatrix();
         char currentChar;
         gc.setFill(Color.GREEN);
-
+        
         for (int row = 0; row < 36; row++) {
             for (int col = 0; col < 54; col++) {
                 currentChar = matrix[row][col];
@@ -719,10 +723,10 @@ public class Main extends Application {
             if (ship instanceof OilTanker) {
                 shipType = 2;
             }
-
+            
             int row = 10 * ship.getRow() + 10;
             int col = 10 * ship.getCol();
-
+            
             switch (shipType) {
                 case 0:
                     gc.setFill(Color.WHITE);
@@ -749,7 +753,7 @@ public class Main extends Application {
             if (dock instanceof Pier) {
                 dockType = 2;
             }
-
+            
             int rowP = 10 * dock.getRow() + 10;
             int colP = 10 * dock.getCol();
             int row = dock.getRow();
@@ -758,9 +762,9 @@ public class Main extends Application {
             // Add LAND under Dock
             gc.setFill(Color.GREEN);
             gc.fillRect(col * 10, row * 10, 10, 10);
-
+            
             gc.setFill(Color.BLACK);
-
+            
             switch (dockType) {
                 case 0:
                     gc.fillText("D", colP, rowP);
