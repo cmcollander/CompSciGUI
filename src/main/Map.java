@@ -19,6 +19,7 @@ public class Map {
     private char[][] matrix;
 
     private ArrayList<CargoShip> ships;
+    private ArrayList<SeaMonster> monsters;
     private Port port;
 
     /**
@@ -28,6 +29,7 @@ public class Map {
         matrix = new char[0][0];
 
         ships = new ArrayList<>();
+        monsters = new ArrayList<>();
         port = new Port();
     }
 
@@ -40,6 +42,27 @@ public class Map {
             ship.display();
             System.out.println("Safety: " + isShipSafe(ship.getRow(), ship.getCol()) + "\n");
         }
+    }
+
+    /*
+     * Method to determin if there is a monster at a specific grid position
+     *
+     *@param position the current position
+     *@return true if there is a monster at position, otherwise false
+     *SHOULD implement position checking correctly
+     */
+    public boolean isMonster(Position position) {
+        if (monsters.isEmpty()) {
+            return false;
+        }
+
+        for (SeaMonster monster : monsters) {
+            if (monster.getPosition().equals(position)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -345,6 +368,49 @@ public class Map {
             currShip.setTransponderNumber(randomLong);
 
             ships.add(currShip);
+        }
+    }
+
+    /**
+     * Generate a number of monsters between 1 and 10, randomly, and placing
+     * them in ArrayList monsters
+     *
+     * @param numMonsters The number of monsters to generate
+     */
+    public void generateMonsters(int numMonsters) {
+        int index;
+
+        for (index = 0; index < numMonsters; index++) {
+            SeaMonster currMonster;
+            Position currPosition = new Position();
+            Random randomGenerator = new Random();
+
+            int monsterType = randomGenerator.nextInt(3);
+            switch (monsterType) {
+                case 0:
+                    currMonster = new Kraken();
+                    break;
+                case 1:
+                    currMonster = new Leviathan();
+                    break;
+                default:
+                    currMonster = new SeaSerpent();
+                    break;
+            }
+
+            boolean validLocation = false;
+
+            // Keep generating locations until a valid location is found
+            while (!validLocation) {
+                currPosition = new Position(randomGenerator.nextInt(matrix.length), randomGenerator.nextInt(matrix[0].length));
+
+                if (isMonster(currMonster.getPosition()) && matrix[currPosition.getRow()][currPosition.getCol()] == '.') {
+                    validLocation = true;
+                }
+            }
+
+            currMonster.setPosition(currPosition);
+            monsters.add(currMonster);
         }
     }
 }

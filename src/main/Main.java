@@ -857,7 +857,7 @@ public class Main extends Application {
         aboutMessage += "\tName: Abdul Rafey Khan\n";
         aboutMessage += "\tID: __________\n";
         aboutMessage += "\tName: Clint Wetzel\n";
-        aboutMessage += "\tID: __________";
+        aboutMessage += "\tID: 1000717927\n";
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
