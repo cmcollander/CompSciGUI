@@ -17,7 +17,9 @@ import javafx.stage.Stage;
  */
 public class PortSimulation {
     private Map map;
-    final Group root = new Group();
+    private Stage stage;
+    private Scene scene;
+    private Group root;
     final Xform world = new Xform();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
     final Xform cameraXform = new Xform();
@@ -34,9 +36,9 @@ public class PortSimulation {
     }
     
     public void run() {
-        Group root = new Group();
-        Stage stage = new Stage();
-        Scene scene = new Scene(root,800,600,Color.BLACK);
+        root = new Group();
+        stage = new Stage();
+        scene = new Scene(root,800,600,Color.BLACK);
         stage.setTitle("3D Port Simulation");
         stage.setScene(scene);
         stage.setMaximized(true);
