@@ -455,6 +455,44 @@ public class Main extends Application {
                     refreshMap();
                 }
 
+                // Update Monsters MenuItem
+                if ("Update Monsters".equalsIgnoreCase(text)) {
+                    ArrayList<String> choices = new ArrayList<>();
+                    for (SeaMonster monster : map.getMonsters()) {
+                        choices.add(monster.getType());
+                    }
+
+                    if (choices.isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("No monsters yet created");
+                        alert.setHeaderText("No monsters yet created");
+                        alert.setContentText("Please generate monsters before attempting to update one");
+                        alert.showAndWait();
+                    }
+
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                    dialog.setTitle("Update Monster");
+                    dialog.setHeaderText("Update Monster");
+                    dialog.setContentText("Choose a Monster:");
+
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        // Find which dock is being updated and pass it to the updateDock function
+                        boolean found = false;
+                        for (SeaMonster monster : map.getMonsters()) {
+                            if (monster.getType().equals(result.get())) {
+                                found = true;
+                                updateMonster(monster);
+                            }
+                        }
+                        if (!found) {
+                            // This shouldn't happen anymore, just a precaution
+                            incorrectInput();
+                        }
+                    }
+                    refreshMap();
+                }
+
                 //Display All Monsters
                 if ("Display All Monsters".equalsIgnoreCase(text)) {
                     String output = new String();
@@ -664,6 +702,51 @@ public class Main extends Application {
             // If Location Button Hit
             if (bt.getText().equalsIgnoreCase("Location")) {
                 updateLocation(dock.getPosition());
+            }
+        }
+        refreshMap();
+    }
+
+    private static void updateMonster(SeaMonster monster) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Update Monster");
+        dialog.setHeaderText("Update Monster");
+
+        // Can set a ship icon here, if we want
+        ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
+        ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
+        dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, updateButtonType, ButtonType.CANCEL);
+
+        // Create the info fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField type = new TextField(monster.getType());
+
+        grid.add(new Label("Type:"), 0, 0);
+        grid.add(type, 1, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            ButtonType bt = result.get();
+
+            // If Update Button Hit
+            if (bt.getText().equalsIgnoreCase("Update")) {
+                try {
+                    monster.setType(type.getText());
+                } catch (Exception ex) {
+                    incorrectInput();
+                }
+            }
+
+            // If Location Button Hit
+            if (bt.getText().equalsIgnoreCase("Location")) {
+                updateLocation(monster.getPosition());
             }
         }
         refreshMap();
