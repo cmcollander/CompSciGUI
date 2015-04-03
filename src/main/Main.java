@@ -52,9 +52,11 @@ public class Main extends Application {
     private static int canvasWidth;
     private static int canvasHeight;
     private static boolean mapLoaded;
+    private static CargoShip draggedShip;
 
     @Override
     public void start(Stage primaryStage) {
+        draggedShip = null;
         stage = primaryStage;
         canvasWidth = 54 * 10;
         canvasHeight = 36 * 10;
@@ -148,6 +150,39 @@ public class Main extends Application {
                     }
                     if (map.isDock(row, col)) {
                         updateDock(map.getDockAt(row, col));
+                    }
+                }
+            }
+        });
+        mapView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getButton() == MouseButton.PRIMARY) {
+                    int col = (int) (event.getX() / 10);
+                    int row = (int) (event.getY() / 10);
+                    
+                    if(draggedShip != null) {
+                        // If a ship is currently in the drag variable, erase it.
+                        draggedShip = null;
+                    }
+                    else if(map.isShip(row, col)){
+                        draggedShip = map.getShipAt(row, col);
+                    }
+                }
+            }
+        });
+        mapView.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getButton() == MouseButton.PRIMARY) {
+                    int col = (int) (event.getX() / 10);
+                    int row = (int) (event.getY() / 10);
+                    
+                    if(draggedShip != null) {
+                        draggedShip.setRow(row);
+                        draggedShip.setCol(col);
+                        draggedShip = null;
+                        refreshMap();
                     }
                 }
             }
