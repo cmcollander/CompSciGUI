@@ -525,14 +525,18 @@ public class Main extends Application {
 
                 //Summon Godzilla
                 if ("Summon Godzilla".equalsIgnoreCase(text)) {
+                    // If there is already a Godzilla, remove him
+                    for (SeaMonster monster : map.getMonsters()) {
+                        if (monster instanceof Godzilla) {
+                            map.getMonsters().remove(monster);
+                        }
+                    }
+
                     Godzilla g = new Godzilla();
-                    Position pos = new Position(-1, -1);
+                    Position pos = new Position(0, 0);
                     updateLocationGodzilla(pos);
                     g.setPosition(pos);
-                    // Only add Godzilla if the user changed the default coordinates
-                    if (pos.getRow() != -1 && pos.getCol() != -1) {
-                        map.getMonsters().add(g);
-                    }
+                    map.getMonsters().add(g);
                     refreshMap();
                 }
             }
