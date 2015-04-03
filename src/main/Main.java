@@ -171,6 +171,9 @@ public class Main extends Application {
                     if (map.isDock(row, col)) {
                         updateDock(map.getDockAt(row, col));
                     }
+                    if (map.isMonster(new Position(row, col))) {
+                        updateMonster(map.getMonsterAt(row, col));
+                    }
                 }
             }
         });

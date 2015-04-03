@@ -71,4 +71,8 @@ public class Position {
     public void setLongitude(double lon) {
         this.col = MapConverter.lon2col(lon);
     }
+    
+    public boolean equals(Position pos) {
+        return row==pos.getRow() && col == pos.getCol();
+    }
 }
