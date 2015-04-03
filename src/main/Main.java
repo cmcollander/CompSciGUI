@@ -900,7 +900,12 @@ public class Main extends Application {
 
     private static void updateCargo(Cargo cargo) {
         if (cargo == null) {
-            incorrectInput();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("No Cargo Exists");
+            alert.setHeaderText("No Cargo Exists");
+            alert.setContentText("No cargo exists to edit!");
+            alert.showAndWait();
+            return;
         }
 
         int cargoType = 0; // Plain Cargo
