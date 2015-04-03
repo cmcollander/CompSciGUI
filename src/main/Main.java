@@ -348,6 +348,11 @@ public class Main extends Application {
                 }
 
                 //Port Menu
+                // Unload Ship MenuItem
+                if ("Unload Ship".equalsIgnoreCase(text)) {
+                    unloadShip();
+                }
+
                 // Update Docks MenuItem
                 if ("Update Docks".equalsIgnoreCase(text)) {
                     ArrayList<String> choices = new ArrayList<>();
@@ -815,7 +820,7 @@ public class Main extends Application {
                     break;
             }
         }
-        
+
         // Iterate through the ships
         for (CargoShip ship : map.getShips()) {
             int shipType = 0;
@@ -843,21 +848,21 @@ public class Main extends Application {
                     gc.fillText("T", col, row);
                     break;
             }
-            
-            if(map.isDock(ship.getRow(), ship.getCol())) {
-                if(map.isShipSafe(ship.getRow(), ship.getCol())) {
+
+            if (map.isDock(ship.getRow(), ship.getCol())) {
+                if (map.isShipSafe(ship.getRow(), ship.getCol())) {
                     // Safely Docked
                     gc.setFill(Color.BLACK);
-                    gc.fillRect(col, row-10, 10, 10);
+                    gc.fillRect(col, row - 10, 10, 10);
                     gc.setFill(Color.GREEN);
                     gc.fillText("$", col, row);
                 }
             }
-            if(!map.isShipSafe(ship.getRow(), ship.getCol())) {
+            if (!map.isShipSafe(ship.getRow(), ship.getCol())) {
                 // Ship is Unsafe
                 // Safely Docked
                 gc.setFill(Color.YELLOW);
-                gc.fillRect(col, row-10, 10, 10);
+                gc.fillRect(col, row - 10, 10, 10);
                 gc.setFill(Color.RED);
                 gc.fillText("X", col, row);
             }
@@ -892,5 +897,41 @@ public class Main extends Application {
             return max;
         }
         return val;
+    }
+
+    private static void unloadShip() {
+        ArrayList<String> choices = new ArrayList<>();
+        for (CargoShip ship : map.getShips()) {
+            if (map.isShipSafe(ship.getRow(), ship.getCol()) && map.isDock(ship.getRow(), ship.getCol()) && ship.getCargo() != null) {
+                choices.add(ship.getName());
+            }
+        }
+
+        // If no safe ships
+        if (choices.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Safe Ships");
+            alert.setHeaderText("No Safe Ships");
+            alert.setContentText("There are no safe ships with cargo parked at a dock to unload");
+            alert.showAndWait();
+            return;
+        }
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+        dialog.setTitle("Unload Ship");
+        dialog.setHeaderText("Unload Ship");
+        dialog.setContentText("Which Ship would you like to unload?");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            for (CargoShip ship : map.getShips()) {
+                if (ship.getName().equalsIgnoreCase(result.get())) {
+                    map.getPort().getCargos().add(ship.getCargo());
+                    ship.setCargo(null);
+                    return;
+                }
+            }
+        }
+
     }
 }

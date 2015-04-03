@@ -96,10 +96,11 @@ public class Map {
         if (!isShip(row, col)) {
             return false;
         }
-        
+
         // Is the ship on land
-        if(matrix[row][col]=='*' && !isDock(row, col))
+        if (matrix[row][col] == '*' && !isDock(row, col)) {
             return false;
+        }
 
         // Get a count of the number of ships at this location. If more than one, return FALSE
         int count = 0;
