@@ -439,11 +439,12 @@ public class Map {
     public void setMonsters(ArrayList<SeaMonster> monsters) {
         this.monsters = monsters;
     }
-    
+
     public SeaMonster getMonsterAt(int row, int col) {
-        for(SeaMonster monster : monsters) {
-            if(monster.getRow() == row && monster.getCol() == col)
+        for (SeaMonster monster : monsters) {
+            if (monster.getRow() == row && monster.getCol() == col) {
                 return monster;
+            }
         }
         return null;
     }

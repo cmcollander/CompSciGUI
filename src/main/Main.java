@@ -55,10 +55,12 @@ public class Main extends Application {
     private static int canvasHeight;
     private static boolean mapLoaded;
     private static CargoShip draggedShip;
+    private static SeaMonster draggedMonster;
 
     @Override
     public void start(Stage primaryStage) {
         draggedShip = null;
+        draggedMonster = null;
         stage = primaryStage;
         canvasWidth = 54 * 10;
         canvasHeight = 36 * 10;
@@ -189,6 +191,10 @@ public class Main extends Application {
                         draggedShip = null;
                     } else if (map.isShip(row, col)) {
                         draggedShip = map.getShipAt(row, col);
+                    } else if (draggedMonster != null) {
+                        draggedMonster = null;
+                    } else if (map.isMonster(new Position(row, col))) {
+                        draggedMonster = map.getMonsterAt(row, col);
                     }
                 }
             }
@@ -207,6 +213,12 @@ public class Main extends Application {
                         draggedShip.setRow(row);
                         draggedShip.setCol(col);
                         draggedShip = null;
+                        refreshMap();
+                    }
+                    if (draggedMonster != null) {
+                        draggedMonster.setRow(row);
+                        draggedMonster.setCol(col);
+                        draggedMonster = null;
                         refreshMap();
                     }
                 }
