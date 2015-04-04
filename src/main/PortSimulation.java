@@ -301,7 +301,7 @@ public class PortSimulation {
             Sphere monsterModel = new Sphere(mType == 0 ? 10 : 5);
 
             // Translation
-            monsterModel.setTranslateY(mType == 0 ? 10 : 5);
+            monsterModel.setTranslateY(mType == 0 ? 10 + ((map.getMatrix()[monster.getRow()][monster.getCol()]=='*')?10:0) : 5);
             monsterModel.setTranslateX(5 + monster.getCol() * 10);
             monsterModel.setTranslateZ(5 + monster.getRow() * 10);
             switch (mType) {
