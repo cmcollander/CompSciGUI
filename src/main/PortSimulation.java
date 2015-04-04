@@ -73,8 +73,8 @@ public class PortSimulation {
         buildLand();
         buildShips();
 
-        world.setTranslateX(-530 / 2);
-        world.setTranslateZ(-350 / 2);
+        world.setTranslateX(-540 / 2);
+        world.setTranslateZ(-360 / 2);
 
         Scene scene = new Scene(root, 1024, 768, true, SceneAntialiasing.BALANCED);
         scene.setFill(Color.SKYBLUE);
@@ -175,9 +175,9 @@ public class PortSimulation {
         oceanMaterial.setDiffuseColor(Color.BLUE);
         oceanMaterial.setSpecularColor(Color.LIGHTBLUE);
 
-        final Box ocean = new Box(530, 1, 350);
-        ocean.setTranslateX(530 / 2);
-        ocean.setTranslateZ(350 / 2);
+        final Box ocean = new Box(540, 1, 360);
+        ocean.setTranslateX(540 / 2);
+        ocean.setTranslateZ(360 / 2);
         ocean.setTranslateY(-1);
 
         ocean.setMaterial(oceanMaterial);
@@ -192,8 +192,8 @@ public class PortSimulation {
         landMaterial.setDiffuseColor(Color.GREEN);
         landMaterial.setSpecularColor(Color.LIGHTGREEN);
 
-        for (int row = 1; row < 35; row++) {
-            for (int col = 52; col > -1; col--) {
+        for (int row = 0; row < 36; row++) {
+            for (int col = 0; col < 54; col++) {
                 if (map.getMatrix()[row][col] == '.' && !map.isDock(row, col)) {
                     continue;
                 }
