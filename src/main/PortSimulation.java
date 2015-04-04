@@ -22,6 +22,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
+import javafx.scene.shape.Sphere;
 
 public class PortSimulation {
 
@@ -37,6 +38,8 @@ public class PortSimulation {
     final Xform oceanGroup = new Xform();
     final Xform landGroup = new Xform();
     final Xform shipGroup = new Xform();
+    final Xform monsterGroup = new Xform();
+    final Xform dockGroup = new Xform();
 
     /*
      X axis is Columns
@@ -72,7 +75,10 @@ public class PortSimulation {
         buildOcean();
         buildLand();
         buildShips();
+        buildMonsters();
+        buildDocks();
 
+        // Get yourself in the right position by repositioning the world... Kinda philosophical
         world.setTranslateX(-540 / 2);
         world.setTranslateZ(-360 / 2);
 
@@ -149,6 +155,9 @@ public class PortSimulation {
                         z = camera.getTranslateZ();
                         newZ = z - 200 * MOUSE_SPEED;
                         camera.setTranslateZ(newZ);
+                        break;
+                    case Q:
+                        stage.close();
                         break;
                 }
             }
@@ -254,5 +263,105 @@ public class PortSimulation {
         }
         world.getChildren().add(shipGroup);
         shipGroup.setVisible(true);
+    }
+
+    private void buildMonsters() {
+        final PhongMaterial krakenMaterial = new PhongMaterial();
+        krakenMaterial.setDiffuseColor(Color.RED);
+        krakenMaterial.setSpecularColor(Color.PINK);
+
+        final PhongMaterial leviathanMaterial = new PhongMaterial();
+        leviathanMaterial.setDiffuseColor(Color.BROWN);
+        leviathanMaterial.setSpecularColor(Color.CHOCOLATE);
+
+        final PhongMaterial serpentMaterial = new PhongMaterial();
+        serpentMaterial.setDiffuseColor(Color.DARKSLATEGRAY);
+        serpentMaterial.setSpecularColor(Color.LIGHTSLATEGRAY);
+
+        final PhongMaterial godzillaMaterial = new PhongMaterial();
+        godzillaMaterial.setDiffuseColor(Color.DARKGREEN);
+        godzillaMaterial.setSpecularColor(Color.GREEN);
+
+        for (SeaMonster monster : map.getMonsters()) {
+            int mType = 0; // Godzilla
+            if (monster instanceof Kraken) {
+                mType = 1;
+            }
+            if (monster instanceof Leviathan) {
+                mType = 2;
+            }
+            if (monster instanceof SeaSerpent) {
+                mType = 3;
+            }
+
+            Sphere monsterModel = new Sphere(5);
+
+            // Translation
+            monsterModel.setTranslateY(5);
+            monsterModel.setTranslateX(5 + monster.getCol() * 10);
+            monsterModel.setTranslateZ(5 + monster.getRow() * 10);
+            switch (mType) {
+                case 0:
+                    monsterModel.setMaterial(godzillaMaterial);
+                    break;
+                case 1:
+                    monsterModel.setMaterial(krakenMaterial);
+                    break;
+                case 2:
+                    monsterModel.setMaterial(leviathanMaterial);
+                    break;
+                case 3:
+                    monsterModel.setMaterial(serpentMaterial);
+                    break;
+            }
+            monsterGroup.getChildren().add(monsterModel);
+        }
+        world.getChildren().add(monsterGroup);
+        monsterGroup.setVisible(true);
+    }
+
+    private void buildDocks() {
+        final PhongMaterial dockMaterial = new PhongMaterial();
+        dockMaterial.setDiffuseColor(Color.RED);
+        dockMaterial.setSpecularColor(Color.PINK);
+
+        final PhongMaterial craneMaterial = new PhongMaterial();
+        craneMaterial.setDiffuseColor(Color.BROWN);
+        craneMaterial.setSpecularColor(Color.CHOCOLATE);
+
+        final PhongMaterial pierMaterial = new PhongMaterial();
+        pierMaterial.setDiffuseColor(Color.DARKSLATEGRAY);
+        pierMaterial.setSpecularColor(Color.LIGHTSLATEGRAY);
+
+        for (Dock dock : map.getPort().getDocks()) {
+            int dockType = 0; // Dock
+            if (dock instanceof Crane) {
+                dockType = 1;
+            }
+            if (dock instanceof Pier) {
+                dockType = 2;
+            }
+
+            Box dockModel = new Box(10, 10, 10);
+
+            // Translation
+            dockModel.setTranslateY(15);
+            dockModel.setTranslateX(5 + dock.getCol() * 10);
+            dockModel.setTranslateZ(5 + dock.getRow() * 10);
+            switch (dockType) {
+                case 0:
+                    dockModel.setMaterial(dockMaterial);
+                    break;
+                case 1:
+                    dockModel.setMaterial(craneMaterial);
+                    break;
+                case 2:
+                    dockModel.setMaterial(pierMaterial);
+                    break;
+            }
+            dockGroup.getChildren().add(dockModel);
+        }
+        world.getChildren().add(dockGroup);
+        dockGroup.setVisible(true);
     }
 }
