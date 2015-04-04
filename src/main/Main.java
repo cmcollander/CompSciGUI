@@ -1285,7 +1285,15 @@ public class Main extends Application {
     }
 
     public void start3D() {
-        // Lets hope this works!
+        if(!mapLoaded) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No Map Loaded");
+            alert.setHeaderText("No Map Loaded");
+            alert.setContentText("Please load a map before running the simulation");
+            alert.showAndWait();
+            return;
+        }
+        
         PortSimulation portSim = new PortSimulation(map);
         portSim.run();
     }

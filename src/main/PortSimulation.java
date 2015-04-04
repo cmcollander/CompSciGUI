@@ -9,6 +9,7 @@
 package main;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
@@ -34,6 +35,12 @@ public class PortSimulation {
     final Xform axisGroup = new Xform();
     final Xform oceanGroup = new Xform();
     final Xform landGroup = new Xform();
+    
+    /*
+        X axis is Columns
+        Z axis is Rows
+        Y axis is Height
+    */
 
     private static final double CAMERA_INITIAL_DISTANCE = -450;
     private static final double CAMERA_INITIAL_X_ANGLE = 70.0;
@@ -69,8 +76,12 @@ public class PortSimulation {
         handleMouse(scene, world);
 
         buildCamera();
-        buildAxes();
         buildOcean();
+        //buildAxes();
+        buildLand();
+        
+        world.setTranslateX(-530/2);
+        world.setTranslateZ(-350/2);
 
         stage.setTitle("3D Port Simulation");
         stage.setScene(scene);
@@ -103,7 +114,7 @@ public class PortSimulation {
         zAxis.setMaterial(blueMaterial);
 
         axisGroup.getChildren().addAll(xAxis, yAxis, zAxis);
-        axisGroup.setVisible(false);
+        axisGroup.setVisible(true);
         world.getChildren().addAll(axisGroup);
     }
 
@@ -155,11 +166,13 @@ public class PortSimulation {
         cameraXform.getChildren().add(cameraXform2);
         cameraXform2.getChildren().add(cameraXform3);
         cameraXform3.getChildren().add(camera);
-        cameraXform3.setRotateZ(180.0);
+        cameraXform3.setRotateZ(-180.0);
 
         camera.setNearClip(CAMERA_NEAR_CLIP);
         camera.setFarClip(CAMERA_FAR_CLIP);
         camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+        
+        
         cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
         cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
     }
@@ -170,11 +183,37 @@ public class PortSimulation {
         oceanMaterial.setSpecularColor(Color.LIGHTBLUE);
 
         final Box ocean = new Box(530, 1, 350);
+        ocean.setTranslateX(530/2);
+        ocean.setTranslateZ(350/2);
 
         ocean.setMaterial(oceanMaterial);
 
         oceanGroup.getChildren().add(ocean);
         oceanGroup.setVisible(true);
         world.getChildren().add(ocean);
+    }
+    
+    private void buildLand() {
+        final PhongMaterial landMaterial = new PhongMaterial();
+        landMaterial.setDiffuseColor(Color.GREEN);
+        landMaterial.setSpecularColor(Color.LIGHTGREEN);
+        
+        for(int row=0;row<35;row++) {
+            for(int col=0;col<53;col++) {
+                if(map.getMatrix()[row][col]=='.')
+                    continue;
+                
+                Box land = new Box(10,10,10);
+                // Translation
+                land.setTranslateY(5);
+                land.setTranslateX(5+col*10);
+                land.setTranslateZ(5+row*10);
+                land.setMaterial(landMaterial);
+                landGroup.getChildren().add(land);
+                world.getChildren().add(land);
+            }
+        }
+        
+        landGroup.setVisible(true);
     }
 }
