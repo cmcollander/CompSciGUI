@@ -9,11 +9,12 @@
 package main;
 
 import javafx.event.EventHandler;
-import javafx.geometry.Point3D;
+import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -23,9 +24,8 @@ import javafx.scene.shape.Box;
 public class PortSimulation {
 
     private Map map;
-    private Stage stage;
-    private Scene scene;
-    private Group root;
+    private Stage stage = new Stage();
+    private Group root = new Group();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
 
     final Xform world = new Xform();
@@ -42,8 +42,8 @@ public class PortSimulation {
      Y axis is Height
      */
     private static final double CAMERA_INITIAL_DISTANCE = -450;
-    private static final double CAMERA_INITIAL_X_ANGLE = 70.0;
-    private static final double CAMERA_INITIAL_Y_ANGLE = 320.0;
+    private static final double CAMERA_INITIAL_X_ANGLE = 30.0;
+    private static final double CAMERA_INITIAL_Y_ANGLE = 120.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 500;
@@ -66,13 +66,8 @@ public class PortSimulation {
     }
 
     public void run() {
-        root = new Group();
         root.getChildren().add(world);
-        stage = new Stage();
-        scene = new Scene(root, 800, 600, Color.BLACK);
-        scene.setFill(Color.SKYBLUE);
-
-        handleMouse(scene, world);
+        root.setDepthTest(DepthTest.ENABLE);
 
         buildCamera();
         buildOcean();
@@ -81,6 +76,11 @@ public class PortSimulation {
 
         world.setTranslateX(-530 / 2);
         world.setTranslateZ(-350 / 2);
+
+        Scene scene = new Scene(root, 1024, 768, true);
+        scene.setFill(Color.SKYBLUE);
+        handleKeyboard(scene, world);
+        handleMouse(scene, world);
 
         stage.setTitle("3D Port Simulation");
         stage.setScene(scene);
@@ -137,24 +137,50 @@ public class PortSimulation {
                 mouseDeltaX = (mousePosX - mouseOldX);
                 mouseDeltaY = (mousePosY - mouseOldY);
 
-                double modifier = 1.0;
-
-                if (me.isControlDown()) {
-                    modifier = CONTROL_MULTIPLIER;
-                }
-                if (me.isShiftDown()) {
-                    modifier = SHIFT_MULTIPLIER;
-                }
                 if (me.isPrimaryButtonDown()) {
-                    cameraXform.ry.setAngle(cameraXform.ry.getAngle() - mouseDeltaX * MOUSE_SPEED * modifier * ROTATION_SPEED);
-                    cameraXform.rx.setAngle(cameraXform.rx.getAngle() + mouseDeltaY * MOUSE_SPEED * modifier * ROTATION_SPEED);
+                    cameraXform.ry.setAngle(cameraXform.ry.getAngle() - mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED);
+                    cameraXform.rx.setAngle(cameraXform.rx.getAngle() + mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED);
                 } else if (me.isSecondaryButtonDown()) {
                     double z = camera.getTranslateZ();
-                    double newZ = z + mouseDeltaX * MOUSE_SPEED * modifier;
+                    double newZ = z + mouseDeltaX * MOUSE_SPEED * SHIFT_MULTIPLIER;
                     camera.setTranslateZ(newZ);
                 } else if (me.isMiddleButtonDown()) {
-                    cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX * MOUSE_SPEED * modifier * TRACK_SPEED);
-                    cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY * MOUSE_SPEED * modifier * TRACK_SPEED);
+                    cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX * MOUSE_SPEED * SHIFT_MULTIPLIER * TRACK_SPEED);
+                    cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY * MOUSE_SPEED * SHIFT_MULTIPLIER * TRACK_SPEED);
+                }
+            }
+        });
+    }
+
+    private void handleKeyboard(Scene scene, final Node root) {
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                double z, newZ;
+                switch (event.getCode()) {
+                    case Z:
+                        cameraXform2.t.setX(0.0);
+                        cameraXform2.t.setY(0.0);
+                        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+                        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
+                        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
+                        break;
+                    case X:
+                        axisGroup.setVisible(!axisGroup.isVisible());
+                        break;
+                    case V:
+                        landGroup.setVisible(!landGroup.isVisible());
+                        break;
+                    case W:
+                        z = camera.getTranslateZ();
+                        newZ = z + 20 * MOUSE_SPEED * SHIFT_MULTIPLIER;
+                        camera.setTranslateZ(newZ);
+                        break;
+                    case S:
+                        z = camera.getTranslateZ();
+                        newZ = z - 20 * MOUSE_SPEED * SHIFT_MULTIPLIER;
+                        camera.setTranslateZ(newZ);
+                        break;
                 }
             }
         });
@@ -183,6 +209,7 @@ public class PortSimulation {
         final Box ocean = new Box(530, 1, 350);
         ocean.setTranslateX(530 / 2);
         ocean.setTranslateZ(350 / 2);
+        ocean.setTranslateY(-1);
 
         ocean.setMaterial(oceanMaterial);
 
@@ -196,9 +223,9 @@ public class PortSimulation {
         landMaterial.setDiffuseColor(Color.GREEN);
         landMaterial.setSpecularColor(Color.LIGHTGREEN);
 
-        for (int row = 0; row < 35; row++) {
-            for (int col = 0; col < 53; col++) {
-                if (map.getMatrix()[row][col] == '.') {
+        for (int row = 1; row < 35; row++) {
+            for (int col = 52; col > -1; col--) {
+                if (map.getMatrix()[row][col] == '.' && !map.isDock(row, col)) {
                     continue;
                 }
 
@@ -209,10 +236,9 @@ public class PortSimulation {
                 land.setTranslateZ(5 + row * 10);
                 land.setMaterial(landMaterial);
                 landGroup.getChildren().add(land);
-                world.getChildren().add(land);
             }
         }
-
+        world.getChildren().add(landGroup);
         landGroup.setVisible(true);
     }
 }
