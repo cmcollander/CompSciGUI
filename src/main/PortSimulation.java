@@ -26,20 +26,21 @@ import javafx.scene.shape.Sphere;
 
 public class PortSimulation {
 
-    private Map map;
-    private Stage stage = new Stage();
-    private Group root = new Group();
-    final PerspectiveCamera camera = new PerspectiveCamera(true);
+    private final Map map;
+    private final Stage stage = new Stage();
+    private final Group root = new Group();
+    private final PerspectiveCamera camera = new PerspectiveCamera(true);
+    private boolean fullscreen = true;
 
-    final Xform world = new Xform();
-    final Xform cameraXform = new Xform();
-    final Xform cameraXform2 = new Xform();
-    final Xform cameraXform3 = new Xform();
-    final Xform oceanGroup = new Xform();
-    final Xform landGroup = new Xform();
-    final Xform shipGroup = new Xform();
-    final Xform monsterGroup = new Xform();
-    final Xform dockGroup = new Xform();
+    private final Xform world = new Xform();
+    private final Xform cameraXform = new Xform();
+    private final Xform cameraXform2 = new Xform();
+    private final Xform cameraXform3 = new Xform();
+    private final Xform oceanGroup = new Xform();
+    private final Xform landGroup = new Xform();
+    private final Xform shipGroup = new Xform();
+    private final Xform monsterGroup = new Xform();
+    private final Xform dockGroup = new Xform();
 
     /*
      X axis is Columns
@@ -56,12 +57,12 @@ public class PortSimulation {
     private static final double ROTATION_SPEED = 2.0;
     private static final double TRACK_SPEED = 0.3;
 
-    double mousePosX;
-    double mousePosY;
-    double mouseOldX;
-    double mouseOldY;
-    double mouseDeltaX;
-    double mouseDeltaY;
+    private double mousePosX;
+    private double mousePosY;
+    private double mouseOldX;
+    private double mouseOldY;
+    private double mouseDeltaX;
+    private double mouseDeltaY;
 
     public PortSimulation(Map map) {
         this.map = map;
@@ -89,7 +90,7 @@ public class PortSimulation {
 
         stage.setTitle("3D Port Simulation");
         stage.setScene(scene);
-        stage.setMaximized(true);
+        stage.setFullScreen(fullscreen);
         stage.show();
 
         scene.setCamera(camera);
@@ -136,6 +137,9 @@ public class PortSimulation {
             public void handle(KeyEvent event) {
                 double z, newZ;
                 switch (event.getCode()) {
+                    case F:
+                        stage.setFullScreen(!fullscreen);
+                        fullscreen = !fullscreen;
                     case Z:
                         cameraXform2.t.setX(0.0);
                         cameraXform2.t.setY(0.0);
@@ -294,10 +298,10 @@ public class PortSimulation {
                 mType = 3;
             }
 
-            Sphere monsterModel = new Sphere(5);
+            Sphere monsterModel = new Sphere(mType == 0 ? 10 : 5);
 
             // Translation
-            monsterModel.setTranslateY(5);
+            monsterModel.setTranslateY(mType == 0 ? 10 : 5);
             monsterModel.setTranslateX(5 + monster.getCol() * 10);
             monsterModel.setTranslateZ(5 + monster.getRow() * 10);
             switch (mType) {
