@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -77,7 +78,7 @@ public class PortSimulation {
         world.setTranslateX(-530 / 2);
         world.setTranslateZ(-350 / 2);
 
-        Scene scene = new Scene(root, 1024, 768, true);
+        Scene scene = new Scene(root, 1024, 768, true, SceneAntialiasing.BALANCED);
         scene.setFill(Color.SKYBLUE);
         handleKeyboard(scene, world);
         handleMouse(scene, world);
