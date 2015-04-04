@@ -274,7 +274,17 @@ public class Map {
                 col = randomGenerator.nextInt(matrix[0].length);
 
                 if (!isShip(row, col) && (matrix[row][col] == '.' || isDock(row, col))) {
-                    validLocation = true;
+                    if(isDock(row, col)) {
+				Dock dock = getDockAt(row,col);
+				if(dock instanceof Pier && ship instanceof OilTanker)
+					validLocation = true;
+				if(dock instanceof Crane && ship instanceof ContainerShip)
+					validLocation = true;
+				if( !(dock instanceof Crane) && !(dock instanceof Pier) && !(ship instanceof ContainerShip) && !(ship instanceof OilTanker))
+					validLocation = true;
+			}
+			else
+				validLocation = true;
                 }
             }
 
