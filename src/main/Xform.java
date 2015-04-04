@@ -29,29 +29,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
 package main;
- 
+
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
- 
+
 public class Xform extends Group {
- 
+
     public enum RotateOrder {
+
         XYZ, XZY, YXZ, YZX, ZXY, ZYX
     }
-        
-    public Translate t  = new Translate();
+
+    public Translate t = new Translate();
     public Translate p = new Translate();
     public Translate ip = new Translate();
     public Rotate rx = new Rotate();
-    { rx.setAxis(Rotate.X_AXIS); }
+
+    {
+        rx.setAxis(Rotate.X_AXIS);
+    }
     public Rotate ry = new Rotate();
-    { ry.setAxis(Rotate.Y_AXIS); }
+
+    {
+        ry.setAxis(Rotate.Y_AXIS);
+    }
     public Rotate rz = new Rotate();
-    { rz.setAxis(Rotate.Z_AXIS); }
+
+    {
+        rz.setAxis(Rotate.Z_AXIS);
+    }
     public Scale s = new Scale();
 
     public Xform() {
@@ -59,25 +68,25 @@ public class Xform extends Group {
         getTransforms().addAll(t, rz, ry, rx, s);
     }
 
-    public Xform(RotateOrder rotateOrder) { 
+    public Xform(RotateOrder rotateOrder) {
         super();
         // choose the order of rotations based on the rotateOrder
         switch (rotateOrder) {
-        case XYZ:
-            getTransforms().addAll(t, p, rz, ry, rx, s, ip);
-            break;
-        case YXZ:
-             getTransforms().addAll(t, p, rz, rx, ry, s, ip);
-             break;
-        case YZX:
-             getTransforms().addAll(t, p, rx, rz, ry, s, ip);  // For Camera
-             break;
-        case ZXY:
-             getTransforms().addAll(t, p, ry, rx, rz, s, ip);
-             break;
-        case ZYX:
-             getTransforms().addAll(t, p, rx, ry, rz, s, ip);
-             break;
+            case XYZ:
+                getTransforms().addAll(t, p, rz, ry, rx, s, ip);
+                break;
+            case YXZ:
+                getTransforms().addAll(t, p, rz, rx, ry, s, ip);
+                break;
+            case YZX:
+                getTransforms().addAll(t, p, rx, rz, ry, s, ip);  // For Camera
+                break;
+            case ZXY:
+                getTransforms().addAll(t, p, ry, rx, rz, s, ip);
+                break;
+            case ZYX:
+                getTransforms().addAll(t, p, rx, ry, rz, s, ip);
+                break;
         }
     }
 
@@ -97,9 +106,17 @@ public class Xform extends Group {
     // public void setTranslateY(double y) { t.setY(y); }
     // public void setTranslateZ(double z) { t.setZ(z); }
     // Use these methods instead:
-    public void setTx(double x) { t.setX(x); }
-    public void setTy(double y) { t.setY(y); }
-    public void setTz(double z) { t.setZ(z); }
+    public void setTx(double x) {
+        t.setX(x);
+    }
+
+    public void setTy(double y) {
+        t.setY(y);
+    }
+
+    public void setTz(double z) {
+        t.setZ(z);
+    }
 
     public void setRotate(double x, double y, double z) {
         rx.setAngle(x);
@@ -107,11 +124,25 @@ public class Xform extends Group {
         rz.setAngle(z);
     }
 
-    public void setRotateX(double x) { rx.setAngle(x); }
-    public void setRotateY(double y) { ry.setAngle(y); }
-    public void setRotateZ(double z) { rz.setAngle(z); }
-    public void setRy(double y) { ry.setAngle(y); }
-    public void setRz(double z) { rz.setAngle(z); }
+    public void setRotateX(double x) {
+        rx.setAngle(x);
+    }
+
+    public void setRotateY(double y) {
+        ry.setAngle(y);
+    }
+
+    public void setRotateZ(double z) {
+        rz.setAngle(z);
+    }
+
+    public void setRy(double y) {
+        ry.setAngle(y);
+    }
+
+    public void setRz(double z) {
+        rz.setAngle(z);
+    }
 
     public void setScale(double scaleFactor) {
         s.setX(scaleFactor);
@@ -124,9 +155,17 @@ public class Xform extends Group {
     // public void setScaleY(double y) { s.setY(y); }
     // public void setScaleZ(double z) { s.setZ(z); }
     // Use these methods instead:
-    public void setSx(double x) { s.setX(x); }
-    public void setSy(double y) { s.setY(y); }
-    public void setSz(double z) { s.setZ(z); }
+    public void setSx(double x) {
+        s.setX(x);
+    }
+
+    public void setSy(double y) {
+        s.setY(y);
+    }
+
+    public void setSz(double z) {
+        s.setZ(z);
+    }
 
     public void setPivot(double x, double y, double z) {
         p.setX(x);
@@ -134,7 +173,7 @@ public class Xform extends Group {
         p.setZ(z);
         ip.setX(-x);
         ip.setY(-y);
-        ip.setZ(-z); 
+        ip.setZ(-z);
     }
 
     public void reset() {
@@ -171,25 +210,25 @@ public class Xform extends Group {
     }
 
     public void debug() {
-        System.out.println("t = (" +
-                           t.getX() + ", " +
-                           t.getY() + ", " +
-                           t.getZ() + ")  " +
-                           "r = (" +
-                           rx.getAngle() + ", " +
-                           ry.getAngle() + ", " +
-                           rz.getAngle() + ")  " +
-                           "s = (" +
-                           s.getX() + ", " +
-                           s.getY() + ", " +
-                           s.getZ() + ")  " +
-                           "p = (" +
-                           p.getX() + ", " +
-                           p.getY() + ", " +
-                           p.getZ() + ")  " +
-                           "ip = (" +
-                           ip.getX() + ", " +
-                           ip.getY() + ", " +
-                           ip.getZ() + ")");
+        System.out.println("t = ("
+                + t.getX() + ", "
+                + t.getY() + ", "
+                + t.getZ() + ")  "
+                + "r = ("
+                + rx.getAngle() + ", "
+                + ry.getAngle() + ", "
+                + rz.getAngle() + ")  "
+                + "s = ("
+                + s.getX() + ", "
+                + s.getY() + ", "
+                + s.getZ() + ")  "
+                + "p = ("
+                + p.getX() + ", "
+                + p.getY() + ", "
+                + p.getZ() + ")  "
+                + "ip = ("
+                + ip.getX() + ", "
+                + ip.getY() + ", "
+                + ip.getZ() + ")");
     }
 }
