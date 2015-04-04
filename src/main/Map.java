@@ -276,6 +276,7 @@ public class Map {
                 if (!isShip(row, col) && (matrix[row][col] == '.' || isDock(row, col))) {
                     if(isDock(row, col)) {
 				Dock dock = getDockAt(row,col);
+                                CargoShip ship = getShipAt(row, col);
 				if(dock instanceof Pier && ship instanceof OilTanker)
 					validLocation = true;
 				if(dock instanceof Crane && ship instanceof ContainerShip)
