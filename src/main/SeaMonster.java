@@ -90,4 +90,8 @@ public abstract class SeaMonster {
 
         return ret;
     }
+    
+    public String toString() {
+        return type+","+getLongitude()+","+getLatitude();
+    }
 }

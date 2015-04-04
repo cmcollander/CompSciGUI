@@ -126,7 +126,9 @@ public class FileHandler {
         }
 
         // Sea Monsters
-        // TODO: Sea Monsters
+        for (SeaMonster monster : map.getMonsters()) {
+            out.format("%s\n", monster.toString());
+        }
         // Cargos
         for (Cargo cargo : map.getPort().getCargos()) {
             out.format("%s\n", cargo.toString());
