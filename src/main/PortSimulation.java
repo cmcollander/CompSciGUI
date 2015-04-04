@@ -35,13 +35,12 @@ public class PortSimulation {
     final Xform axisGroup = new Xform();
     final Xform oceanGroup = new Xform();
     final Xform landGroup = new Xform();
-    
-    /*
-        X axis is Columns
-        Z axis is Rows
-        Y axis is Height
-    */
 
+    /*
+     X axis is Columns
+     Z axis is Rows
+     Y axis is Height
+     */
     private static final double CAMERA_INITIAL_DISTANCE = -450;
     private static final double CAMERA_INITIAL_X_ANGLE = 70.0;
     private static final double CAMERA_INITIAL_Y_ANGLE = 320.0;
@@ -79,9 +78,9 @@ public class PortSimulation {
         buildOcean();
         //buildAxes();
         buildLand();
-        
-        world.setTranslateX(-530/2);
-        world.setTranslateZ(-350/2);
+
+        world.setTranslateX(-530 / 2);
+        world.setTranslateZ(-350 / 2);
 
         stage.setTitle("3D Port Simulation");
         stage.setScene(scene);
@@ -171,8 +170,7 @@ public class PortSimulation {
         camera.setNearClip(CAMERA_NEAR_CLIP);
         camera.setFarClip(CAMERA_FAR_CLIP);
         camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
-        
-        
+
         cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
         cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
     }
@@ -183,8 +181,8 @@ public class PortSimulation {
         oceanMaterial.setSpecularColor(Color.LIGHTBLUE);
 
         final Box ocean = new Box(530, 1, 350);
-        ocean.setTranslateX(530/2);
-        ocean.setTranslateZ(350/2);
+        ocean.setTranslateX(530 / 2);
+        ocean.setTranslateZ(350 / 2);
 
         ocean.setMaterial(oceanMaterial);
 
@@ -192,28 +190,29 @@ public class PortSimulation {
         oceanGroup.setVisible(true);
         world.getChildren().add(ocean);
     }
-    
+
     private void buildLand() {
         final PhongMaterial landMaterial = new PhongMaterial();
         landMaterial.setDiffuseColor(Color.GREEN);
         landMaterial.setSpecularColor(Color.LIGHTGREEN);
-        
-        for(int row=0;row<35;row++) {
-            for(int col=0;col<53;col++) {
-                if(map.getMatrix()[row][col]=='.')
+
+        for (int row = 0; row < 35; row++) {
+            for (int col = 0; col < 53; col++) {
+                if (map.getMatrix()[row][col] == '.') {
                     continue;
-                
-                Box land = new Box(10,10,10);
+                }
+
+                Box land = new Box(10, 10, 10);
                 // Translation
                 land.setTranslateY(5);
-                land.setTranslateX(5+col*10);
-                land.setTranslateZ(5+row*10);
+                land.setTranslateX(5 + col * 10);
+                land.setTranslateZ(5 + row * 10);
                 land.setMaterial(landMaterial);
                 landGroup.getChildren().add(land);
                 world.getChildren().add(land);
             }
         }
-        
+
         landGroup.setVisible(true);
     }
 }

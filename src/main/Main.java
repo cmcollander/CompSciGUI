@@ -1285,7 +1285,7 @@ public class Main extends Application {
     }
 
     public void start3D() {
-        if(!mapLoaded) {
+        if (!mapLoaded) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No Map Loaded");
             alert.setHeaderText("No Map Loaded");
@@ -1293,7 +1293,7 @@ public class Main extends Application {
             alert.showAndWait();
             return;
         }
-        
+
         PortSimulation portSim = new PortSimulation(map);
         portSim.run();
     }
