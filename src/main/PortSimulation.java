@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Cylinder;
 
 public class PortSimulation {
 
@@ -33,9 +34,9 @@ public class PortSimulation {
     final Xform cameraXform = new Xform();
     final Xform cameraXform2 = new Xform();
     final Xform cameraXform3 = new Xform();
-    final Xform axisGroup = new Xform();
     final Xform oceanGroup = new Xform();
     final Xform landGroup = new Xform();
+    final Xform shipGroup = new Xform();
 
     /*
      X axis is Columns
@@ -47,10 +48,7 @@ public class PortSimulation {
     private static final double CAMERA_INITIAL_Y_ANGLE = 120.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
-    private static final double AXIS_LENGTH = 500;
 
-    private static final double CONTROL_MULTIPLIER = 0.1;
-    private static final double SHIFT_MULTIPLIER = 10.0;
     private static final double MOUSE_SPEED = 0.1;
     private static final double ROTATION_SPEED = 2.0;
     private static final double TRACK_SPEED = 0.3;
@@ -72,8 +70,8 @@ public class PortSimulation {
 
         buildCamera();
         buildOcean();
-        //buildAxes();
         buildLand();
+        buildShips();
 
         world.setTranslateX(-530 / 2);
         world.setTranslateZ(-350 / 2);
@@ -89,33 +87,6 @@ public class PortSimulation {
         stage.show();
 
         scene.setCamera(camera);
-    }
-
-    private void buildAxes() {
-        System.out.println("buildAxes()");
-        final PhongMaterial redMaterial = new PhongMaterial();
-        redMaterial.setDiffuseColor(Color.DARKRED);
-        redMaterial.setSpecularColor(Color.RED);
-
-        final PhongMaterial greenMaterial = new PhongMaterial();
-        greenMaterial.setDiffuseColor(Color.DARKGREEN);
-        greenMaterial.setSpecularColor(Color.GREEN);
-
-        final PhongMaterial blueMaterial = new PhongMaterial();
-        blueMaterial.setDiffuseColor(Color.DARKBLUE);
-        blueMaterial.setSpecularColor(Color.BLUE);
-
-        final Box xAxis = new Box(AXIS_LENGTH, 1, 1);
-        final Box yAxis = new Box(1, AXIS_LENGTH, 1);
-        final Box zAxis = new Box(1, 1, AXIS_LENGTH);
-
-        xAxis.setMaterial(redMaterial);
-        yAxis.setMaterial(greenMaterial);
-        zAxis.setMaterial(blueMaterial);
-
-        axisGroup.getChildren().addAll(xAxis, yAxis, zAxis);
-        axisGroup.setVisible(true);
-        world.getChildren().addAll(axisGroup);
     }
 
     private void handleMouse(Scene scene, final Node root) {
@@ -143,11 +114,11 @@ public class PortSimulation {
                     cameraXform.rx.setAngle(cameraXform.rx.getAngle() + mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED);
                 } else if (me.isSecondaryButtonDown()) {
                     double z = camera.getTranslateZ();
-                    double newZ = z + mouseDeltaX * MOUSE_SPEED * SHIFT_MULTIPLIER;
+                    double newZ = z + mouseDeltaX * MOUSE_SPEED * 10;
                     camera.setTranslateZ(newZ);
                 } else if (me.isMiddleButtonDown()) {
-                    cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX * MOUSE_SPEED * SHIFT_MULTIPLIER * TRACK_SPEED);
-                    cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY * MOUSE_SPEED * SHIFT_MULTIPLIER * TRACK_SPEED);
+                    cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX * MOUSE_SPEED * 10 * TRACK_SPEED);
+                    cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY * MOUSE_SPEED * 10 * TRACK_SPEED);
                 }
             }
         });
@@ -166,20 +137,17 @@ public class PortSimulation {
                         cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
                         cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
                         break;
-                    case X:
-                        axisGroup.setVisible(!axisGroup.isVisible());
-                        break;
                     case V:
                         landGroup.setVisible(!landGroup.isVisible());
                         break;
                     case W:
                         z = camera.getTranslateZ();
-                        newZ = z + 20 * MOUSE_SPEED * SHIFT_MULTIPLIER;
+                        newZ = z + 200 * MOUSE_SPEED;
                         camera.setTranslateZ(newZ);
                         break;
                     case S:
                         z = camera.getTranslateZ();
-                        newZ = z - 20 * MOUSE_SPEED * SHIFT_MULTIPLIER;
+                        newZ = z - 200 * MOUSE_SPEED;
                         camera.setTranslateZ(newZ);
                         break;
                 }
@@ -241,5 +209,50 @@ public class PortSimulation {
         }
         world.getChildren().add(landGroup);
         landGroup.setVisible(true);
+    }
+
+    private void buildShips() {
+        final PhongMaterial cargoShipMaterial = new PhongMaterial();
+        cargoShipMaterial.setDiffuseColor(Color.RED);
+        cargoShipMaterial.setSpecularColor(Color.PINK);
+
+        final PhongMaterial containerShipMaterial = new PhongMaterial();
+        containerShipMaterial.setDiffuseColor(Color.BROWN);
+        containerShipMaterial.setSpecularColor(Color.CHOCOLATE);
+
+        final PhongMaterial tankerShipMaterial = new PhongMaterial();
+        tankerShipMaterial.setDiffuseColor(Color.DARKSLATEGRAY);
+        tankerShipMaterial.setSpecularColor(Color.LIGHTSLATEGRAY);
+
+        for (CargoShip ship : map.getShips()) {
+            int shipType = 0; // CargoShip
+            if (ship instanceof ContainerShip) {
+                shipType = 1;
+            }
+            if (ship instanceof OilTanker) {
+                shipType = 2;
+            }
+
+            Cylinder shipModel = new Cylinder(5, 20);
+
+            // Translation
+            shipModel.setTranslateY(10);
+            shipModel.setTranslateX(5 + ship.getCol() * 10);
+            shipModel.setTranslateZ(5 + ship.getRow() * 10);
+            switch (shipType) {
+                case 0:
+                    shipModel.setMaterial(cargoShipMaterial);
+                    break;
+                case 1:
+                    shipModel.setMaterial(containerShipMaterial);
+                    break;
+                case 2:
+                    shipModel.setMaterial(tankerShipMaterial);
+                    break;
+            }
+            shipGroup.getChildren().add(shipModel);
+        }
+        world.getChildren().add(shipGroup);
+        shipGroup.setVisible(true);
     }
 }
