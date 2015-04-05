@@ -224,6 +224,10 @@ public class Main extends Application {
                         draggedShip.setRow(row);
                         draggedShip.setCol(col);
                         checkMonsterCollision(draggedShip);
+                        if (map.isDock(row, col)) {
+                            draggedShip.setDirection(map.getDockAt(row, col).getDirection());
+                        }
+
                         draggedShip = null;
                         refreshMap();
                     }
@@ -231,6 +235,10 @@ public class Main extends Application {
                         draggedMonster.setRow(row);
                         draggedMonster.setCol(col);
                         checkMonsterCollision(draggedMonster);
+                        if (map.isDock(row, col)) {
+                            draggedShip.setDirection(map.getDockAt(row, col).getDirection());
+                        }
+
                         draggedMonster = null;
                         refreshMap();
                     }
@@ -1290,22 +1298,28 @@ public class Main extends Application {
     public void checkMonsterCollision(SeaMonster monster) {
         if (map.isShip(monster.getRow(), monster.getCol())) {
             try {
-                SoundManager.growl();
+                SoundManager.growl(monster);
             } catch (Exception ex) {
                 displayStackTrace(ex);
             }
             textArea.setText(monster.battleCry());
+
+            // Remove ship
+            map.getShips().remove(map.getShipAt(monster.getRow(), monster.getCol()));
         }
     }
 
     public void checkMonsterCollision(CargoShip ship) {
         if (map.isMonster(new Position(ship.getRow(), ship.getCol()))) {
             try {
-                SoundManager.growl();
+                SoundManager.growl(map.getMonsterAt(ship.getRow(), ship.getCol()));
             } catch (Exception ex) {
                 displayStackTrace(ex);
             }
             textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
+
+            // Remove ship
+            map.getShips().remove(ship);
         }
     }
 

@@ -212,9 +212,9 @@ public class PortSimulation {
         for (int row = 0; row < 36; row++) {
             for (int col = 0; col < 54; col++) {
                 if (map.getMatrix()[row][col] == '*' && !map.isDock(row, col)) {
-                    Box land = new Box(10, 5, 10);
+                    Box land = new Box(10, 2, 10);
                     // Translation
-                    land.setTranslateY(2.5);
+                    land.setTranslateY(1);
                     land.setTranslateX(5 + col * 10);
                     land.setTranslateZ(5 + row * 10);
                     land.setMaterial(landMaterial);
