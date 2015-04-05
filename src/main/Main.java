@@ -393,29 +393,31 @@ public class Main extends Application {
                         alert.setContentText("Please generate ships before attempting to update");
                         alert.showAndWait();
                     }
+                    else {
+                        ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                        dialog.setTitle("Update Ship");
+                        dialog.setHeaderText("Update Ship");
+                        dialog.setContentText("Choose a ship:");
 
-                    ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
-                    dialog.setTitle("Update Ship");
-                    dialog.setHeaderText("Update Ship");
-                    dialog.setContentText("Choose a ship:");
-
-                    Optional<String> result = dialog.showAndWait();
-                    if (result.isPresent()) {
-                        // Find which ship is being updated and pass it to the updateShip function
-                        boolean found = false;
-                        for (CargoShip ship : map.getShips()) {
-                            if (ship.getName().equals(result.get())) {
-                                found = true;
-                                updateShip(ship);
-                                checkMonsterCollision();
+                        Optional<String> result = dialog.showAndWait();
+                        if (result.isPresent()) {
+                            // Find which ship is being updated and pass it to the updateShip function
+                            boolean found = false;
+                            for (CargoShip ship : map.getShips()) {
+                                if (ship.getName().equals(result.get())) {
+                                    found = true;
+                                    updateShip(ship);
+                                    checkMonsterCollision();
+                                }
+                            }
+                            if (!found) {
+                                // This shouldn't happen anymore, just a precaution
+                                incorrectInput();
                             }
                         }
-                        if (!found) {
-                            // This shouldn't happen anymore, just a precaution
-                            incorrectInput();
-                        }
+                        refreshMap();
+                        
                     }
-                    refreshMap();
                 }
 
                 // Display All Ships MenuItem
