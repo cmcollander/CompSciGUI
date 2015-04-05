@@ -644,9 +644,8 @@ public class Main extends Application {
         dialog.setTitle("Update Ship");
         dialog.setHeaderText("Update Ship");
 
-        // Ship Icon *DOESNT WORK YET*
         try {
-            URL resource = new File("media\\ship_icon.png").toURI().toURL();
+            URL resource = new File("media\\images\\updateShip.png").toURI().toURL();
             dialog.setGraphic(new ImageView(resource.toString()));
         } catch (Exception ex) {
             displayStackTrace(ex);
@@ -724,8 +723,14 @@ public class Main extends Application {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Dock");
         dialog.setHeaderText("Update Dock");
+        
+        try {
+            URL resource = new File("media\\images\\updateDock.png").toURI().toURL();
+            dialog.setGraphic(new ImageView(resource.toString()));
+        } catch (Exception ex) {
+            displayStackTrace(ex);
+        }
 
-        // Can set a ship icon here, if we want
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
         dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, updateButtonType, ButtonType.CANCEL);
@@ -790,7 +795,13 @@ public class Main extends Application {
         dialog.setTitle("Update Monster");
         dialog.setHeaderText("Update Monster");
 
-        // Can set a ship icon here, if we want
+        try {
+            URL resource = new File("media\\images\\updateMonster.png").toURI().toURL();
+            dialog.setGraphic(new ImageView(resource.toString()));
+        } catch (Exception ex) {
+            displayStackTrace(ex);
+        }
+        
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
         dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, updateButtonType, ButtonType.CANCEL);
@@ -834,6 +845,13 @@ public class Main extends Application {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Location");
         dialog.setHeaderText("Update Location");
+        
+        try {
+            URL resource = new File("media\\images\\updateLocation.png").toURI().toURL();
+            dialog.setGraphic(new ImageView(resource.toString()));
+        } catch (Exception ex) {
+            displayStackTrace(ex);
+        }
 
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
@@ -907,6 +925,13 @@ public class Main extends Application {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Place Godzilla");
         dialog.setHeaderText("Place Godzilla");
+        
+        try {
+            URL resource = new File("media\\images\\updateLocationGodzilla.png").toURI().toURL();
+            dialog.setGraphic(new ImageView(resource.toString()));
+        } catch (Exception ex) {
+            displayStackTrace(ex);
+        }
 
         ButtonType updateButtonType = new ButtonType("Place", ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
@@ -996,6 +1021,13 @@ public class Main extends Application {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Cargo");
         dialog.setHeaderText("Update Cargo");
+        
+        try {
+            URL resource = new File("media\\images\\updateCargo.png").toURI().toURL();
+            dialog.setGraphic(new ImageView(resource.toString()));
+        } catch (Exception ex) {
+            displayStackTrace(ex);
+        }
 
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
