@@ -63,7 +63,6 @@ public class FileHandler {
         port.setCargos(cargos);
 
         scanner.close();
-
         return port;
     }
 

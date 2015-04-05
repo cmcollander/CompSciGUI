@@ -20,6 +20,7 @@ public class Dock {
     protected double length;
     protected double width;
     protected Position position;
+    protected int direction;
 
     /**
      * Constructor for the Dock class
@@ -34,6 +35,7 @@ public class Dock {
         double longitude = -2.977838;
         double latitude = 53.410777;
         position = new Position(latitude, longitude);
+        direction = 0;
     }
 
     /**
@@ -52,6 +54,7 @@ public class Dock {
         double longitude = Double.parseDouble(parts[6].trim());
         double latitude = Double.parseDouble(parts[7].trim());
         position = new Position(latitude, longitude);
+        direction = 0;
     }
 
     /**
@@ -261,6 +264,20 @@ public class Dock {
      */
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    /**
+     * @return the direction
+     */
+    public int getDirection() {
+        return direction;
+    }
+
+    /**
+     * @param direction the direction to set
+     */
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
 }

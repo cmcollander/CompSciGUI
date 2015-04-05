@@ -281,12 +281,15 @@ public class Map {
                         Dock dock = getDockAt(row, col);
                         if ((dock instanceof Pier) && (currShip instanceof OilTanker)) {
                             validLocation = true;
+                            currShip.setDirection(dock.getDirection());
                         }
                         if ((dock instanceof Crane) && (currShip instanceof ContainerShip)) {
                             validLocation = true;
+                            currShip.setDirection(dock.getDirection());
                         }
                         if (!(dock instanceof Crane) && !(dock instanceof Pier) && !(currShip instanceof ContainerShip) && !(currShip instanceof OilTanker)) {
                             validLocation = true;
+                            currShip.setDirection(dock.getDirection());
                         }
                     } else {
                         validLocation = true;

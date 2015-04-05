@@ -290,6 +290,33 @@ public class Main extends Application {
                             map = FileHandler.getMapFile(result.get() + ".map.txt");
                             map.setPort(FileHandler.getPortFile(result.get() + ".port.txt"));
                             mapLoaded = true;
+
+                            // Set the directions for the docks
+                            for (Dock dock : map.getPort().getDocks()) {
+                                int row = dock.getRow();
+                                int col = dock.getCol();
+
+                                dock.setDirection(1); // Default Direction, East
+                                // If land north, direction=0
+                                if (row != 0) {
+                                    if (map.getMatrix()[row - 1][col] == '.') {
+                                        dock.setDirection(0);
+                                    }
+                                }
+                                // If land south, direction=2
+                                if (row != 35) {
+                                    if (map.getMatrix()[row + 1][col] == '.') {
+                                        dock.setDirection(2);
+                                    }
+                                }
+                                // If land west, direction=1
+                                if (col != 0) {
+                                    if (map.getMatrix()[row][col - 1] == '.') {
+                                        dock.setDirection(3);
+                                    }
+                                }
+                            }
+
                             refreshMap();
                         } catch (Exception ex) {
                             displayStackTrace(ex);
@@ -675,6 +702,9 @@ public class Main extends Application {
             // Location Button Hit
             if (bt.getText().equalsIgnoreCase("Location")) {
                 updateLocation(ship.getPosition());
+                if (map.isDock(ship.getRow(), ship.getCol())) {
+                    ship.setDirection(map.getDockAt(ship.getRow(), ship.getCol()).getDirection());
+                }
             }
         }
 

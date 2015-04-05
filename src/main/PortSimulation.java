@@ -366,7 +366,7 @@ public class PortSimulation {
 
             // Translation
             dockModel.setRotateZ(180.0);
-            //dockModel.setRotateY(dock.getDirection() * 90);
+            dockModel.setRotateY(dock.getDirection() * 90);
             dockModel.setTranslateX(5 + dock.getCol() * 10);
             dockModel.setTranslateZ(5 + dock.getRow() * 10);
 
