@@ -22,11 +22,13 @@ public class CargoShip {
     protected double draft;
     protected Position position;
     protected Cargo cargo;
+    protected int direction;
 
     /**
      * Default Constructor for the Ship class
      */
     public CargoShip() {
+        this.direction = 0;
         this.name = "Zenda";
         this.countryOfRegistration = "Ruritania";
         this.transponderNumber = 0;
@@ -44,6 +46,7 @@ public class CargoShip {
      * @param line the string to parse for the new Ship
      */
     public CargoShip(String line) {
+        this.direction = 0;
         String[] parts = line.split(",");
         this.name = parts[0].trim();
         this.countryOfRegistration = parts[1].trim();
@@ -320,5 +323,19 @@ public class CargoShip {
      */
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    /**
+     * @return the direction
+     */
+    public int getDirection() {
+        return direction;
+    }
+
+    /**
+     * @param direction the direction to set
+     */
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }

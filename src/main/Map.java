@@ -257,6 +257,9 @@ public class Map {
                     currShip = new OilTanker();
                     break;
             }
+            
+            int direction = randomGenerator.nextInt(4);
+            currShip.setDirection(direction);
 
             boolean validLocation = false;
 
