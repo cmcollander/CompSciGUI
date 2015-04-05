@@ -278,7 +278,7 @@ public class PortSimulation {
 
             // Translation
             shipModel.setRotateZ(180.0);
-            shipModel.setRotateY(ship.getDirection()*90);
+            shipModel.setRotateY(ship.getDirection() * 90);
             shipModel.setTranslateX(5 + ship.getCol() * 10);
             shipModel.setTranslateZ(5 + ship.getRow() * 10);
             switch (shipType) {
