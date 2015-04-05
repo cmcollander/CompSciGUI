@@ -211,17 +211,15 @@ public class PortSimulation {
 
         for (int row = 0; row < 36; row++) {
             for (int col = 0; col < 54; col++) {
-                if (map.getMatrix()[row][col] == '.' && !map.isDock(row, col)) {
-                    continue;
+                if(map.getMatrix()[row][col]=='*' && !map.isDock(row, col)) {
+                    Box land = new Box(10, 5, 10);
+                    // Translation
+                    land.setTranslateY(2.5);
+                    land.setTranslateX(5 + col * 10);
+                    land.setTranslateZ(5 + row * 10);
+                    land.setMaterial(landMaterial);
+                    landGroup.getChildren().add(land);
                 }
-
-                Box land = new Box(10, 10, 10);
-                // Translation
-                land.setTranslateY(5);
-                land.setTranslateX(5 + col * 10);
-                land.setTranslateZ(5 + row * 10);
-                land.setMaterial(landMaterial);
-                landGroup.getChildren().add(land);
             }
         }
         world.getChildren().add(landGroup);
@@ -229,25 +227,13 @@ public class PortSimulation {
     }
 
     private void buildShips() {
-        final PhongMaterial cargoShipMaterial = new PhongMaterial();
-        cargoShipMaterial.setDiffuseColor(Color.RED);
-        cargoShipMaterial.setSpecularColor(Color.PINK);
-
-        final PhongMaterial containerShipMaterial = new PhongMaterial();
-        containerShipMaterial.setDiffuseColor(Color.BROWN);
-        containerShipMaterial.setSpecularColor(Color.CHOCOLATE);
-
-        final PhongMaterial tankerShipMaterial = new PhongMaterial();
-        tankerShipMaterial.setDiffuseColor(Color.DARKSLATEGRAY);
-        tankerShipMaterial.setSpecularColor(Color.LIGHTSLATEGRAY);
-
         for (CargoShip ship : map.getShips()) {
             int shipType = 0; // CargoShip
             if (ship instanceof ContainerShip) {
-                shipType = 1;
+                shipType = 1; // ContainerShip
             }
             if (ship instanceof OilTanker) {
-                shipType = 2;
+                shipType = 2; // OilTanker
             }
 
             // Read in 3D Model
@@ -281,17 +267,7 @@ public class PortSimulation {
             shipModel.setRotateY(ship.getDirection() * 90);
             shipModel.setTranslateX(5 + ship.getCol() * 10);
             shipModel.setTranslateZ(5 + ship.getRow() * 10);
-            switch (shipType) {
-                case 0:
-                    //shipModel.setMaterial(cargoShipMaterial);
-                    break;
-                case 1:
-                    //shipModel.setMaterial(containerShipMaterial);
-                    break;
-                case 2:
-                    //shipModel.setMaterial(tankerShipMaterial);
-                    break;
-            }
+            
             shipGroup.getChildren().add(shipModel);
         }
         world.getChildren().add(shipGroup);
@@ -378,7 +354,7 @@ public class PortSimulation {
             Box dockModel = new Box(10, 10, 10);
 
             // Translation
-            dockModel.setTranslateY(15);
+            dockModel.setTranslateY(5);
             dockModel.setTranslateX(5 + dock.getCol() * 10);
             dockModel.setTranslateZ(5 + dock.getRow() * 10);
             switch (dockType) {
