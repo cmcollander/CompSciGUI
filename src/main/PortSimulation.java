@@ -211,7 +211,7 @@ public class PortSimulation {
 
         for (int row = 0; row < 36; row++) {
             for (int col = 0; col < 54; col++) {
-                if(map.getMatrix()[row][col]=='*' && !map.isDock(row, col)) {
+                if (map.getMatrix()[row][col] == '*' && !map.isDock(row, col)) {
                     Box land = new Box(10, 5, 10);
                     // Translation
                     land.setTranslateY(2.5);
@@ -267,7 +267,7 @@ public class PortSimulation {
             shipModel.setRotateY(ship.getDirection() * 90);
             shipModel.setTranslateX(5 + ship.getCol() * 10);
             shipModel.setTranslateZ(5 + ship.getRow() * 10);
-            
+
             shipGroup.getChildren().add(shipModel);
         }
         world.getChildren().add(shipGroup);
@@ -330,44 +330,46 @@ public class PortSimulation {
     }
 
     private void buildDocks() {
-        final PhongMaterial dockMaterial = new PhongMaterial();
-        dockMaterial.setDiffuseColor(Color.RED);
-        dockMaterial.setSpecularColor(Color.PINK);
-
-        final PhongMaterial craneMaterial = new PhongMaterial();
-        craneMaterial.setDiffuseColor(Color.BROWN);
-        craneMaterial.setSpecularColor(Color.CHOCOLATE);
-
-        final PhongMaterial pierMaterial = new PhongMaterial();
-        pierMaterial.setDiffuseColor(Color.DARKSLATEGRAY);
-        pierMaterial.setSpecularColor(Color.LIGHTSLATEGRAY);
-
         for (Dock dock : map.getPort().getDocks()) {
             int dockType = 0; // Dock
             if (dock instanceof Crane) {
-                dockType = 1;
+                dockType = 1; // Crane
             }
             if (dock instanceof Pier) {
-                dockType = 2;
+                dockType = 2; // Pier
             }
 
-            Box dockModel = new Box(10, 10, 10);
-
-            // Translation
-            dockModel.setTranslateY(5);
-            dockModel.setTranslateX(5 + dock.getCol() * 10);
-            dockModel.setTranslateZ(5 + dock.getRow() * 10);
+            // Read in 3D Model
+            Xform dockModel = new Xform();
+            File modelFile;
             switch (dockType) {
                 case 0:
-                    dockModel.setMaterial(dockMaterial);
+                    modelFile = new File("media\\models\\dock.3ds");
                     break;
                 case 1:
-                    dockModel.setMaterial(craneMaterial);
+                    modelFile = new File("media\\models\\crane.3ds");
                     break;
-                case 2:
-                    dockModel.setMaterial(pierMaterial);
+                default:
+                    modelFile = new File("media\\models\\pier.3ds");
                     break;
             }
+            try {
+                importer.read(modelFile.toURI().toURL());
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error opening 3D model!");
+                alert.showAndWait();
+                return;
+            }
+            Node[] dockNodes = importer.getImport();
+            dockModel.getChildren().addAll(dockNodes);
+
+            // Translation
+            dockModel.setRotateZ(180.0);
+            //dockModel.setRotateY(dock.getDirection() * 90);
+            dockModel.setTranslateX(5 + dock.getCol() * 10);
+            dockModel.setTranslateZ(5 + dock.getRow() * 10);
+
             dockGroup.getChildren().add(dockModel);
         }
         world.getChildren().add(dockGroup);
