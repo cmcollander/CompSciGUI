@@ -275,22 +275,6 @@ public class PortSimulation {
     }
 
     private void buildMonsters() {
-        final PhongMaterial krakenMaterial = new PhongMaterial();
-        krakenMaterial.setDiffuseColor(Color.RED);
-        krakenMaterial.setSpecularColor(Color.PINK);
-
-        final PhongMaterial leviathanMaterial = new PhongMaterial();
-        leviathanMaterial.setDiffuseColor(Color.BROWN);
-        leviathanMaterial.setSpecularColor(Color.CHOCOLATE);
-
-        final PhongMaterial serpentMaterial = new PhongMaterial();
-        serpentMaterial.setDiffuseColor(Color.DARKSLATEGRAY);
-        serpentMaterial.setSpecularColor(Color.LIGHTSLATEGRAY);
-
-        final PhongMaterial godzillaMaterial = new PhongMaterial();
-        godzillaMaterial.setDiffuseColor(Color.DARKGREEN);
-        godzillaMaterial.setSpecularColor(Color.GREEN);
-
         for (SeaMonster monster : map.getMonsters()) {
             int mType = 0; // Godzilla
             if (monster instanceof Kraken) {
@@ -303,26 +287,41 @@ public class PortSimulation {
                 mType = 3;
             }
 
-            Sphere monsterModel = new Sphere(mType == 0 ? 10 : 5);
-
-            // Translation
-            monsterModel.setTranslateY(mType == 0 ? 10 + ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 10 : 0) : 5);
-            monsterModel.setTranslateX(5 + monster.getCol() * 10);
-            monsterModel.setTranslateZ(5 + monster.getRow() * 10);
+            // Read in 3D Model
+            Xform monsterModel = new Xform();
+            File modelFile;
             switch (mType) {
                 case 0:
-                    monsterModel.setMaterial(godzillaMaterial);
+                    modelFile = new File("media\\models\\godzilla.3ds");
                     break;
                 case 1:
-                    monsterModel.setMaterial(krakenMaterial);
+                    modelFile = new File("media\\models\\kraken.3ds");
                     break;
                 case 2:
-                    monsterModel.setMaterial(leviathanMaterial);
+                    modelFile = new File("media\\models\\leviathan.3ds");
                     break;
-                case 3:
-                    monsterModel.setMaterial(serpentMaterial);
+                default:
+                    modelFile = new File("media\\models\\seaSerpent.3ds");
                     break;
+
             }
+            try {
+                importer.read(modelFile.toURI().toURL());
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error opening 3D model!");
+                alert.showAndWait();
+                return;
+            }
+            Node[] monsterNodes = importer.getImport();
+            monsterModel.getChildren().addAll(monsterNodes);
+
+            // Translation
+            monsterModel.setRotateZ(180.0);
+            monsterModel.setTranslateY(mType == 0 ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 10 : 0) : 0);
+            monsterModel.setTranslateX(5 + monster.getCol() * 10);
+            monsterModel.setTranslateZ(5 + monster.getRow() * 10);
+
             monsterGroup.getChildren().add(monsterModel);
         }
         world.getChildren().add(monsterGroup);

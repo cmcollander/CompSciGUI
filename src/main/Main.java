@@ -392,8 +392,7 @@ public class Main extends Application {
                         alert.setHeaderText("No Ships have been generated");
                         alert.setContentText("Please generate ships before attempting to update");
                         alert.showAndWait();
-                    }
-                    else {
+                    } else {
                         ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
                         dialog.setTitle("Update Ship");
                         dialog.setHeaderText("Update Ship");
@@ -416,7 +415,7 @@ public class Main extends Application {
                             }
                         }
                         refreshMap();
-                        
+
                     }
                 }
 
