@@ -23,6 +23,7 @@ public class CargoShip {
     protected Position position;
     protected Cargo cargo;
     protected int direction;
+    protected Xform model;
 
     /**
      * Default Constructor for the Ship class
@@ -38,6 +39,7 @@ public class CargoShip {
         this.draft = 5;
         position = new Position(53.410777, -2.977838);
         cargo = new Cargo();
+        model = new Xform();
     }
 
     /**
@@ -59,6 +61,8 @@ public class CargoShip {
         double longitude = Double.parseDouble(parts[7].trim());
         double latitude = Double.parseDouble(parts[8].trim());
         position = new Position(latitude, longitude);
+        
+        model = new Xform();
 
         Cargo newCargo = null;
 
@@ -337,5 +341,19 @@ public class CargoShip {
      */
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    /**
+     * @return the model
+     */
+    public Xform getModel() {
+        return model;
+    }
+
+    /**
+     * @param model the model to set
+     */
+    public void setModel(Xform model) {
+        this.model = model;
     }
 }

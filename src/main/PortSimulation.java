@@ -237,7 +237,6 @@ public class PortSimulation {
             }
 
             // Read in 3D Model
-            Xform shipModel = new Xform();
             File modelFile;
             switch (shipType) {
                 case 0:
@@ -260,15 +259,15 @@ public class PortSimulation {
                 return;
             }
             Node[] shipNodes = importer.getImport();
-            shipModel.getChildren().addAll(shipNodes);
+            ship.getModel().getChildren().addAll(shipNodes);
 
             // Translation
-            shipModel.setRotateZ(180.0);
-            shipModel.setRotateY(ship.getDirection() * 90);
-            shipModel.setTranslateX(5 + ship.getCol() * 10);
-            shipModel.setTranslateZ(5 + ship.getRow() * 10);
+            ship.getModel().setRotateZ(180.0);
+            ship.getModel().setRotateY(ship.getDirection() * 90);
+            ship.getModel().setTranslateX(5 + ship.getCol() * 10);
+            ship.getModel().setTranslateZ(5 + ship.getRow() * 10);
 
-            shipGroup.getChildren().add(shipModel);
+            shipGroup.getChildren().add(ship.getModel());
         }
         world.getChildren().add(shipGroup);
         shipGroup.setVisible(true);
@@ -288,7 +287,6 @@ public class PortSimulation {
             }
 
             // Read in 3D Model
-            Xform monsterModel = new Xform();
             File modelFile;
             switch (mType) {
                 case 0:
@@ -314,15 +312,15 @@ public class PortSimulation {
                 return;
             }
             Node[] monsterNodes = importer.getImport();
-            monsterModel.getChildren().addAll(monsterNodes);
+            monster.getModel().getChildren().addAll(monsterNodes);
 
             // Translation
-            monsterModel.setRotateZ(180.0);
-            monsterModel.setTranslateY(mType == 0 ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 10 : 0) : 0);
-            monsterModel.setTranslateX(5 + monster.getCol() * 10);
-            monsterModel.setTranslateZ(5 + monster.getRow() * 10);
+            monster.getModel().setRotateZ(180.0);
+            monster.getModel().setTranslateY(mType == 0 ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 10 : 0) : 0);
+            monster.getModel().setTranslateX(5 + monster.getCol() * 10);
+            monster.getModel().setTranslateZ(5 + monster.getRow() * 10);
 
-            monsterGroup.getChildren().add(monsterModel);
+            monsterGroup.getChildren().add(monster.getModel());
         }
         world.getChildren().add(monsterGroup);
         monsterGroup.setVisible(true);

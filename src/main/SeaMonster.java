@@ -13,6 +13,7 @@ public abstract class SeaMonster {
 
     protected Position position;
     protected String type;
+    protected Xform model;
 
     public abstract String battleCry();
 
@@ -20,6 +21,7 @@ public abstract class SeaMonster {
     public SeaMonster() {
         this.position = new Position();
         this.type = "Sea Monster";
+        this.model = new Xform();
     }
 
     /**
@@ -93,5 +95,19 @@ public abstract class SeaMonster {
 
     public String toString() {
         return type + "," + getLongitude() + "," + getLatitude();
+    }
+
+    /**
+     * @return the model
+     */
+    public Xform getModel() {
+        return model;
+    }
+
+    /**
+     * @param model the model to set
+     */
+    public void setModel(Xform model) {
+        this.model = model;
     }
 }
