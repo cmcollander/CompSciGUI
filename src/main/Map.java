@@ -274,17 +274,20 @@ public class Map {
                 col = randomGenerator.nextInt(matrix[0].length);
 
                 if (!isShip(row, col) && (matrix[row][col] == '.')) {
-                    if(isDock(row, col)) {
-				Dock dock = getDockAt(row,col);
-				if((dock instanceof Pier) && (currShip instanceof OilTanker))
-					validLocation = true;
-				if((dock instanceof Crane) && (currShip instanceof ContainerShip))
-					validLocation = true;
-				if( !(dock instanceof Crane) && !(dock instanceof Pier) && !(currShip instanceof ContainerShip) && !(currShip instanceof OilTanker))
-					validLocation = true;
-                    }
-                    else
+                    if (isDock(row, col)) {
+                        Dock dock = getDockAt(row, col);
+                        if ((dock instanceof Pier) && (currShip instanceof OilTanker)) {
+                            validLocation = true;
+                        }
+                        if ((dock instanceof Crane) && (currShip instanceof ContainerShip)) {
+                            validLocation = true;
+                        }
+                        if (!(dock instanceof Crane) && !(dock instanceof Pier) && !(currShip instanceof ContainerShip) && !(currShip instanceof OilTanker)) {
+                            validLocation = true;
+                        }
+                    } else {
                         validLocation = true;
+                    }
                 }
             }
 
@@ -450,7 +453,7 @@ public class Map {
                 currPosition = new Position(randomGenerator.nextInt(matrix.length), randomGenerator.nextInt(matrix[0].length));
 
                 if (!isMonster(currMonster.getPosition()) && matrix[currPosition.getRow()][currPosition.getCol()] == '.') {
-                    
+
                     validLocation = true;
                 }
             }

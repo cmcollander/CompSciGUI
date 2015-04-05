@@ -21,8 +21,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Sphere;
+import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
+import java.io.File;
+import javafx.scene.control.Alert;
 
 public class PortSimulation {
 
@@ -41,6 +43,8 @@ public class PortSimulation {
     private final Xform shipGroup = new Xform();
     private final Xform monsterGroup = new Xform();
     private final Xform dockGroup = new Xform();
+
+    TdsModelImporter importer = new TdsModelImporter();
 
     /*
      X axis is Columns
@@ -246,21 +250,45 @@ public class PortSimulation {
                 shipType = 2;
             }
 
-            Cylinder shipModel = new Cylinder(5, 20);
+            // Read in 3D Model
+            Xform shipModel = new Xform();
+            File modelFile;
+            switch (shipType) {
+                case 0:
+                    modelFile = new File("media\\models\\cargoShip.3ds");
+                    break;
+                case 1:
+                    modelFile = new File("media\\models\\containerShip.3ds");
+                    break;
+                default:
+                    modelFile = new File("media\\models\\oilTanker.3ds");
+                    break;
+
+            }
+            try {
+                importer.read(modelFile.toURI().toURL());
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error opening 3D model!");
+                alert.showAndWait();
+                return;
+            }
+            Node[] shipNodes = importer.getImport();
+            shipModel.getChildren().addAll(shipNodes);
 
             // Translation
-            shipModel.setTranslateY(10);
+            shipModel.setRotateZ(180.0);
             shipModel.setTranslateX(5 + ship.getCol() * 10);
             shipModel.setTranslateZ(5 + ship.getRow() * 10);
             switch (shipType) {
                 case 0:
-                    shipModel.setMaterial(cargoShipMaterial);
+                    //shipModel.setMaterial(cargoShipMaterial);
                     break;
                 case 1:
-                    shipModel.setMaterial(containerShipMaterial);
+                    //shipModel.setMaterial(containerShipMaterial);
                     break;
                 case 2:
-                    shipModel.setMaterial(tankerShipMaterial);
+                    //shipModel.setMaterial(tankerShipMaterial);
                     break;
             }
             shipGroup.getChildren().add(shipModel);
@@ -301,7 +329,7 @@ public class PortSimulation {
             Sphere monsterModel = new Sphere(mType == 0 ? 10 : 5);
 
             // Translation
-            monsterModel.setTranslateY(mType == 0 ? 10 + ((map.getMatrix()[monster.getRow()][monster.getCol()]=='*')?10:0) : 5);
+            monsterModel.setTranslateY(mType == 0 ? 10 + ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 10 : 0) : 5);
             monsterModel.setTranslateX(5 + monster.getCol() * 10);
             monsterModel.setTranslateZ(5 + monster.getRow() * 10);
             switch (mType) {
