@@ -451,6 +451,8 @@ public class Map {
                     currMonster.setType(currMonster.getType() + " " + numS);
                     break;
             }
+            
+            currMonster.setDirection(randomGenerator.nextInt(4));
 
             boolean validLocation = false;
 

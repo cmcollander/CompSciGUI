@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -1337,8 +1338,21 @@ public class Main extends Application {
             alert.showAndWait();
             return;
         }
-
-        PortSimulation portSim = new PortSimulation(map);
-        portSim.run();
+        String text = new String();
+        text += "Please be patient while the simulation loads...\n";
+        text += "I'll leave this for you to ponder over meanwhile\n";
+        text += "*Why is it that when you transport something by car\n";
+        text += "*it is called a shipment, but when you transport\n";
+        text += "*something by ship, it is called cargo???";
+        
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(text);
+        alert.setTitle("Please wait...");
+        alert.setHeaderText(null);
+        alert.show();
+        
+        (new PortSimulation(map)).run();
+        
+        alert.close();
     }
 }

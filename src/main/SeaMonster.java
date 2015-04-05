@@ -8,17 +8,21 @@
  */
 package main;
 
-//The seamonster class is used as an abstract class for creating different seamonsters.
+/**
+ * The SeaMonster class is used as an abstract class for creating different SeaMonsters.
+ **/
 public abstract class SeaMonster {
 
     protected Position position;
     protected String type;
     protected Xform model;
+    protected int direction;
 
     public abstract String battleCry();
 
     //Basic constructor
     public SeaMonster() {
+        this.direction = 0;
         this.position = new Position();
         this.type = "Sea Monster";
         this.model = new Xform();
@@ -109,5 +113,19 @@ public abstract class SeaMonster {
      */
     public void setModel(Xform model) {
         this.model = model;
+    }
+
+    /**
+     * @return the direction
+     */
+    public int getDirection() {
+        return direction;
+    }
+
+    /**
+     * @param direction the direction to set
+     */
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }

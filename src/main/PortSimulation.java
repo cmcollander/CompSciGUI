@@ -26,7 +26,7 @@ import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import java.io.File;
 import javafx.scene.control.Alert;
 
-public class PortSimulation {
+public class PortSimulation  {
 
     private final Map map;
     private final Stage stage = new Stage();
@@ -316,6 +316,7 @@ public class PortSimulation {
 
             // Translation
             monster.getModel().setRotateZ(180.0);
+            monster.getModel().setRotateY(monster.getDirection() * 90);
             monster.getModel().setTranslateY(mType == 0 ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 10 : 0) : 0);
             monster.getModel().setTranslateX(5 + monster.getCol() * 10);
             monster.getModel().setTranslateZ(5 + monster.getRow() * 10);
