@@ -8,6 +8,11 @@
  */
 package main;
 
+/*
+ X axis is Columns
+ Z axis is Rows
+ Y axis is Height
+ */
 import javafx.event.EventHandler;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
@@ -24,7 +29,7 @@ import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import java.io.File;
 import javafx.scene.control.Alert;
 
-public class PortSimulation  {
+public class PortSimulation {
 
     private final Map map;
     private final Stage stage = new Stage();
@@ -43,12 +48,6 @@ public class PortSimulation  {
     private final Xform dockGroup = new Xform();
 
     TdsModelImporter importer = new TdsModelImporter();
-
-    /*
-     X axis is Columns
-     Z axis is Rows
-     Y axis is Height
-     */
 
     private static final double MOUSE_SPEED = 0.1;
     private static final double ROTATION_SPEED = 2.0;
