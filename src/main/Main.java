@@ -45,6 +45,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * The Main class for the Port application.
+ * @author Collander, Khan, Wetzel
+ */
 public class Main extends Application {
 
     private static Stage stage;
@@ -56,7 +60,11 @@ public class Main extends Application {
     private static boolean mapLoaded;
     private static CargoShip draggedShip;
     private static SeaMonster draggedMonster;
-
+    
+    /**
+     * Main method for the application.
+     * @param primaryStage Primary GUI Stage
+     */
     @Override
     public void start(Stage primaryStage) {
         draggedShip = null;
@@ -273,10 +281,18 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * This main method is only present in case we run the application from a .jar file
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
-
+    
+    /**
+     * Menu Event Handler
+     * @return the actual Handle method containing instructions for the Handler
+     */
     private EventHandler<ActionEvent> menuItemSelected() {
         return new EventHandler<ActionEvent>() {
 
@@ -599,6 +615,9 @@ public class Main extends Application {
         };
     }
 
+    /**
+     *  A dialog alert for incorrect input, usually being called on a number parsing issue
+     */
     public static void incorrectInput() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Incorrect Input");
@@ -607,6 +626,10 @@ public class Main extends Application {
         alert.showAndWait();
     }
 
+    /**
+     * Easily dialog box to display the stack trace of an exception
+     * @param ex the exception to output
+     */
     public static void displayStackTrace(Exception ex) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Exception");
@@ -638,7 +661,11 @@ public class Main extends Application {
 
         alert.showAndWait();
     }
-
+    
+    /**
+     * Presents a dialog box to update a ship variable
+     * @param ship The ship to be edited
+     */
     private static void updateShip(CargoShip ship) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Ship");
@@ -718,12 +745,16 @@ public class Main extends Application {
         }
 
     }
-
+    
+    /**
+     * Presents a dialog box to update a dock variable
+     * @param dock The dock to be edited
+     */
     private static void updateDock(Dock dock) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Dock");
         dialog.setHeaderText("Update Dock");
-        
+
         try {
             URL resource = new File("media\\images\\updateDock.png").toURI().toURL();
             dialog.setGraphic(new ImageView(resource.toString()));
@@ -790,6 +821,10 @@ public class Main extends Application {
         refreshMap();
     }
 
+    /**
+     * Presents a dialog box to update a SeaMonster variable
+     * @param monster The monster to be edited
+     */
     private static void updateMonster(SeaMonster monster) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Monster");
@@ -801,7 +836,7 @@ public class Main extends Application {
         } catch (Exception ex) {
             displayStackTrace(ex);
         }
-        
+
         ButtonType updateButtonType = new ButtonType("Update", ButtonData.OK_DONE);
         ButtonType locationButtonType = new ButtonType("Location", ButtonData.OTHER);
         dialog.getDialogPane().getButtonTypes().addAll(locationButtonType, updateButtonType, ButtonType.CANCEL);
@@ -841,11 +876,15 @@ public class Main extends Application {
         refreshMap();
     }
 
+    /**
+     * Presents a dialog box to edit the location of either a CargoShip, Dock, or SeaMonster
+     * @param pos The position object to be edited
+     */
     private static void updateLocation(Position pos) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Location");
         dialog.setHeaderText("Update Location");
-        
+
         try {
             URL resource = new File("media\\images\\updateLocation.png").toURI().toURL();
             dialog.setGraphic(new ImageView(resource.toString()));
@@ -921,11 +960,15 @@ public class Main extends Application {
         refreshMap();
     }
 
+    /**
+     * Presents a dialog box to edit the location of Godzilla
+     * @param pos The position object to be edited
+     */
     private static void updateLocationGodzilla(Position pos) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Place Godzilla");
         dialog.setHeaderText("Place Godzilla");
-        
+
         try {
             URL resource = new File("media\\images\\updateLocationGodzilla.png").toURI().toURL();
             dialog.setGraphic(new ImageView(resource.toString()));
@@ -1000,7 +1043,11 @@ public class Main extends Application {
         }
         refreshMap();
     }
-
+    
+    /**
+     * Presents a dialog box to edit the location of either a Cargo
+     * @param cargo The Cargo object to be edited
+     */
     private static void updateCargo(Cargo cargo) {
         if (cargo == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1021,7 +1068,7 @@ public class Main extends Application {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Cargo");
         dialog.setHeaderText("Update Cargo");
-        
+
         try {
             URL resource = new File("media\\images\\updateCargo.png").toURI().toURL();
             dialog.setGraphic(new ImageView(resource.toString()));
@@ -1104,7 +1151,10 @@ public class Main extends Application {
             }
         }
     }
-
+    
+    /**
+     * Refresh the graphic viewport of the GUI
+     */
     private static void refreshMap() {
 
         // Base ocean
@@ -1257,6 +1307,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Called upon hitting the About button, this presents a dialog with information about our team and this project
+     */
     private static void aboutDialog() {
         String aboutMessage = new String();
 
@@ -1277,6 +1330,13 @@ public class Main extends Application {
         alert.showAndWait();
     }
 
+    /**
+     * Constrain an integer between a minimum and a maximum value
+     * @param val the integer to constrain
+     * @param min the minimum constraint
+     * @param max the maximum constraint
+     * @return the constrained value
+     */
     private static int constrain(int val, int min, int max) {
         if (val < min) {
             return min;
@@ -1287,6 +1347,9 @@ public class Main extends Application {
         return val;
     }
 
+    /**
+     * Presents a dialog box to unload a ship that is safely at the correct type of Dock
+     */
     private static void unloadShip() {
         ArrayList<String> choices = new ArrayList<>();
         for (CargoShip ship : map.getShips()) {
@@ -1323,12 +1386,19 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Checks to see if a monster has collided with a ship
+     */
     public void checkMonsterCollision() {
         for (SeaMonster monster : map.getMonsters()) {
             checkMonsterCollision(monster);
         }
     }
 
+    /**
+     * Checks to see if a monster has collided with a ship
+     * @param monster The monster to check
+     */
     public void checkMonsterCollision(SeaMonster monster) {
         if (map.isShip(monster.getRow(), monster.getCol())) {
             try {
@@ -1343,6 +1413,10 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Checks to see if a Ship has collided with a monster
+     * @param ship the ship to check
+     */
     public void checkMonsterCollision(CargoShip ship) {
         if (map.isMonster(new Position(ship.getRow(), ship.getCol()))) {
             try {
@@ -1357,10 +1431,16 @@ public class Main extends Application {
         }
     }
 
+    /**
+     *  Start a new thread for the predator-prey algorithm
+     */
     public void startPredatorPrey() {
         aboutDialog();
     }
 
+    /**
+     * Load the map into a 3D Representation of the map
+     */
     public void start3D() {
         if (!mapLoaded) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -1376,15 +1456,15 @@ public class Main extends Application {
         text += "*Why is it that when you transport something by car\n";
         text += "*it is called a shipment, but when you transport\n";
         text += "*something by ship, it is called cargo???";
-        
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(text);
         alert.setTitle("Please wait...");
         alert.setHeaderText(null);
         alert.show();
-        
+
         (new PortSimulation(map)).run();
-        
+
         alert.close();
     }
 }
