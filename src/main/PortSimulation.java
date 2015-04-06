@@ -78,8 +78,6 @@ public class PortSimulation {
         buildDocks();
 
         // Get yourself in the right position by repositioning the world... Kinda philosophical
-        world.setTranslateX(-540 / 2);
-        world.setTranslateZ(-360 / 2);
         world.setRotateZ(180);
 
         Scene scene = new Scene(root, 1024, 768, true, SceneAntialiasing.BALANCED);
@@ -89,7 +87,7 @@ public class PortSimulation {
 
         stage.setTitle("3D Port Simulation");
         stage.setScene(scene);
-        stage.setFullScreen(fullscreen);
+        //stage.setFullScreen(fullscreen);
         stage.show();
 
         controller.setScene(scene);
@@ -97,6 +95,22 @@ public class PortSimulation {
         camera.setController(controller);
         root.getChildren().add(camera);
         scene.setCamera(camera);
+        
+        /**
+         * Camera starts at (0,0,0)
+         */
+
+        //DEBUGGING
+        /*
+        String camCoords = new String();
+        camCoords += Double.toString(controller.getCamera().getRotate());
+        
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Camera Coords");
+        alert.setHeaderText(null);
+        alert.setContentText(camCoords);
+        alert.showAndWait();
+                */
         
     }
 
