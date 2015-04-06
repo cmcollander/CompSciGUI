@@ -97,6 +97,11 @@ public class PortSimulation {
         camera.setController(controller);
         root.getChildren().add(camera);
         scene.setCamera(camera);
+        
+        controller.setTy(100);
+        controller.setTx(0);
+        controller.setTy(0);
+        controller.setRotateX(45);
     }
 
     private void handleMouse(Scene scene, final Node root) {
