@@ -12,7 +12,6 @@ import javafx.event.EventHandler;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.input.KeyEvent;
@@ -21,7 +20,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Sphere;
 import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import java.io.File;
 import javafx.scene.control.Alert;
@@ -31,7 +29,7 @@ public class PortSimulation  {
     private final Map map;
     private final Stage stage = new Stage();
     private final Group root = new Group();
-    private final PerspectiveCamera camera = new PerspectiveCamera(true);
+    private final FPSCamera camera = new FPSCamera(true);
     private boolean fullscreen = true;
 
     private final Xform world = new Xform();
@@ -51,11 +49,6 @@ public class PortSimulation  {
      Z axis is Rows
      Y axis is Height
      */
-    private static final double CAMERA_INITIAL_DISTANCE = -450;
-    private static final double CAMERA_INITIAL_X_ANGLE = 30.0;
-    private static final double CAMERA_INITIAL_Y_ANGLE = 120.0;
-    private static final double CAMERA_NEAR_CLIP = 0.1;
-    private static final double CAMERA_FAR_CLIP = 10000.0;
 
     private static final double MOUSE_SPEED = 0.1;
     private static final double ROTATION_SPEED = 2.0;
@@ -147,9 +140,9 @@ public class PortSimulation  {
                     case Z:
                         cameraXform2.t.setX(0.0);
                         cameraXform2.t.setY(0.0);
-                        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
-                        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
-                        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
+                        camera.setTranslateZ(camera.CAMERA_INITIAL_DISTANCE);
+                        cameraXform.ry.setAngle(camera.CAMERA_INITIAL_Y_ANGLE);
+                        cameraXform.rx.setAngle(camera.CAMERA_INITIAL_X_ANGLE);
                         break;
                     case V:
                         landGroup.setVisible(!landGroup.isVisible());
@@ -179,12 +172,12 @@ public class PortSimulation  {
         cameraXform3.getChildren().add(camera);
         cameraXform3.setRotateZ(-180.0);
 
-        camera.setNearClip(CAMERA_NEAR_CLIP);
-        camera.setFarClip(CAMERA_FAR_CLIP);
-        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+        camera.setNearClip(camera.CAMERA_NEAR_CLIP);
+        camera.setFarClip(camera.CAMERA_FAR_CLIP);
+        camera.setTranslateZ(camera.CAMERA_INITIAL_DISTANCE);
 
-        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
-        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
+        cameraXform.ry.setAngle(camera.CAMERA_INITIAL_Y_ANGLE);
+        cameraXform.rx.setAngle(camera.CAMERA_INITIAL_X_ANGLE);
     }
 
     private void buildOcean() {

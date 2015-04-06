@@ -403,7 +403,7 @@ public class Main extends Application {
                         choices.add(ship.getName());
                     }
 
-                    if (choices.size() == 0) {
+                    if (choices.isEmpty()) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("No Ships have been generated");
                         alert.setHeaderText("No Ships have been generated");
