@@ -20,13 +20,13 @@ public class SoundManager {
     public static void growl(SeaMonster monster) throws Exception {
         File file;
         if (monster instanceof Godzilla) {
-            file = new File("media\\sound\\godzillaSound.mp3");
+            file = new File("media\\sounds\\godzillaSound.mp3");
         } else if (monster instanceof Leviathan) {
-            file = new File("media\\sound\\eviathanSound.mp3");
+            file = new File("media\\sounds\\leviathanSound.mp3");
         } else if (monster instanceof Kraken) {
-            file = new File("media\\krakenSound.mp3");
+            file = new File("media\\sounds\\krakenSound.mp3");
         } else {
-            file = new File("media\\sound\\seaSerpentSound.mp3");
+            file = new File("media\\sounds\\seaSerpentSound.mp3");
         }
 
         URL resource = file.toURI().toURL();
