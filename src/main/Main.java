@@ -1500,7 +1500,7 @@ public class Main extends Application {
         alert.close();
     }
     
-    private double distance(SeaMonster m, CargoShip s) {
+    private static double distance(SeaMonster m, CargoShip s) {
         return Math.sqrt((m.getRow()-s.getRow())*(m.getRow()-s.getRow()) + (m.getCol()-s.getCol())*(m.getCol()-s.getCol()));
     }
     
@@ -1512,7 +1512,7 @@ public class Main extends Application {
         }
     }
     
-    public void step() {
+    public static void step() {
         for(SeaMonster monster : map.getMonsters()) {
             CargoShip closestShip = map.getShips().get(0); // Assume the first ship is the closest
             for(CargoShip ship : map.getShips()) {

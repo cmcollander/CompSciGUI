@@ -109,6 +109,11 @@ public class PortSimulation {
                     alert.setContentText(text);
                     alert.showAndWait();
                     break;
+                case E:
+                    Main.step();
+                    for(SeaMonster mon : map.getMonsters())
+                        mon.updateXform();
+                    break;
                 case F:  // Fullscreen Toggle (messes up if you use ESC to exit fullscreen
                     stage.setFullScreen(!fullscreen);
                     fullscreen = !fullscreen;
