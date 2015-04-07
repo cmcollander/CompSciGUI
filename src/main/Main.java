@@ -361,6 +361,7 @@ public class Main extends Application {
                 // Close MenuItem
                 if ("Close".equalsIgnoreCase(text)) {
                     map = new Map(); // This should reset absolutely everything
+                    mapLoaded = false;
                     refreshMap();
                 }
                 // Snap Shot MenuItem
