@@ -110,19 +110,21 @@ public class PortSimulation {
                     alert.showAndWait();
                     break;
                 case E:
-                    PredatorPrey.step(map);
-                    Main.checkMonsterCollision();
-                    for (SeaMonster mon : map.getMonsters()) {
-                        mon.updateXform();
+                    if (!map.getShips().isEmpty() && !map.getMonsters().isEmpty()) {
+                        PredatorPrey.step(map);
+                        Main.checkMonsterCollision();
+                        map.getMonsters().stream().forEach((mon) -> {
+                            mon.updateXform();
+                        });
                     }
                     break;
                 case R:
                     while (!map.getShips().isEmpty()) {
                         PredatorPrey.step(map);
                         Main.checkMonsterCollision();
-                        for (SeaMonster mon : map.getMonsters()) {
+                        map.getMonsters().stream().forEach((mon) -> {
                             mon.updateXform();
-                        }
+                        });
                         PredatorPrey.delay();
                     }
                     break;
