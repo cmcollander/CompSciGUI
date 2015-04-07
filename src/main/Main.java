@@ -410,9 +410,7 @@ public class Main extends Application {
                 // Update Ships MenuItem
                 if ("Update Ships".equalsIgnoreCase(text)) {
                     ArrayList<String> choices = new ArrayList<>();
-                    for (CargoShip ship : map.getShips()) {
-                        choices.add(ship.getName());
-                    }
+                    map.getShips().stream().forEach(s -> choices.add(s.getName()));
 
                     if (choices.isEmpty()) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
