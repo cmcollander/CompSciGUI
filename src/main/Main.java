@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -187,14 +186,22 @@ public class Main extends Application {
                     int row = (int) (event.getY() / 10);
                     if (map.isShip(row, col)) {
                         updateShip(map.getShipAt(row, col));
-                        checkMonsterCollision(map.getShipAt(row, col));
+                        try {
+                            checkMonsterCollision(map.getShipAt(row, col));
+                        } catch(Exception ex) {
+                            displayStackTrace(ex);
+                        }
                     }
                     if (map.isDock(row, col)) {
                         updateDock(map.getDockAt(row, col));
                     }
                     if (map.isMonster(new Position(row, col))) {
                         updateMonster(map.getMonsterAt(row, col));
-                        checkMonsterCollision(map.getMonsterAt(row, col));
+                        try {
+                            checkMonsterCollision(map.getMonsterAt(row, col));
+                        } catch(Exception ex) {
+                            displayStackTrace(ex);
+                        }
                     }
                 }
             }
@@ -232,7 +239,11 @@ public class Main extends Application {
                     if (draggedShip != null) {
                         draggedShip.setRow(row);
                         draggedShip.setCol(col);
-                        checkMonsterCollision(draggedShip);
+                        try {
+                            checkMonsterCollision(draggedShip);
+                        } catch(Exception ex) {
+                            displayStackTrace(ex);
+                        }
                         if (map.isDock(row, col)) {
                             draggedShip.setDirection(map.getDockAt(row, col).getDirection());
                         }
@@ -243,7 +254,11 @@ public class Main extends Application {
                     if (draggedMonster != null) {
                         draggedMonster.setRow(row);
                         draggedMonster.setCol(col);
-                        checkMonsterCollision(draggedMonster);
+                        try {
+                            checkMonsterCollision(draggedMonster);
+                        } catch(Exception ex) {
+                            displayStackTrace(ex);
+                        }
                         if (map.isDock(row, col)) {
                             draggedShip.setDirection(map.getDockAt(row, col).getDirection());
                         }
@@ -568,7 +583,11 @@ public class Main extends Application {
                             if (monster.getType().equals(result.get())) {
                                 found = true;
                                 updateMonster(monster);
-                                checkMonsterCollision(monster);
+                                try {
+                                    checkMonsterCollision(monster);
+                                } catch(Exception ex) {
+                                    displayStackTrace(ex);
+                                }
                             }
                         }
                         if (!found) {
@@ -608,7 +627,11 @@ public class Main extends Application {
                     updateLocationGodzilla(pos);
                     g.setPosition(pos);
                     map.getMonsters().add(g);
-                    checkMonsterCollision(g);
+                    try {
+                        checkMonsterCollision(g);
+                    } catch(Exception ex) {
+                        displayStackTrace(ex);
+                    }
                     refreshMap();
                 }
             }
@@ -1391,21 +1414,22 @@ public class Main extends Application {
      */
     public void checkMonsterCollision() {
         for (SeaMonster monster : map.getMonsters()) {
-            checkMonsterCollision(monster);
+            try {
+                checkMonsterCollision(monster);
+            } catch(Exception ex) {
+                displayStackTrace(ex);
+            }
         }
     }
 
     /**
      * Checks to see if a monster has collided with a ship
      * @param monster The monster to check
+     * @throws java.lang.Exception
      */
-    public void checkMonsterCollision(SeaMonster monster) {
+    public void checkMonsterCollision(SeaMonster monster) throws Exception {
         if (map.isShip(monster.getRow(), monster.getCol())) {
-            try {
-                SoundManager.growl(monster);
-            } catch (Exception ex) {
-                displayStackTrace(ex);
-            }
+            SoundManager.growl(monster);
             textArea.setText(monster.battleCry());
 
             // Remove ship
@@ -1416,14 +1440,11 @@ public class Main extends Application {
     /**
      * Checks to see if a Ship has collided with a monster
      * @param ship the ship to check
+     * @throws java.lang.Exception
      */
-    public void checkMonsterCollision(CargoShip ship) {
+    public void checkMonsterCollision(CargoShip ship) throws Exception {
         if (map.isMonster(new Position(ship.getRow(), ship.getCol()))) {
-            try {
-                SoundManager.growl(map.getMonsterAt(ship.getRow(), ship.getCol()));
-            } catch (Exception ex) {
-                displayStackTrace(ex);
-            }
+            SoundManager.growl(map.getMonsterAt(ship.getRow(), ship.getCol()));
             textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
 
             // Remove ship
@@ -1435,7 +1456,8 @@ public class Main extends Application {
      *  Start a new thread for the predator-prey algorithm
      */
     public void startPredatorPrey() {
-        aboutDialog();
+        PredatorPrey pp = new PredatorPrey(map);
+        pp.run();
     }
 
     /**
