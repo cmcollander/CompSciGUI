@@ -87,12 +87,10 @@ public class Main extends Application {
         Label aboutLabel = new Label("About");
 
         // MouseHandler for About button
-        aboutLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                aboutDialog();
-            }
+        aboutLabel.setOnMouseClicked((MouseEvent event) -> {
+            aboutDialog();
         });
+        
         Menu menu5 = new Menu();
         menu5.setGraphic(aboutLabel);
 

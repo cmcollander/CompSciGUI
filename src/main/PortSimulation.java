@@ -78,19 +78,22 @@ public class PortSimulation {
         camera.setController(controller);
         root.getChildren().add(camera);
         scene.setCamera(camera);
+        setInitialCamera();
         
+    }
+    
+    public void setInitialCamera() {
         // Default camera position (41,-183,445),(-35,-150,0)
         controller.affine.setTx(41);
         controller.affine.setTy(-183);
         controller.affine.setTz(445);
         controller.setRotate(-25,-150,0);
-        
     }
 
     private void handleKeyboard(Scene scene, final Node root) {
         scene.setOnKeyPressed((KeyEvent event) -> {
             switch (event.getCode()) {
-                case C:
+                case C:  // Debug Dialog
                     String text = new String();
                     text += "Current Camera Coordinates\n";
                     double x = controller.affine.getTx();
@@ -107,13 +110,10 @@ public class PortSimulation {
                     alert.setContentText(text);
                     alert.showAndWait();
                     break;
-                case F:
+                case F:  // Fullscreen Toggle (messes up if you use ESC to exit fullscreen
                     stage.setFullScreen(!fullscreen);
                     fullscreen = !fullscreen;
-                case V:
-                    landGroup.setVisible(!landGroup.isVisible());
-                    break;
-                case Q:
+                case Q:  // Fully closes the 3D Display
                     stage.close();
                     break;
             }
