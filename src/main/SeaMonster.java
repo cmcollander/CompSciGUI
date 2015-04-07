@@ -29,7 +29,7 @@ public abstract class SeaMonster {
         this.type = "Sea Monster";
         this.model = new Xform();
     }
-    
+
     public void updateXform() {
         model.setTranslateX(5 + getCol() * 10);
         model.setTranslateZ(5 + getRow() * 10);

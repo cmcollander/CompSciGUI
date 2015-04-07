@@ -158,20 +158,12 @@ public class Main extends Application {
         buttonView.setPadding(new Insets(0, 0, 0, 0));
 
         Button crankButton = new Button("Crank To 11!");
-        Button runButton = new Button("Run");
         buttonView.add(crankButton, 0, 0);
-        buttonView.add(runButton, 1, 0);
 
         // Start 3D Button
         crankButton.setOnMouseClicked((MouseEvent event) -> {
             start3D();
         });
-
-        // PredatorPrey Button
-        runButton.setOnMouseClicked((MouseEvent event) -> {
-            startPredatorPrey();
-        });
-
         // MapView Setup
         mapView = new Canvas(canvasWidth, canvasHeight);
         refreshMap();
@@ -1351,7 +1343,7 @@ public class Main extends Application {
         alert.setHeaderText(null);
         alert.setContentText(aboutMessage);
         alert.showAndWait();
-        
+
     }
 
     /**
@@ -1437,6 +1429,7 @@ public class Main extends Application {
             textArea.setText(monster.battleCry());
 
             // Remove ship
+            map.getShipAt(monster.getRow(), monster.getCol()).removeModel();
             map.getShips().remove(map.getShipAt(monster.getRow(), monster.getCol()));
         }
     }
@@ -1453,20 +1446,8 @@ public class Main extends Application {
             textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
 
             // Remove ship
+            ship.removeModel();
             map.getShips().remove(ship);
-        }
-    }
-
-    
-    /**
-     * Start a new thread for the predator-prey algorithm
-     */
-    public void startPredatorPrey() {
-        while(!map.getShips().isEmpty()) {
-            step();
-            checkMonsterCollision();
-            refreshMap();
-            delay();
         }
     }
 
@@ -1498,51 +1479,5 @@ public class Main extends Application {
         (new PortSimulation(map)).run();
 
         alert.close();
-    }
-    
-    private static double distance(SeaMonster m, CargoShip s) {
-        return Math.sqrt((m.getRow()-s.getRow())*(m.getRow()-s.getRow()) + (m.getCol()-s.getCol())*(m.getCol()-s.getCol()));
-    }
-    
-    private void delay() {
-        try {
-            Thread.sleep(100);
-        } catch (Exception ex) {
-            System.out.println("Doesn't support Thread.sleep");
-        }
-    }
-    
-    public static void step() {
-        for(SeaMonster monster : map.getMonsters()) {
-            CargoShip closestShip = map.getShips().get(0); // Assume the first ship is the closest
-            for(CargoShip ship : map.getShips()) {
-                double currDistance = distance(monster, ship);
-                if(currDistance<distance(monster,closestShip))
-                    closestShip = ship;
-            }
-            
-            
-            int dx, dy;
-            if(monster.getCol() < closestShip.getCol())
-                dx = 1;
-            else if(monster.getCol() > closestShip.getCol())
-                dx = -1;
-            else
-                dx = 0;
-            
-            if(monster.getRow() < closestShip.getRow())
-                dy = 1;
-            else if(monster.getRow() > closestShip.getRow())
-                dy = -1;
-            else
-                dy = 0;
-            
-            if(!map.isMonster(new Position(monster.getRow()+dy,monster.getCol()+dx))) {
-                monster.setCol(monster.getCol()+dx);
-                monster.setRow(monster.getRow()+dy);
-            }
-            
-        }
-        
     }
 }

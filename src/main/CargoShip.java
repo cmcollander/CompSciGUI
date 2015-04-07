@@ -42,6 +42,10 @@ public class CargoShip {
         model = new Xform();
     }
 
+    public void removeModel() {
+        model.setTranslateY(10000);
+    }
+
     /**
      * String Constructor for the ship class
      *

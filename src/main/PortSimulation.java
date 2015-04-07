@@ -110,9 +110,21 @@ public class PortSimulation {
                     alert.showAndWait();
                     break;
                 case E:
-                    Main.step();
-                    for(SeaMonster mon : map.getMonsters())
+                    PredatorPrey.step(map);
+                    Main.checkMonsterCollision();
+                    for (SeaMonster mon : map.getMonsters()) {
                         mon.updateXform();
+                    }
+                    break;
+                case R:
+                    while (!map.getShips().isEmpty()) {
+                        PredatorPrey.step(map);
+                        Main.checkMonsterCollision();
+                        for (SeaMonster mon : map.getMonsters()) {
+                            mon.updateXform();
+                        }
+                        PredatorPrey.delay();
+                    }
                     break;
                 case F:  // Fullscreen Toggle (messes up if you use ESC to exit fullscreen
                     stage.setFullScreen(!fullscreen);
