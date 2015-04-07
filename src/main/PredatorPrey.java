@@ -23,6 +23,12 @@ public class PredatorPrey implements Runnable{
     
     public void step() {
         // Place an individual step for Predator/Prey here!
+        
+        /*  SUMMARY OF STEPS
+         1. Loop through each monster
+         2. Find the nearest ship to the monster
+         3. Move one step towards the ship, unless something is in the way (COMPLICATED)
+        */
     }
     
 }
