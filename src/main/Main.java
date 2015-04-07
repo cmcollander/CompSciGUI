@@ -257,9 +257,6 @@ public class Main extends Application {
                         } catch(Exception ex) {
                             displayStackTrace(ex);
                         }
-                        if (map.isDock(row, col)) {
-                            draggedShip.setDirection(map.getDockAt(row, col).getDirection());
-                        }
 
                         draggedMonster = null;
                         refreshMap();
