@@ -45,13 +45,7 @@ public class Map {
             return false;
         }
 
-        for (SeaMonster monster : getMonsters()) {
-            if (monster.getPosition().equals(position)) {
-                return true;
-            }
-        }
-
-        return false;
+        return getMonsters().stream().anyMatch((monster) -> (monster.getPosition().equals(position)));
     }
 
     /**
@@ -67,12 +61,7 @@ public class Map {
             return false;
         }
 
-        for (Dock dock : port.getDocks()) {
-            if (row == dock.getRow() && col == dock.getCol()) {
-                return true;
-            }
-        }
-        return false;
+        return port.getDocks().stream().anyMatch((dock) -> (row == dock.getRow() && col == dock.getCol()));
     }
 
     /**
@@ -88,12 +77,7 @@ public class Map {
             return false;
         }
 
-        for (CargoShip ship : ships) {
-            if (row == ship.getRow() && col == ship.getCol()) {
-                return true;
-            }
-        }
-        return false;
+        return ships.stream().anyMatch((ship) -> (row == ship.getRow() && col == ship.getCol()));
     }
 
     /**
@@ -116,11 +100,7 @@ public class Map {
 
         // Get a count of the number of ships at this location. If more than one, return FALSE
         int count = 0;
-        for (CargoShip ship : ships) {
-            if (ship.getRow() == row && ship.getCol() == col) {
-                count++;
-            }
-        }
+        count = ships.stream().filter((ship) -> (ship.getRow() == row && ship.getCol() == col)).map((_item) -> 1).reduce(count, Integer::sum);
         if (count > 1) {
             return false;
         }
@@ -451,7 +431,7 @@ public class Map {
                     currMonster.setType(currMonster.getType() + " " + numS);
                     break;
             }
-            
+
             currMonster.setDirection(randomGenerator.nextInt(4));
 
             boolean validLocation = false;

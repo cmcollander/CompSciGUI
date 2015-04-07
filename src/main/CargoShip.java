@@ -61,7 +61,7 @@ public class CargoShip {
         double longitude = Double.parseDouble(parts[7].trim());
         double latitude = Double.parseDouble(parts[8].trim());
         position = new Position(latitude, longitude);
-        
+
         model = new Xform();
 
         Cargo newCargo = null;

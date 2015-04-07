@@ -9,8 +9,10 @@
 package main;
 
 /**
- * The SeaMonster class is used as an abstract class for creating different SeaMonsters.
- **/
+ * The SeaMonster class is used as an abstract class for creating different
+ * SeaMonsters.
+ *
+ */
 public abstract class SeaMonster {
 
     protected Position position;

@@ -46,6 +46,7 @@ import javafx.stage.Stage;
 
 /**
  * The Main class for the Port application.
+ *
  * @author Collander, Khan, Wetzel
  */
 public class Main extends Application {
@@ -59,9 +60,10 @@ public class Main extends Application {
     private static boolean mapLoaded;
     private static CargoShip draggedShip;
     private static SeaMonster draggedMonster;
-    
+
     /**
      * Main method for the application.
+     *
      * @param primaryStage Primary GUI Stage
      */
     @Override
@@ -90,7 +92,7 @@ public class Main extends Application {
         aboutLabel.setOnMouseClicked((MouseEvent event) -> {
             aboutDialog();
         });
-        
+
         Menu menu5 = new Menu();
         menu5.setGraphic(aboutLabel);
 
@@ -186,7 +188,7 @@ public class Main extends Application {
                         updateShip(map.getShipAt(row, col));
                         try {
                             checkMonsterCollision(map.getShipAt(row, col));
-                        } catch(Exception ex) {
+                        } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
                     }
@@ -197,7 +199,7 @@ public class Main extends Application {
                         updateMonster(map.getMonsterAt(row, col));
                         try {
                             checkMonsterCollision(map.getMonsterAt(row, col));
-                        } catch(Exception ex) {
+                        } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
                     }
@@ -239,7 +241,7 @@ public class Main extends Application {
                         draggedShip.setCol(col);
                         try {
                             checkMonsterCollision(draggedShip);
-                        } catch(Exception ex) {
+                        } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
                         if (map.isDock(row, col)) {
@@ -254,7 +256,7 @@ public class Main extends Application {
                         draggedMonster.setCol(col);
                         try {
                             checkMonsterCollision(draggedMonster);
-                        } catch(Exception ex) {
+                        } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
 
@@ -292,15 +294,18 @@ public class Main extends Application {
     }
 
     /**
-     * This main method is only present in case we run the application from a .jar file
+     * This main method is only present in case we run the application from a
+     * .jar file
+     *
      * @param args Command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     /**
      * Menu Event Handler
+     *
      * @return the actual Handle method containing instructions for the Handler
      */
     private EventHandler<ActionEvent> menuItemSelected() {
@@ -448,9 +453,7 @@ public class Main extends Application {
                 // Display All Ships MenuItem
                 if ("Display All Ships".equalsIgnoreCase(text)) {
                     String output = "";
-                    for (CargoShip ship : map.getShips()) {
-                        output += ship.display();
-                    }
+                    output = map.getShips().stream().map((ship) -> ship.display()).reduce(output, String::concat);
                     textArea.setText(output);
                 }
 
@@ -469,9 +472,9 @@ public class Main extends Application {
                 // Update Docks MenuItem
                 if ("Update Docks".equalsIgnoreCase(text)) {
                     ArrayList<String> choices = new ArrayList<>();
-                    for (Dock dock : map.getPort().getDocks()) {
+                    map.getPort().getDocks().stream().forEach((dock) -> {
                         choices.add(dock.getName());
-                    }
+                    });
 
                     if (choices.isEmpty()) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -507,18 +510,14 @@ public class Main extends Application {
                 //Display All Docks MenuItem
                 if ("Display All Docks".equalsIgnoreCase(text)) {
                     String output = "";
-                    for (Dock dock : map.getPort().getDocks()) {
-                        output += dock.display();
-                    }
+                    output = map.getPort().getDocks().stream().map((dock) -> dock.display()).reduce(output, String::concat);
                     textArea.setText(output);
                 }
 
                 //Display All Cargos MenuItem
                 if ("Display All Cargos".equalsIgnoreCase(text)) {
                     String output = "";
-                    for (Cargo cargo : map.getPort().getCargos()) {
-                        output += cargo.display();
-                    }
+                    output = map.getPort().getCargos().stream().map((cargo) -> cargo.display()).reduce(output, String::concat);
                     textArea.setText(output);
                 }
 
@@ -552,9 +551,9 @@ public class Main extends Application {
                 // Update Monsters MenuItem
                 if ("Update Monsters".equalsIgnoreCase(text)) {
                     ArrayList<String> choices = new ArrayList<>();
-                    for (SeaMonster monster : map.getMonsters()) {
+                    map.getMonsters().stream().forEach((monster) -> {
                         choices.add(monster.getType());
-                    }
+                    });
 
                     if (choices.isEmpty()) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -579,7 +578,7 @@ public class Main extends Application {
                                 updateMonster(monster);
                                 try {
                                     checkMonsterCollision(monster);
-                                } catch(Exception ex) {
+                                } catch (Exception ex) {
                                     displayStackTrace(ex);
                                 }
                             }
@@ -595,9 +594,7 @@ public class Main extends Application {
                 //Display All Monsters
                 if ("Display All Monsters".equalsIgnoreCase(text)) {
                     String output = new String();
-                    for (SeaMonster monster : map.getMonsters()) {
-                        output += monster.display();
-                    }
+                    output = map.getMonsters().stream().map((monster) -> monster.display()).reduce(output, String::concat);
                     textArea.setText(output);
                 }
 
@@ -610,11 +607,9 @@ public class Main extends Application {
                 //Summon Godzilla
                 if ("Summon Godzilla".equalsIgnoreCase(text)) {
                     // If there is already a Godzilla, remove him
-                    for (SeaMonster monster : map.getMonsters()) {
-                        if (monster instanceof Godzilla) {
-                            map.getMonsters().remove(monster);
-                        }
-                    }
+                    map.getMonsters().stream().filter((monster) -> (monster instanceof Godzilla)).forEach((monster) -> {
+                        map.getMonsters().remove(monster);
+                    });
 
                     Godzilla g = new Godzilla();
                     Position pos = new Position(0, 0);
@@ -623,7 +618,7 @@ public class Main extends Application {
                     map.getMonsters().add(g);
                     try {
                         checkMonsterCollision(g);
-                    } catch(Exception ex) {
+                    } catch (Exception ex) {
                         displayStackTrace(ex);
                     }
                     refreshMap();
@@ -633,7 +628,8 @@ public class Main extends Application {
     }
 
     /**
-     *  A dialog alert for incorrect input, usually being called on a number parsing issue
+     * A dialog alert for incorrect input, usually being called on a number
+     * parsing issue
      */
     public static void incorrectInput() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -645,6 +641,7 @@ public class Main extends Application {
 
     /**
      * Easily dialog box to display the stack trace of an exception
+     *
      * @param ex the exception to output
      */
     public static void displayStackTrace(Exception ex) {
@@ -678,9 +675,10 @@ public class Main extends Application {
 
         alert.showAndWait();
     }
-    
+
     /**
      * Presents a dialog box to update a ship variable
+     *
      * @param ship The ship to be edited
      */
     private static void updateShip(CargoShip ship) {
@@ -762,9 +760,10 @@ public class Main extends Application {
         }
 
     }
-    
+
     /**
      * Presents a dialog box to update a dock variable
+     *
      * @param dock The dock to be edited
      */
     private static void updateDock(Dock dock) {
@@ -840,6 +839,7 @@ public class Main extends Application {
 
     /**
      * Presents a dialog box to update a SeaMonster variable
+     *
      * @param monster The monster to be edited
      */
     private static void updateMonster(SeaMonster monster) {
@@ -894,7 +894,9 @@ public class Main extends Application {
     }
 
     /**
-     * Presents a dialog box to edit the location of either a CargoShip, Dock, or SeaMonster
+     * Presents a dialog box to edit the location of either a CargoShip, Dock,
+     * or SeaMonster
+     *
      * @param pos The position object to be edited
      */
     private static void updateLocation(Position pos) {
@@ -979,6 +981,7 @@ public class Main extends Application {
 
     /**
      * Presents a dialog box to edit the location of Godzilla
+     *
      * @param pos The position object to be edited
      */
     private static void updateLocationGodzilla(Position pos) {
@@ -1060,9 +1063,10 @@ public class Main extends Application {
         }
         refreshMap();
     }
-    
+
     /**
      * Presents a dialog box to edit the location of either a Cargo
+     *
      * @param cargo The Cargo object to be edited
      */
     private static void updateCargo(Cargo cargo) {
@@ -1168,7 +1172,7 @@ public class Main extends Application {
             }
         }
     }
-    
+
     /**
      * Refresh the graphic viewport of the GUI
      */
@@ -1325,7 +1329,8 @@ public class Main extends Application {
     }
 
     /**
-     * Called upon hitting the About button, this presents a dialog with information about our team and this project
+     * Called upon hitting the About button, this presents a dialog with
+     * information about our team and this project
      */
     private static void aboutDialog() {
         String aboutMessage = new String();
@@ -1349,6 +1354,7 @@ public class Main extends Application {
 
     /**
      * Constrain an integer between a minimum and a maximum value
+     *
      * @param val the integer to constrain
      * @param min the minimum constraint
      * @param max the maximum constraint
@@ -1365,7 +1371,8 @@ public class Main extends Application {
     }
 
     /**
-     * Presents a dialog box to unload a ship that is safely at the correct type of Dock
+     * Presents a dialog box to unload a ship that is safely at the correct type
+     * of Dock
      */
     private static void unloadShip() {
         ArrayList<String> choices = new ArrayList<>();
@@ -1407,17 +1414,18 @@ public class Main extends Application {
      * Checks to see if a monster has collided with a ship
      */
     public static void checkMonsterCollision() {
-        for (SeaMonster monster : map.getMonsters()) {
+        map.getMonsters().stream().forEach((monster) -> {
             try {
                 checkMonsterCollision(monster);
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 displayStackTrace(ex);
             }
-        }
+        });
     }
 
     /**
      * Checks to see if a monster has collided with a ship
+     *
      * @param monster The monster to check
      * @throws java.lang.Exception
      */
@@ -1433,6 +1441,7 @@ public class Main extends Application {
 
     /**
      * Checks to see if a Ship has collided with a monster
+     *
      * @param ship the ship to check
      * @throws java.lang.Exception
      */
@@ -1447,10 +1456,10 @@ public class Main extends Application {
     }
 
     /**
-     *  Start a new thread for the predator-prey algorithm
+     * Start a new thread for the predator-prey algorithm
      */
     public void startPredatorPrey() {
-        
+
     }
 
     /**
