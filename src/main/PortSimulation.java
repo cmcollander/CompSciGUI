@@ -41,9 +41,6 @@ public class PortSimulation {
     private boolean fullscreen = true;
 
     private final Xform world = new Xform();
-    private final Xform cameraXform = new Xform();
-    private final Xform cameraXform2 = new Xform();
-    private final Xform cameraXform3 = new Xform();
     private final Xform oceanGroup = new Xform();
     private final Xform landGroup = new Xform();
     private final Xform shipGroup = new Xform();
@@ -51,17 +48,6 @@ public class PortSimulation {
     private final Xform dockGroup = new Xform();
 
     TdsModelImporter importer = new TdsModelImporter();
-
-    private static final double MOUSE_SPEED = 0.1;
-    private static final double ROTATION_SPEED = 2.0;
-    private static final double TRACK_SPEED = 0.3;
-
-    private double mousePosX;
-    private double mousePosY;
-    private double mouseOldX;
-    private double mouseOldY;
-    private double mouseDeltaX;
-    private double mouseDeltaY;
 
     public PortSimulation(Map map) {
         this.map = map;
@@ -83,11 +69,10 @@ public class PortSimulation {
         Scene scene = new Scene(root, 1024, 768, true, SceneAntialiasing.BALANCED);
         scene.setFill(Color.SKYBLUE);
         handleKeyboard(scene, world);
-        handleMouse(scene, world);
 
         stage.setTitle("3D Port Simulation");
         stage.setScene(scene);
-        //stage.setFullScreen(fullscreen);
+        stage.setFullScreen(fullscreen);
         stage.show();
 
         controller.setScene(scene);
@@ -96,75 +81,20 @@ public class PortSimulation {
         root.getChildren().add(camera);
         scene.setCamera(camera);
         
-        /**
-         * Camera starts at (0,0,0)
-         */
-
-        //DEBUGGING
-        /*
-        String camCoords = new String();
-        camCoords += Double.toString(controller.getCamera().getRotate());
-        
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Camera Coords");
-        alert.setHeaderText(null);
-        alert.setContentText(camCoords);
-        alert.showAndWait();
-                */
-        
-    }
-
-    private void handleMouse(Scene scene, final Node root) {
-        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                mousePosX = me.getSceneX();
-                mousePosY = me.getSceneY();
-                mouseOldX = me.getSceneX();
-                mouseOldY = me.getSceneY();
-            }
-        });
-        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent me) {
-                mouseOldX = mousePosX;
-                mouseOldY = mousePosY;
-                mousePosX = me.getSceneX();
-                mousePosY = me.getSceneY();
-                mouseDeltaX = (mousePosX - mouseOldX);
-                mouseDeltaY = (mousePosY - mouseOldY);
-
-                if (me.isPrimaryButtonDown()) {
-                    cameraXform.ry.setAngle(cameraXform.ry.getAngle() - mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED);
-                    cameraXform.rx.setAngle(cameraXform.rx.getAngle() + mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED);
-                } else if (me.isSecondaryButtonDown()) {
-                    double z = camera.getTranslateZ();
-                    double newZ = z + mouseDeltaX * MOUSE_SPEED * 10;
-                    camera.setTranslateZ(newZ);
-                } else if (me.isMiddleButtonDown()) {
-                    cameraXform2.t.setX(cameraXform2.t.getX() + mouseDeltaX * MOUSE_SPEED * 10 * TRACK_SPEED);
-                    cameraXform2.t.setY(cameraXform2.t.getY() + mouseDeltaY * MOUSE_SPEED * 10 * TRACK_SPEED);
-                }
-            }
-        });
     }
 
     private void handleKeyboard(Scene scene, final Node root) {
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                double z, newZ;
-                switch (event.getCode()) {
-                    case F:
-                        stage.setFullScreen(!fullscreen);
-                        fullscreen = !fullscreen;
-                    case V:
-                        landGroup.setVisible(!landGroup.isVisible());
-                        break;
-                    case Q:
-                        stage.close();
-                        break;
-                }
+        scene.setOnKeyPressed((KeyEvent event) -> {
+            switch (event.getCode()) {
+                case F:
+                    stage.setFullScreen(!fullscreen);
+                    fullscreen = !fullscreen;
+                case V:
+                    landGroup.setVisible(!landGroup.isVisible());
+                    break;
+                case Q:
+                    stage.close();
+                    break;
             }
         });
     }
