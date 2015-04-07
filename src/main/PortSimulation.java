@@ -13,14 +13,12 @@ package main;
  Z axis is Rows
  Y axis is Height
  */
-import javafx.event.EventHandler;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
@@ -81,11 +79,34 @@ public class PortSimulation {
         root.getChildren().add(camera);
         scene.setCamera(camera);
         
+        // Default camera position (41,-183,445),(-35,-150,0)
+        controller.affine.setTx(41);
+        controller.affine.setTy(-183);
+        controller.affine.setTz(445);
+        controller.setRotate(-25,-150,0);
+        
     }
 
     private void handleKeyboard(Scene scene, final Node root) {
         scene.setOnKeyPressed((KeyEvent event) -> {
             switch (event.getCode()) {
+                case C:
+                    String text = new String();
+                    text += "Current Camera Coordinates\n";
+                    double x = controller.affine.getTx();
+                    double y = controller.affine.getTy();
+                    double z = controller.affine.getTz();
+                    double rx= controller.rotateX.getAngle();
+                    double ry= controller.rotateY.getAngle();
+                    double rz= controller.rotateZ.getAngle();
+                    text += String.format("Pos = (%5.2f,%5.2f,%5.2f)",x,y,z);
+                    text += String.format("Rot = (%5.2f,%5.2f,%5.2f)",rx,ry,rz);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Camera Coordinates");
+                    alert.setHeaderText(null);
+                    alert.setContentText(text);
+                    alert.showAndWait();
+                    break;
                 case F:
                     stage.setFullScreen(!fullscreen);
                     fullscreen = !fullscreen;
