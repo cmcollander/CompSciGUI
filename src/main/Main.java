@@ -60,6 +60,7 @@ public class Main extends Application {
     private static boolean mapLoaded;
     private static CargoShip draggedShip;
     private static SeaMonster draggedMonster;
+    public static boolean threadStepComplete = false;
 
     /**
      * Main method for the application.
@@ -1350,6 +1351,7 @@ public class Main extends Application {
         alert.setHeaderText(null);
         alert.setContentText(aboutMessage);
         alert.showAndWait();
+        
     }
 
     /**
@@ -1455,11 +1457,17 @@ public class Main extends Application {
         }
     }
 
+    
     /**
      * Start a new thread for the predator-prey algorithm
      */
     public void startPredatorPrey() {
-
+        while(!map.getShips().isEmpty()) {
+            step();
+            checkMonsterCollision();
+            refreshMap();
+            delay();
+        }
     }
 
     /**
@@ -1490,5 +1498,51 @@ public class Main extends Application {
         (new PortSimulation(map)).run();
 
         alert.close();
+    }
+    
+    private double distance(SeaMonster m, CargoShip s) {
+        return Math.sqrt((m.getRow()-s.getRow())*(m.getRow()-s.getRow()) + (m.getCol()-s.getCol())*(m.getCol()-s.getCol()));
+    }
+    
+    private void delay() {
+        try {
+            Thread.sleep(100);
+        } catch (Exception ex) {
+            System.out.println("Doesn't support Thread.sleep");
+        }
+    }
+    
+    public void step() {
+        for(SeaMonster monster : map.getMonsters()) {
+            CargoShip closestShip = map.getShips().get(0); // Assume the first ship is the closest
+            for(CargoShip ship : map.getShips()) {
+                double currDistance = distance(monster, ship);
+                if(currDistance<distance(monster,closestShip))
+                    closestShip = ship;
+            }
+            
+            
+            int dx, dy;
+            if(monster.getCol() < closestShip.getCol())
+                dx = 1;
+            else if(monster.getCol() > closestShip.getCol())
+                dx = -1;
+            else
+                dx = 0;
+            
+            if(monster.getRow() < closestShip.getRow())
+                dy = 1;
+            else if(monster.getRow() > closestShip.getRow())
+                dy = -1;
+            else
+                dy = 0;
+            
+            if(!map.isMonster(new Position(monster.getRow()+dy,monster.getCol()+dx))) {
+                monster.setCol(monster.getCol()+dx);
+                monster.setRow(monster.getRow()+dy);
+            }
+            
+        }
+        
     }
 }
