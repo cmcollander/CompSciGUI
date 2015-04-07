@@ -79,7 +79,6 @@ public class PortSimulation {
         root.getChildren().add(camera);
         scene.setCamera(camera);
         setInitialCamera();
-        
     }
     
     public void setInitialCamera() {
