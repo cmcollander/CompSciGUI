@@ -1178,7 +1178,7 @@ public class Main extends Application {
     /**
      * Refresh the graphic viewport of the GUI
      */
-    private static void refreshMap() {
+    public static void refreshMap() {
 
         // Base ocean
         GraphicsContext gc = mapView.getGraphicsContext2D();
@@ -1412,7 +1412,7 @@ public class Main extends Application {
     /**
      * Checks to see if a monster has collided with a ship
      */
-    public void checkMonsterCollision() {
+    public static void checkMonsterCollision() {
         for (SeaMonster monster : map.getMonsters()) {
             try {
                 checkMonsterCollision(monster);
@@ -1427,7 +1427,7 @@ public class Main extends Application {
      * @param monster The monster to check
      * @throws java.lang.Exception
      */
-    public void checkMonsterCollision(SeaMonster monster) throws Exception {
+    public static void checkMonsterCollision(SeaMonster monster) throws Exception {
         if (map.isShip(monster.getRow(), monster.getCol())) {
             SoundManager.growl(monster);
             textArea.setText(monster.battleCry());
@@ -1442,7 +1442,7 @@ public class Main extends Application {
      * @param ship the ship to check
      * @throws java.lang.Exception
      */
-    public void checkMonsterCollision(CargoShip ship) throws Exception {
+    public static void checkMonsterCollision(CargoShip ship) throws Exception {
         if (map.isMonster(new Position(ship.getRow(), ship.getCol()))) {
             SoundManager.growl(map.getMonsterAt(ship.getRow(), ship.getCol()));
             textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
@@ -1456,8 +1456,7 @@ public class Main extends Application {
      *  Start a new thread for the predator-prey algorithm
      */
     public void startPredatorPrey() {
-        PredatorPrey pp = new PredatorPrey(map);
-        pp.run();
+        
     }
 
     /**
