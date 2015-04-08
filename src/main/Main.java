@@ -517,6 +517,9 @@ public class Main extends Application {
                 //Monster Menu
                 //Generate Monsters
                 if ("Generate Monsters".equalsIgnoreCase(text)) {
+                    
+                    if(mapLoaded==true){
+                    
                     int numMonsters = 0;
 
                     TextInputDialog openDialog = new TextInputDialog("10");
@@ -539,10 +542,22 @@ public class Main extends Application {
                     map.generateMonsters(numMonsters);
                     checkMonsterCollision();
                     refreshMap();
+                }else
+                    {    
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("ERROR!");
+                        alert.setHeaderText("Map not loaded.");
+                        alert.setContentText("Please load map first in order to generate monsters.");
+                        alert.showAndWait();
+                        
+                    }
+                        
+                    
                 }
 
                 // Update Monsters MenuItem
                 if ("Update Monsters".equalsIgnoreCase(text)) {
+                    if (mapLoaded==true){
                     ArrayList<String> choices = new ArrayList<>();
                     map.getMonsters().stream().forEach((monster) -> {
                         choices.add(monster.getType());
@@ -582,6 +597,17 @@ public class Main extends Application {
                         }
                     }
                     refreshMap();
+                }else
+                        {
+                        //System.out.println("map not loaded!");
+                        
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("ERROR!");
+                        alert.setHeaderText("Map not loaded.");
+                        alert.setContentText("Please load map first in order to generate and update monsters.");
+                        alert.showAndWait();
+                        
+                    }
                 }
 
                 //Display All Monsters
@@ -605,27 +631,43 @@ public class Main extends Application {
                         map.getMonsters().remove(monster);
                     });
                     */
-                    ArrayList toRemove = new ArrayList();
-                    for (SeaMonster monst : map.getMonsters()) {
-                        if (monst instanceof Godzilla) {
-                            toRemove.add(monst);
-                        }
-                    }
-                    map.getMonsters().removeAll(toRemove);
-                    toRemove.clear();
                     
+                    if (mapLoaded == true){
+                    
+                        ArrayList toRemove = new ArrayList();
+                        for (SeaMonster monst : map.getMonsters()) {
+                            if (monst instanceof Godzilla) {
+                                toRemove.add(monst);
+                            }
+                        }
+                        map.getMonsters().removeAll(toRemove);
+                        toRemove.clear();
 
-                    Godzilla g = new Godzilla();
-                    Position pos = new Position(0, 0);
-                    updateLocationGodzilla(pos);
-                    g.setPosition(pos);
-                    map.getMonsters().add(g);
-                    try {
-                        checkMonsterCollision(g);
-                    } catch (Exception ex) {
-                        displayStackTrace(ex);
+
+                        Godzilla g = new Godzilla();
+                        Position pos = new Position(0, 0);
+                        updateLocationGodzilla(pos);
+                        g.setPosition(pos);
+                        map.getMonsters().add(g);
+                        try {
+                            checkMonsterCollision(g);
+                        } catch (Exception ex) {
+                            displayStackTrace(ex);
+                        }
+                        refreshMap();
                     }
-                    refreshMap();
+                    else 
+                    {
+                        //System.out.println("map not loaded!");
+                        
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("ERROR! Godzilla could not be summoned.");
+                        alert.setHeaderText("Map not loaded.");
+                        alert.setContentText("Please load map first in order to generate Godzilla.");
+                        alert.showAndWait();
+                        
+                    }
+                    
                 }
             }
         };
