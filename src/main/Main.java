@@ -2,7 +2,6 @@
  Chris Collander
  Abdul Rafey Khan
  Clint Wetzel
-
  CSE 1325-002
  Semester Project
  */
@@ -1387,7 +1386,7 @@ public class Main extends Application {
         aboutMessage += "\tName: Chris Collander\n";
         aboutMessage += "\tID: 1001101078\n";
         aboutMessage += "\tName: Abdul Rafey Khan\n";
-        aboutMessage += "\tID: __________\n";
+        aboutMessage += "\tID: 1000955036\n";
         aboutMessage += "\tName: Clint Wetzel\n";
         aboutMessage += "\tID: 1000717927\n";
 
