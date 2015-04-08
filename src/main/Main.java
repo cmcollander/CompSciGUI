@@ -600,9 +600,20 @@ public class Main extends Application {
                 //Summon Godzilla
                 if ("Summon Godzilla".equalsIgnoreCase(text)) {
                     // If there is already a Godzilla, remove him
+                    /*
                     map.getMonsters().stream().filter((monster) -> (monster instanceof Godzilla)).forEach((monster) -> {
                         map.getMonsters().remove(monster);
                     });
+                    */
+                    ArrayList toRemove = new ArrayList();
+                    for (SeaMonster monst : map.getMonsters()) {
+                        if (monst instanceof Godzilla) {
+                            toRemove.add(monst);
+                        }
+                    }
+                    map.getMonsters().removeAll(toRemove);
+                    toRemove.clear();
+                    
 
                     Godzilla g = new Godzilla();
                     Position pos = new Position(0, 0);
