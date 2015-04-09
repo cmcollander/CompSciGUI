@@ -116,7 +116,7 @@ public class PortSimulation {
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                     alert2.setTitle("Oil Spills");
                     alert2.setHeaderText(null);
-                    alert2.setContentText(String.join(",",new Integer(numSpills).toString(),new Integer(numSpillsGroup).toString()));
+                    alert2.setContentText(String.join(",", new Integer(numSpills).toString(), new Integer(numSpillsGroup).toString()));
                     alert2.show();
                     break;
                 case E:

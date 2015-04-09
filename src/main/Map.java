@@ -43,11 +43,11 @@ public class Map {
      *SHOULD implement position checking correctly
      */
     public boolean isMonster(Position position) {
-        if (getMonsters().isEmpty()) {
-            return false;
-        }
-
         return getMonsters().stream().anyMatch((monster) -> (monster.getPosition().equals(position)));
+    }
+
+    public boolean isMonster(int row, int col) {
+        return getMonsters().stream().anyMatch(m -> (m.getRow() == row && m.getCol() == col));
     }
 
     /**
