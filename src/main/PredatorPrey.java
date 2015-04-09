@@ -5,6 +5,11 @@ public class PredatorPrey {
     public static double distance(SeaMonster m, CargoShip s) {
         return Math.sqrt((m.getRow() - s.getRow()) * (m.getRow() - s.getRow()) + (m.getCol() - s.getCol()) * (m.getCol() - s.getCol()));
     }
+    
+    //same concept as above but for ships and docks
+    public static double distance(CargoShip s, Dock d) {
+    	return Math.sqrt((s.getRow() - d.getRow()) * (s.getRow() - d.getRow()) + (s.getCol() - d.getCol()) * (s.getCol() - d.getCol()));
+    }
 
     public static void delay() {
         try {
@@ -54,6 +59,29 @@ public class PredatorPrey {
             monster.getModel().setTranslateY(monster instanceof Godzilla ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 2 : 0) : 0); // Update Monster Height
         }
 
-    }
+        for(CargoShip ship : map.getShips()) {
+        	Dock closestDock = map.getDocks().get(0);
+        	for(Dock dock : map.getDocks()) {
+		        double currDistance = distance(ship, dock);
+        		if(currDistance < distance(ship, closestDock)) {
+		        	closestDock = dock;
+                }
+        	}
 
+        if(ship.getCol() < closestDock.getCol()) {
+		    dx = 1;
+    	} else if (ship.getCol() > closestDock.getCol()) {
+    		dx = -1;
+    	} else {
+	    	dx = 0;
+	    }
+
+	    if(ship.getRow() < closestDock.getRow()) {
+		    dx = 1;
+    	} else if (ship.getRow() > closestDock.getRow()) {
+    		dx = -1;
+    	} else {
+    		dx = 0;
+    	}
+	}
 }
