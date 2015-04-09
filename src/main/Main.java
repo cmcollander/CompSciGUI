@@ -591,52 +591,40 @@ public class Main extends Application {
 
             //Summon Godzilla
             if ("Summon Godzilla".equalsIgnoreCase(text)) {
+                if (loadMapNotify()) {
+                    return;
+                }
+                Godzilla g = new Godzilla();
+                Position pos = new Position(0, 0);
 
-                if (mapLoaded == true) {
-
-                    Godzilla g = new Godzilla();
-                    Position pos = new Position(0, 0);
-
-                    //added boolean check here
-                    if (updateLocationGodzilla(pos)) {
-                        // if updated, remove previous Godzilla
-                        ArrayList toRemove = new ArrayList();
-                        for (SeaMonster monst : map.getMonsters()) {
-                            if (monst instanceof Godzilla) {
-                                toRemove.add(monst);
-                            }
-                        }
-                        map.getMonsters().removeAll(toRemove);
-                        toRemove.clear();
-
-                        g.setPosition(pos);
-                        // Random direction for Godzilla
-                        Random random = new Random();
-                        int direction = random.nextInt(4);
-                        g.setDirection(direction);
-
-                        map.getMonsters().add(g);
-                        try {
-                            checkMonsterCollision(g);
-                        } catch (Exception ex) {
-                            displayStackTrace(ex);
-                        }
-                        try {
-                            SoundManager.theme("thrill.mp3");
-                        } catch (Exception ex) {
-                            System.out.println("could not play sound.");
+                //added boolean check here
+                if (updateLocationGodzilla(pos)) {
+                    // if updated, remove previous Godzilla
+                    ArrayList toRemove = new ArrayList();
+                    for (SeaMonster monst : map.getMonsters()) {
+                        if (monst instanceof Godzilla) {
+                            toRemove.add(monst);
                         }
                     }
-                    refreshMap();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("ERROR! Godzilla could not be summoned.");
-                    alert.setHeaderText("Map not loaded.");
-                    alert.setContentText("Please load map first in order to generate Godzilla.");
-                    alert.showAndWait();
+                    map.getMonsters().removeAll(toRemove);
+                    toRemove.clear();
 
+                    g.setPosition(pos);
+                    // Random direction for Godzilla
+                    Random random = new Random();
+                    int direction = random.nextInt(4);
+                    g.setDirection(direction);
+
+                    map.getMonsters().add(g);
+                    checkMonsterCollision();
+
+                    try {
+                        SoundManager.theme("thrill.mp3");
+                    } catch (Exception ex) {
+                        System.out.println("could not play sound.");
+                    }
                 }
-
+                refreshMap();
             }
         };
     }
@@ -671,19 +659,19 @@ public class Main extends Application {
 
         Label label = new Label("The exception stacktrace was:");
 
-        TextArea textArea = new TextArea(exceptionText);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+        TextArea exceptionTextArea = new TextArea(exceptionText);
+        exceptionTextArea.setEditable(false);
+        exceptionTextArea.setWrapText(true);
 
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        GridPane.setVgrow(textArea, Priority.ALWAYS);
-        GridPane.setHgrow(textArea, Priority.ALWAYS);
+        exceptionTextArea.setMaxWidth(Double.MAX_VALUE);
+        exceptionTextArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(exceptionTextArea, Priority.ALWAYS);
+        GridPane.setHgrow(exceptionTextArea, Priority.ALWAYS);
 
         GridPane expContent = new GridPane();
         expContent.setMaxWidth(Double.MAX_VALUE);
         expContent.add(label, 0, 0);
-        expContent.add(textArea, 0, 1);
+        expContent.add(exceptionTextArea, 0, 1);
 
         alert.getDialogPane().setExpandableContent(expContent);
 
@@ -1219,6 +1207,11 @@ public class Main extends Application {
                 }
             }
         }
+        // Iterate through the OilSpills
+        for (OilSpill spill : map.getSpills()) {
+            gc.setFill(Color.BLACK);
+            gc.fillOval(10 * spill.getPosition().getCol(), 10 * spill.getPosition().getRow(), 8, 8);
+        }
 
         //Iterate through the docks, ALSO CREATING LAND UNDERNEATH
         // *Not all docks are placed on land. Some are on land, some are on water, at least in 'complex'
@@ -1278,7 +1271,7 @@ public class Main extends Application {
                     gc.fillText("B", col, row);
                     break;
                 case 2:
-                    gc.setFill(Color.RED);
+                    gc.setFill(Color.WHITE);
                     gc.fillText("T", col, row);
                     break;
             }
@@ -1293,8 +1286,6 @@ public class Main extends Application {
                 }
             }
             if (!map.isShipSafe(ship.getRow(), ship.getCol())) {
-                // Ship is Unsafe
-                // Safely Docked
                 gc.setFill(Color.YELLOW);
                 gc.fillRect(col, row - 10, 10, 10);
                 gc.setFill(Color.RED);
@@ -1353,7 +1344,7 @@ public class Main extends Application {
     private static void aboutDialog() {
         String aboutMessage = new String();
 
-        aboutMessage += "Team ____\n";
+        aboutMessage += "Team {We never decided on a name}\n";
         aboutMessage += "CSE 1325-002\n";
         aboutMessage += "April 2, 2015\n";
         aboutMessage += "\tName: Chris Collander\n";
@@ -1481,32 +1472,6 @@ public class Main extends Application {
                     ship.removeModel();
                 }
             }
-            map.getShips().removeAll(toRemove);
-            toRemove.clear();
-
-            refreshMap();
-
-        }
-    }
-
-    public static void checkMonsterCollision(SeaMonster monster, PortSimulation ps) throws Exception {
-        if (map.isShip(monster.getRow(), monster.getCol())) {
-
-            SoundManager.growl(monster);
-            textArea.setText(monster.battleCry());
-
-            ArrayList toRemove = new ArrayList();
-            for (CargoShip ship : map.getShips()) {
-                if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
-                    // If the ship being destroyed is an OilTanker, place an OilSpill
-                    if (ship instanceof OilTanker) {
-                        map.getSpills().add(new OilSpill(new Position(ship.getRow(), ship.getCol())));
-                    }
-                    toRemove.add(ship);
-                    ship.removeModel();
-                }
-            }
-
             map.getShips().removeAll(toRemove);
             toRemove.clear();
 
