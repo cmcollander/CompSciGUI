@@ -112,16 +112,18 @@ public class PortSimulation {
                     break;
                 case T:
                     int numSpills = map.getSpills().size();
+                    int numSpillsGroup = spillGroup.getChildren().size();
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                     alert2.setTitle("Oil Spills");
                     alert2.setHeaderText(null);
-                    alert2.setContentText(new Integer(numSpills).toString());
+                    alert2.setContentText(String.join(",",new Integer(numSpills).toString(),new Integer(numSpillsGroup).toString()));
                     alert2.show();
                     break;
                 case E:
                     if (!map.getShips().isEmpty() && !map.getMonsters().isEmpty()) {
                         PredatorPrey.step(map);
                         Main.checkMonsterCollision();
+                        buildSpills();
                         map.getMonsters().stream().forEach((mon) -> {
                             mon.updateXform();
                         });
@@ -340,7 +342,7 @@ public class PortSimulation {
         for (OilSpill spill : map.getSpills()) {
             Xform spillModel = new Xform();
             File modelFile;
-            modelFile = new File("media\\models\\oilSpill2.3ds");
+            modelFile = new File("media\\models\\oilSpill.3ds");
             try {
                 importer.read(modelFile.toURI().toURL());
             } catch (Exception e) {

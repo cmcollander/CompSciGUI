@@ -1576,16 +1576,13 @@ public class Main extends Application {
             ArrayList toRemove = new ArrayList();
             for (CargoShip ship : map.getShips()) {
                 if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
+                    // If the ship being destroyed is an OilTanker, place an OilSpill
                     if (ship instanceof OilTanker) {
                         map.getSpills().add(new OilSpill(new Position(ship.getRow(), ship.getCol())));
                     }
                     toRemove.add(ship);
                     ship.removeModel();
                 }
-            }
-
-            if (map.getShipAt(monster.getRow(), monster.getCol()) instanceof OilTanker) {
-                ps.buildSpills();
             }
 
             map.getShips().removeAll(toRemove);
