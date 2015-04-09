@@ -185,7 +185,7 @@ public class Main extends Application {
                         row = currentShip.getRow();
                         col = currentShip.getCol();
                         try {
-                            checkMonsterCollision(map.getShipAt(row, col));
+                            checkMonsterCollision();
                         } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
@@ -196,7 +196,7 @@ public class Main extends Application {
                     if (map.isMonster(new Position(row, col))) {
                         updateMonster(map.getMonsterAt(row, col));
                         try {
-                            checkMonsterCollision(map.getMonsterAt(row, col));
+                            checkMonsterCollision();
                         } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
@@ -238,7 +238,7 @@ public class Main extends Application {
                         draggedShip.setRow(row);
                         draggedShip.setCol(col);
                         try {
-                            checkMonsterCollision(draggedShip);
+                            checkMonsterCollision();
                         } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
@@ -253,7 +253,7 @@ public class Main extends Application {
                         draggedMonster.setRow(row);
                         draggedMonster.setCol(col);
                         try {
-                            checkMonsterCollision(draggedMonster);
+                            checkMonsterCollision();
                         } catch (Exception ex) {
                             displayStackTrace(ex);
                         }
@@ -421,7 +421,7 @@ public class Main extends Application {
                 // Update Ships MenuItem
                 if ("Update Ships".equalsIgnoreCase(text)) {
 
-                    if (loadMapNotif()) {
+                    if (loadMapNotify()) {
                         return;
                     }
                     ArrayList<String> choices = new ArrayList<>();
@@ -462,7 +462,7 @@ public class Main extends Application {
 
                 // Display All Ships MenuItem
                 if ("Display All Ships".equalsIgnoreCase(text)) {
-                    if (loadMapNotif()) {
+                    if (loadMapNotify()) {
                         return;
                     }
 
@@ -480,7 +480,7 @@ public class Main extends Application {
                 //Port Menu
                 // Unload Ship MenuItem
                 if ("Unload Ship".equalsIgnoreCase(text)) {
-                    if (loadMapNotif()) {
+                    if (loadMapNotify()) {
                         return;
                     }
                     unloadShip();
@@ -488,7 +488,7 @@ public class Main extends Application {
 
                 // Update Docks MenuItem
                 if ("Update Docks".equalsIgnoreCase(text)) {
-                    if (loadMapNotif()) {
+                    if (loadMapNotify()) {
                         return;
                     }
                     /*
@@ -539,7 +539,7 @@ public class Main extends Application {
 
                 //Display All Docks MenuItem
                 if ("Display All Docks".equalsIgnoreCase(text)) {
-                    if (loadMapNotif()) {
+                    if (loadMapNotify()) {
                         return;
                     }
                     String output = "";
@@ -652,7 +652,7 @@ public class Main extends Application {
 
                 //Display All Monsters
                 if ("Display All Monsters".equalsIgnoreCase(text)) {
-                    if (loadMapNotif()) {
+                    if (loadMapNotify()) {
                         return;
                     }
                     String output = new String();
@@ -1548,20 +1548,14 @@ public class Main extends Application {
         if (map.isShip(monster.getRow(), monster.getCol())) {
             SoundManager.growl(monster);
             textArea.setText(monster.battleCry());
-
-            // Remove ship
-            /*
-             for(CargoShip ship : map.getShips()) {
-             if(ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol())
-             map.getShips().remove(ship);
-             }
-             */
+            
             ArrayList toRemove = new ArrayList();
             for (CargoShip ship : map.getShips()) {
                 if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
+                    if(ship instanceof OilTanker)
+                        map.getSpills().add(new OilSpill(new Position(ship.getRow(),ship.getCol())));
                     toRemove.add(ship);
                     ship.removeModel();
-                    //map.getShips().remove(ship);
                 }
             }
             map.getShips().removeAll(toRemove);
@@ -1571,26 +1565,35 @@ public class Main extends Application {
 
         }
     }
+    
+    public static void checkMonsterCollision(SeaMonster monster, PortSimulation ps) throws Exception {
+        if (map.isShip(monster.getRow(), monster.getCol())) {
+            
+            SoundManager.growl(monster);
+            textArea.setText(monster.battleCry());
+            
+            ArrayList toRemove = new ArrayList();
+            for (CargoShip ship : map.getShips()) {
+                if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
+                    if(ship instanceof OilTanker)
+                        map.getSpills().add(new OilSpill(new Position(ship.getRow(),ship.getCol())));
+                    toRemove.add(ship);
+                    ship.removeModel();
+                }
+            }
+            map.getShips().removeAll(toRemove);
+            toRemove.clear();
+            
+            if(map.getShipAt(monster.getRow(), monster.getCol()) instanceof OilTanker) {
+                ps.buildSpills();
+            }
 
-    /**
-     * Checks to see if a Ship has collided with a monster
-     *
-     * @param ship the ship to check
-     * @throws java.lang.Exception
-     */
-    public static void checkMonsterCollision(CargoShip ship) throws Exception {
-        if (map.isMonster(new Position(ship.getRow(), ship.getCol()))) {
-            SoundManager.growl(map.getMonsterAt(ship.getRow(), ship.getCol()));
-            textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
+            refreshMap();
 
-            // Remove ship
-            ship.removeModel();
-
-            map.getShips().remove(ship);
         }
     }
-
-    public boolean loadMapNotif() {
+    
+    public boolean loadMapNotify() {
         if (!mapLoaded) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No Map Loaded");

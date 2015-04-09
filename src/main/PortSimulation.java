@@ -44,6 +44,7 @@ public class PortSimulation {
     private final Xform shipGroup = new Xform();
     private final Xform monsterGroup = new Xform();
     private final Xform dockGroup = new Xform();
+    public final Xform spillGroup = new Xform();
 
     TdsModelImporter importer = new TdsModelImporter();
 
@@ -320,6 +321,34 @@ public class PortSimulation {
             dockModel.setTranslateZ(5 + dock.getRow() * 10);
 
             dockGroup.getChildren().add(dockModel);
+        }
+        world.getChildren().add(dockGroup);
+        dockGroup.setVisible(true);
+    }
+    
+    public void buildSpills() {
+        for (OilSpill spill : map.getSpills()) {
+            Xform spillModel = new Xform();
+            File modelFile;
+            modelFile = new File("media\\models\\oilSpill.3ds");
+            try {
+                importer.read(modelFile.toURI().toURL());
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error opening 3D model!");
+                alert.showAndWait();
+                return;
+            }
+            Node[] spillNodes = importer.getImport();
+            spillModel.getChildren().addAll(spillNodes);
+
+            // Translation
+            spillModel.setRotateZ(180.0);
+            spillModel.setTranslateY(3);
+            spillModel.setTranslateX(5 + spill.getPosition().getCol() * 10);
+            spillModel.setTranslateZ(5 + spill.getPosition().getRow() * 10);
+
+            spillGroup.getChildren().add(spillModel);
         }
         world.getChildren().add(dockGroup);
         dockGroup.setVisible(true);

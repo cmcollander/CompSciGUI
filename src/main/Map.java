@@ -20,6 +20,7 @@ public class Map {
 
     private ArrayList<CargoShip> ships;
     private ArrayList<SeaMonster> monsters;
+    private ArrayList<OilSpill> spills;
     private Port port;
 
     /**
@@ -30,6 +31,7 @@ public class Map {
 
         ships = new ArrayList<>();
         monsters = new ArrayList<>();
+        spills = new ArrayList<>();
         port = new Port();
     }
 
@@ -472,5 +474,19 @@ public class Map {
             }
         }
         return null;
+    }
+
+    /**
+     * @return the spills
+     */
+    public ArrayList<OilSpill> getSpills() {
+        return spills;
+    }
+
+    /**
+     * @param spills the spills to set
+     */
+    public void setSpills(ArrayList<OilSpill> spills) {
+        this.spills = spills;
     }
 }
