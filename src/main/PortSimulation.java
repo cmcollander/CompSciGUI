@@ -61,6 +61,7 @@ public class PortSimulation {
         buildShips();
         buildMonsters();
         buildDocks();
+        buildSpills();
 
         // Get yourself in the right position by repositioning the world... Kinda philosophical
         world.setRotateZ(180);
@@ -356,7 +357,7 @@ public class PortSimulation {
 
             // Translation
             spillModel.setRotateZ(180.0);
-            spillModel.setTranslateY(3);
+            spillModel.setTranslateY(0.5);
             spillModel.setTranslateX(5 + spill.getPosition().getCol() * 10);
             spillModel.setTranslateZ(5 + spill.getPosition().getRow() * 10);
 
