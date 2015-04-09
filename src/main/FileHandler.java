@@ -8,11 +8,12 @@
  */
 package main;
 
-import java.util.ArrayList;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Scanner;
-import java.io.FileOutputStream;
 
 /**
  * Static class to handle loading Port and Map files
@@ -135,5 +136,45 @@ public class FileHandler {
 
         out.close();
         fileOut.close();
+    }
+
+    public static void save(char[][] matrix, File file) {
+        Formatter formatter = null;
+        try {
+            formatter = new Formatter(file);
+        } catch (Exception ex) {
+            System.out.println(Arrays.toString(ex.getStackTrace()));
+            return;
+        }
+        for (int row = 0; row < 36; row++) {
+            for (int col = 0; col < 54; col++) {
+                formatter.format("%d,%d,%c\n", col, row, matrix[row][col]);
+            }
+        }
+        formatter.close();
+    }
+
+    public static char[][] open(File file) {
+        char[][] matrix = new char[36][54];
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
+        }
+        String[] parts;
+
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            parts = line.split(",");
+
+            int row = Integer.parseInt(parts[1].trim());
+            int col = Integer.parseInt(parts[0].trim());
+            char c = parts[2].trim().charAt(0);
+
+            matrix[row][col] = c;
+        }
+        scanner.close();
+        return matrix;
     }
 }

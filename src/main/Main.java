@@ -103,9 +103,11 @@ public class Main extends Application {
         menu12.setOnAction(menuAction);
         MenuItem menu13 = new MenuItem("Snap Shot");
         menu13.setOnAction(menuAction);
+        MenuItem menu15 = new MenuItem("Map Generator");
+        menu15.setOnAction(menuAction);
         MenuItem menu14 = new MenuItem("Exit");
         menu14.setOnAction(menuAction);
-        menu1.getItems().addAll(menu11, menu12, menu13, menu14);
+        menu1.getItems().addAll(menu11, menu12, menu13, menu15, menu14);
 
         // Ship Menu
         MenuItem menu21 = new MenuItem("Generate Ships");
@@ -369,11 +371,19 @@ public class Main extends Application {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Save Snap Shot");
                     File snapShotFile = fileChooser.showSaveDialog(stage);
-                    try {
-                        FileHandler.setSnapShot(snapShotFile, map);
-                    } catch (Exception ex) {
-                        displayStackTrace(ex);
+                    if (snapShotFile != null) {
+                        try {
+                            FileHandler.setSnapShot(snapShotFile, map);
+                        } catch (Exception ex) {
+                            displayStackTrace(ex);
+                        }
                     }
+                }
+                // Map Generator MenuItem
+                if ("Map Generator".equalsIgnoreCase(text)) {
+                    Stage newStage = new Stage();
+                    MapGenerator gen = new MapGenerator();
+                    gen.start(newStage);
                 }
                 // Exit MenuItem
                 if ("Exit".equalsIgnoreCase(text)) {
@@ -409,8 +419,8 @@ public class Main extends Application {
                 }
                 // Update Ships MenuItem
                 if ("Update Ships".equalsIgnoreCase(text)) {
-                    
-                    if(loadMapNotif()){
+
+                    if (loadMapNotif()) {
                         return;
                     }
                     ArrayList<String> choices = new ArrayList<>();
@@ -451,10 +461,10 @@ public class Main extends Application {
 
                 // Display All Ships MenuItem
                 if ("Display All Ships".equalsIgnoreCase(text)) {
-                    if(loadMapNotif()){
+                    if (loadMapNotif()) {
                         return;
                     }
-                    
+
                     String output = "";
                     output = map.getShips().stream().map((ship) -> ship.display()).reduce(output, String::concat);
                     textArea.setText(output);
@@ -469,7 +479,7 @@ public class Main extends Application {
                 //Port Menu
                 // Unload Ship MenuItem
                 if ("Unload Ship".equalsIgnoreCase(text)) {
-                    if(loadMapNotif()){
+                    if (loadMapNotif()) {
                         return;
                     }
                     unloadShip();
@@ -477,19 +487,19 @@ public class Main extends Application {
 
                 // Update Docks MenuItem
                 if ("Update Docks".equalsIgnoreCase(text)) {
-                    if(loadMapNotif()){
+                    if (loadMapNotif()) {
                         return;
                     }
                     /*
-                    if (!mapLoaded) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("No Map Loaded");
-                        alert.setHeaderText("No Map Loaded");
-                        alert.setContentText("Please load a map in order to continue.");
-                        alert.showAndWait();
-                        return;
-                    }*/
-                    
+                     if (!mapLoaded) {
+                     Alert alert = new Alert(Alert.AlertType.ERROR);
+                     alert.setTitle("No Map Loaded");
+                     alert.setHeaderText("No Map Loaded");
+                     alert.setContentText("Please load a map in order to continue.");
+                     alert.showAndWait();
+                     return;
+                     }*/
+
                     ArrayList<String> choices = new ArrayList<>();
                     map.getPort().getDocks().stream().forEach((dock) -> {
                         choices.add(dock.getName());
@@ -528,7 +538,7 @@ public class Main extends Application {
 
                 //Display All Docks MenuItem
                 if ("Display All Docks".equalsIgnoreCase(text)) {
-                    if(loadMapNotif()){
+                    if (loadMapNotif()) {
                         return;
                     }
                     String output = "";
@@ -641,7 +651,7 @@ public class Main extends Application {
 
                 //Display All Monsters
                 if ("Display All Monsters".equalsIgnoreCase(text)) {
-                    if(loadMapNotif()){
+                    if (loadMapNotif()) {
                         return;
                     }
                     String output = new String();
@@ -1580,7 +1590,8 @@ public class Main extends Application {
             map.getShips().remove(ship);
         }
     }
-    public boolean loadMapNotif(){
+
+    public boolean loadMapNotif() {
         if (!mapLoaded) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No Map Loaded");
@@ -1588,7 +1599,7 @@ public class Main extends Application {
             alert.setContentText("Please load a map in order to continue.");
             alert.showAndWait();
             return true;
-        }else{
+        } else {
             return false;
         }
     }

@@ -13,19 +13,19 @@ package main;
  Z axis is Rows
  Y axis is Height
  */
+import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
+import java.io.File;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
+import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.stage.Stage;
 import javafx.scene.shape.Box;
-import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
-import java.io.File;
-import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import org.fxyz.cameras.AdvancedCamera;
 import org.fxyz.cameras.controllers.FPSController;
 
