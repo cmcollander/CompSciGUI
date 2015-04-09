@@ -25,7 +25,12 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Box;
 import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import java.io.File;
+import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.PickResult;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.Sphere;
 import org.fxyz.cameras.AdvancedCamera;
 import org.fxyz.cameras.controllers.FPSController;
 

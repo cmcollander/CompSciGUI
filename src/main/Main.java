@@ -177,7 +177,10 @@ public class Main extends Application {
                     int col = (int) (event.getX() / 10);
                     int row = (int) (event.getY() / 10);
                     if (map.isShip(row, col)) {
-                        updateShip(map.getShipAt(row, col));
+                        CargoShip currentShip = map.getShipAt(row,col);
+                        updateShip(currentShip);
+                        row = currentShip.getRow();
+                        col = currentShip.getCol();
                         try {
                             checkMonsterCollision(map.getShipAt(row, col));
                         } catch (Exception ex) {
@@ -726,7 +729,7 @@ public class Main extends Application {
      *
      * @param ship The ship to be edited
      */
-    private static void updateShip(CargoShip ship) {
+    public static void updateShip(CargoShip ship) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Update Ship");
         dialog.setHeaderText("Update Ship");
@@ -1004,16 +1007,16 @@ public class Main extends Application {
                         alert.showAndWait();
                     } else {
                         if (rowChanged) {
-                            pos.setRow(Integer.parseInt(row.getText()));
+                            pos.setRow(constrain(Integer.parseInt(row.getText()),0,35));
                         }
                         if (colChanged) {
-                            pos.setCol(Integer.parseInt(col.getText()));
+                            pos.setCol(constrain(Integer.parseInt(col.getText()),0,53));
                         }
                         if (latChanged) {
-                            pos.setLatitude(Integer.parseInt(latitude.getText()));
+                            pos.setLatitude(constrain(Double.parseDouble(latitude.getText()),MapConverter.row2lat(0),MapConverter.row2lat(35)));
                         }
                         if (lonChanged) {
-                            pos.setLongitude(Integer.parseInt(longitude.getText()));
+                            pos.setLongitude(constrain(Double.parseDouble(longitude.getText()),MapConverter.col2lon(0),MapConverter.col2lon(53)));
                         }
                     }
                 } catch (Exception ex) {
@@ -1089,16 +1092,16 @@ public class Main extends Application {
                         alert.showAndWait();
                     } else {
                         if (rowChanged) {
-                            pos.setRow(Integer.parseInt(row.getText()));
+                            pos.setRow(constrain(Integer.parseInt(row.getText()),0,35));
                         }
                         if (colChanged) {
-                            pos.setCol(Integer.parseInt(col.getText()));
+                            pos.setCol(constrain(Integer.parseInt(col.getText()),0,53));
                         }
                         if (latChanged) {
-                            pos.setLatitude(Integer.parseInt(latitude.getText()));
+                            pos.setLatitude(constrain(Double.parseDouble(latitude.getText()),MapConverter.row2lat(0),MapConverter.row2lat(35)));
                         }
                         if (lonChanged) {
-                            pos.setLongitude(Integer.parseInt(longitude.getText()));
+                            pos.setLongitude(constrain(Double.parseDouble(longitude.getText()),MapConverter.col2lon(0),MapConverter.col2lon(53)));
                         }
                     }
                 } catch (Exception ex) {
@@ -1407,6 +1410,24 @@ public class Main extends Application {
      * @return the constrained value
      */
     private static int constrain(int val, int min, int max) {
+        if (val < min) {
+            return min;
+        }
+        if (val > max) {
+            return max;
+        }
+        return val;
+    }
+    
+    /**
+     * Constrain an integer between a minimum and a maximum value
+     *
+     * @param val the integer to constrain
+     * @param min the minimum constraint
+     * @param max the maximum constraint
+     * @return the constrained value
+     */
+    private static double constrain(double val, double min, double max) {
         if (val < min) {
             return min;
         }
