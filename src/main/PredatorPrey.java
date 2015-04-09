@@ -45,11 +45,13 @@ public class PredatorPrey {
 
             // If the monster will land on water or a dock, move
             if (!map.isMonster(new Position(monster.getRow() + dy, monster.getCol() + dx))) {
-                if (map.getMatrix()[monster.getRow() + dy][monster.getCol() + dx] == '.' || map.isDock(monster.getRow() + dy, monster.getCol() + dx)) {
+                if (map.getMatrix()[monster.getRow() + dy][monster.getCol() + dx] == '.' || map.isDock(monster.getRow() + dy, monster.getCol() + dx) || monster instanceof Godzilla) {
                     monster.setCol(monster.getCol() + dx);
                     monster.setRow(monster.getRow() + dy);
                 }
             }
+            
+            monster.getModel().setTranslateY(monster instanceof Godzilla ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 2 : 0) : 0); // Update Monster Height
         }
 
     }
