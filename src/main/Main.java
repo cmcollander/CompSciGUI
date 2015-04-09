@@ -570,33 +570,37 @@ public class Main extends Application {
                             alert.setContentText("Please generate monsters before attempting to update one");
                             alert.showAndWait();
                         }
+                        else{
 
-                        ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
-                        dialog.setTitle("Update Monster");
-                        dialog.setHeaderText("Update Monster");
-                        dialog.setContentText("Choose a Monster:");
+                            ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                            dialog.setTitle("Update Monster");
+                            dialog.setHeaderText("Update Monster");
+                            dialog.setContentText("Choose a Monster:");
 
-                        Optional<String> result = dialog.showAndWait();
-                        if (result.isPresent()) {
-                            // Find which dock is being updated and pass it to the updateDock function
-                            boolean found = false;
-                            for (SeaMonster monster : map.getMonsters()) {
-                                if (monster.getType().equals(result.get())) {
-                                    found = true;
-                                    updateMonster(monster);
-                                    try {
-                                        checkMonsterCollision(monster);
-                                    } catch (Exception ex) {
-                                        displayStackTrace(ex);
+                            System.out.println("here3");
+
+                            Optional<String> result = dialog.showAndWait();
+                            if (result.isPresent()) {
+                                // Find which dock is being updated and pass it to the updateDock function
+                                boolean found = false;
+                                for (SeaMonster monster : map.getMonsters()) {
+                                    if (monster.getType().equals(result.get())) {
+                                        found = true;
+                                        updateMonster(monster);
+                                        try {
+                                            checkMonsterCollision(monster);
+                                        } catch (Exception ex) {
+                                            displayStackTrace(ex);
+                                        }
                                     }
                                 }
+                                if (!found) {
+                                    // This shouldn't happen anymore, just a precaution
+                                    incorrectInput();
+                                }
                             }
-                            if (!found) {
-                                // This shouldn't happen anymore, just a precaution
-                                incorrectInput();
-                            }
+                            refreshMap();
                         }
-                        refreshMap();
                     } else {
                         //System.out.println("map not loaded!");
 
@@ -633,29 +637,37 @@ public class Main extends Application {
 
                     if (mapLoaded == true) {
 
-                        ArrayList toRemove = new ArrayList();
-                        for (SeaMonster monst : map.getMonsters()) {
-                            if (monst instanceof Godzilla) {
-                                toRemove.add(monst);
-                            }
-                        }
-                        map.getMonsters().removeAll(toRemove);
-                        toRemove.clear();
-
                         Godzilla g = new Godzilla();
                         Position pos = new Position(0, 0);
-                        updateLocationGodzilla(pos);
-                        g.setPosition(pos);
-                        map.getMonsters().add(g);
-                        try {
-                            checkMonsterCollision(g);
-                        } catch (Exception ex) {
-                            displayStackTrace(ex);
+                        
+                        //added boolean check here
+                        if (updateLocationGodzilla(pos)) {
+                            // if updated, remove previous Godzilla
+                            ArrayList toRemove = new ArrayList();
+                            for (SeaMonster monst : map.getMonsters()) {
+                                if (monst instanceof Godzilla) {
+                                    toRemove.add(monst);
+                                }
+                            }
+                            map.getMonsters().removeAll(toRemove);
+                            toRemove.clear();
+
+                            g.setPosition(pos);
+                            map.getMonsters().add(g);
+                            try {
+                                checkMonsterCollision(g);
+                            } catch (Exception ex) {
+                                displayStackTrace(ex);
+                            }
+                            try {
+                                SoundManager.theme("thrill.mp3");
+                            } catch (Exception ex) {
+                                System.out.println("could not play sound.");
+                                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                         refreshMap();
                     } else {
-                        //System.out.println("map not loaded!");
-
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("ERROR! Godzilla could not be summoned.");
                         alert.setHeaderText("Map not loaded.");
@@ -668,7 +680,6 @@ public class Main extends Application {
             }
         };
     }
-
     /**
      * A dialog alert for incorrect input, usually being called on a number
      * parsing issue
@@ -1026,7 +1037,8 @@ public class Main extends Application {
      *
      * @param pos The position object to be edited
      */
-    private static void updateLocationGodzilla(Position pos) {
+    private static boolean updateLocationGodzilla(Position pos) {
+        boolean check = false;
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Place Godzilla");
         dialog.setHeaderText("Place Godzilla");
@@ -1098,12 +1110,15 @@ public class Main extends Application {
                             pos.setLongitude(constrain(Double.parseDouble(longitude.getText()), MapConverter.col2lon(0), MapConverter.col2lon(53)));
                         }
                     }
+                    check = true;
+                    
                 } catch (Exception ex) {
                     incorrectInput();
                 }
             }
         }
         refreshMap();
+        return check;
     }
 
     /**
@@ -1496,10 +1511,26 @@ public class Main extends Application {
             textArea.setText(monster.battleCry());
 
             // Remove ship
+            /*
             for(CargoShip ship : map.getShips()) {
                 if(ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol())
                     map.getShips().remove(ship);
             }
+            */
+            ArrayList toRemove = new ArrayList();
+            for(CargoShip ship : map.getShips()) {
+                if(ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()){
+                    toRemove.add(ship);
+                    ship.removeModel();
+                    //map.getShips().remove(ship);
+                }
+            }
+            map.getShips().removeAll(toRemove);
+            toRemove.clear();
+            
+            refreshMap();
+            
+
         }
     }
 
@@ -1515,7 +1546,9 @@ public class Main extends Application {
             textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
 
             // Remove ship
+            
             ship.removeModel();
+            
             map.getShips().remove(ship);
         }
     }
@@ -1532,6 +1565,14 @@ public class Main extends Application {
             alert.showAndWait();
             return;
         }
+        
+        try {
+            SoundManager.theme("theme.mp3");
+        } catch (Exception ex) {
+            System.out.println("Error playing sound track.");
+            //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         String text = new String();
         text += "Please be patient while the simulation loads...\n";
         text += "I'll leave this for you to ponder over meanwhile\n";
