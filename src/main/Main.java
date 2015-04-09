@@ -13,6 +13,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -667,12 +668,6 @@ public class Main extends Application {
 
                 //Summon Godzilla
                 if ("Summon Godzilla".equalsIgnoreCase(text)) {
-                    // If there is already a Godzilla, remove him
-                    /*
-                     map.getMonsters().stream().filter((monster) -> (monster instanceof Godzilla)).forEach((monster) -> {
-                     map.getMonsters().remove(monster);
-                     });
-                     */
 
                     if (mapLoaded == true) {
 
@@ -692,6 +687,11 @@ public class Main extends Application {
                             toRemove.clear();
 
                             g.setPosition(pos);
+                            // Random direction for Godzilla
+                            Random random = new Random();
+                            int direction = random.nextInt(4);
+                            g.setDirection(direction);
+                            
                             map.getMonsters().add(g);
                             try {
                                 checkMonsterCollision(g);
@@ -702,12 +702,11 @@ public class Main extends Application {
                                 SoundManager.theme("thrill.mp3");
                             } catch (Exception ex) {
                                 System.out.println("could not play sound.");
-                                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                         refreshMap();
                     } else {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("ERROR! Godzilla could not be summoned.");
                         alert.setHeaderText("Map not loaded.");
                         alert.setContentText("Please load map first in order to generate Godzilla.");
