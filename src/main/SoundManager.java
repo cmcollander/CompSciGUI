@@ -33,13 +33,13 @@ public class SoundManager {
         AudioClip growlSound = new AudioClip(resource.toString());
         growlSound.play();
     }
-    
-    public static void theme(String name)throws Exception{
-        String nameFile ="media\\sounds\\" + name;
-        File tFile= new File (nameFile);
-        
+
+    public static void theme(String name) throws Exception {
+        String nameFile = "media\\sounds\\" + name;
+        File tFile = new File(nameFile);
+
         URL resource = tFile.toURI().toURL();
         AudioClip backgnd = new AudioClip(resource.toString());
-        backgnd.play(); 
+        backgnd.play();
     }
 }

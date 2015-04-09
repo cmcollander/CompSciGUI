@@ -569,8 +569,7 @@ public class Main extends Application {
                             alert.setHeaderText("No monsters yet created");
                             alert.setContentText("Please generate monsters before attempting to update one");
                             alert.showAndWait();
-                        }
-                        else{
+                        } else {
 
                             ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
                             dialog.setTitle("Update Monster");
@@ -639,7 +638,7 @@ public class Main extends Application {
 
                         Godzilla g = new Godzilla();
                         Position pos = new Position(0, 0);
-                        
+
                         //added boolean check here
                         if (updateLocationGodzilla(pos)) {
                             // if updated, remove previous Godzilla
@@ -680,6 +679,7 @@ public class Main extends Application {
             }
         };
     }
+
     /**
      * A dialog alert for incorrect input, usually being called on a number
      * parsing issue
@@ -1111,7 +1111,7 @@ public class Main extends Application {
                         }
                     }
                     check = true;
-                    
+
                 } catch (Exception ex) {
                     incorrectInput();
                 }
@@ -1375,7 +1375,7 @@ public class Main extends Application {
                     break;
                 case 2:
                     gc.setFill(Color.YELLOW);
-                    gc.fillText("S", col, row);
+                    gc.fillText("\u01A7", col, row);
                     break;
                 case 3:
                     gc.setFill(Color.YELLOW);
@@ -1512,14 +1512,14 @@ public class Main extends Application {
 
             // Remove ship
             /*
-            for(CargoShip ship : map.getShips()) {
-                if(ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol())
-                    map.getShips().remove(ship);
-            }
-            */
+             for(CargoShip ship : map.getShips()) {
+             if(ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol())
+             map.getShips().remove(ship);
+             }
+             */
             ArrayList toRemove = new ArrayList();
-            for(CargoShip ship : map.getShips()) {
-                if(ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()){
+            for (CargoShip ship : map.getShips()) {
+                if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
                     toRemove.add(ship);
                     ship.removeModel();
                     //map.getShips().remove(ship);
@@ -1527,9 +1527,8 @@ public class Main extends Application {
             }
             map.getShips().removeAll(toRemove);
             toRemove.clear();
-            
+
             refreshMap();
-            
 
         }
     }
@@ -1546,9 +1545,8 @@ public class Main extends Application {
             textArea.setText(map.getMonsterAt(ship.getRow(), ship.getCol()).battleCry());
 
             // Remove ship
-            
             ship.removeModel();
-            
+
             map.getShips().remove(ship);
         }
     }
@@ -1565,14 +1563,14 @@ public class Main extends Application {
             alert.showAndWait();
             return;
         }
-        
+
         try {
             SoundManager.theme("theme.mp3");
         } catch (Exception ex) {
             System.out.println("Error playing sound track.");
             //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         String text = new String();
         text += "Please be patient while the simulation loads...\n";
         text += "I'll leave this for you to ponder over meanwhile\n";

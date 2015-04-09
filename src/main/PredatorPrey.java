@@ -23,8 +23,6 @@ public class PredatorPrey {
                     closestShip = ship;
                 }
             }
-            
-            
 
             int dx, dy;
             if (monster.getCol() < closestShip.getCol()) {
@@ -33,7 +31,7 @@ public class PredatorPrey {
                 dx = -1;
             } else {
                 dx = 0;
-                
+
             }
 
             if (monster.getRow() < closestShip.getRow()) {
@@ -42,20 +40,18 @@ public class PredatorPrey {
                 dy = -1;
             } else {
                 dy = 0;
-                
+
             }
 
+            // If the monster will land on water or a dock, move
             if (!map.isMonster(new Position(monster.getRow() + dy, monster.getCol() + dx))) {
-                if(map.getMatrix()[monster.getRow() + dy][ monster.getCol() + dx]!='*' || map.isDock(monster.getRow()+dy, monster.getCol()+dx)){
+                if (map.getMatrix()[monster.getRow() + dy][monster.getCol() + dx] == '.' || map.isDock(monster.getRow() + dy, monster.getCol() + dx)) {
                     monster.setCol(monster.getCol() + dx);
                     monster.setRow(monster.getRow() + dy);
                 }
             }
         }
-        
-        
 
     }
-    
 
 }
