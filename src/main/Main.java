@@ -1513,12 +1513,12 @@ public class Main extends Application {
             //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        String text = new String();
-        text += "Please be patient while the simulation loads...\n";
-        text += "I'll leave this for you to ponder over meanwhile\n";
-        text += "*Why is it that when you transport something by car\n";
-        text += "*it is called a shipment, but when you transport\n";
-        text += "*something by ship, it is called cargo???";
+        String text = String.join("\n",
+                "Please be patient while the simulation loads...",
+                "I'll leave this for you to ponder over meanwhile",
+                "\tWhy is it that when you transport something by car",
+                "\tit is called a shipment, but when you transport",
+                "\tsomething by ship, it is called cargo???");
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(text);
