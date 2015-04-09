@@ -1496,8 +1496,10 @@ public class Main extends Application {
             textArea.setText(monster.battleCry());
 
             // Remove ship
-            map.getShipAt(monster.getRow(), monster.getCol()).removeModel();
-            map.getShips().remove(map.getShipAt(monster.getRow(), monster.getCol()));
+            for(CargoShip ship : map.getShips()) {
+                if(ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol())
+                    map.getShips().remove(ship);
+            }
         }
     }
 
