@@ -50,7 +50,7 @@ public class PredatorPrey {
                     monster.setRow(monster.getRow() + dy);
                 }
             }
-            
+
             monster.getModel().setTranslateY(monster instanceof Godzilla ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 2 : 0) : 0); // Update Monster Height
         }
 

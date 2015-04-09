@@ -44,7 +44,7 @@ public class PortSimulation {
     private final Xform shipGroup = new Xform();
     private final Xform monsterGroup = new Xform();
     private final Xform dockGroup = new Xform();
-    public final Xform spillGroup = new Xform();
+    private Xform spillGroup = new Xform();
 
     TdsModelImporter importer = new TdsModelImporter();
 
@@ -110,6 +110,14 @@ public class PortSimulation {
                     alert.setContentText(text);
                     alert.showAndWait();
                     break;
+                case T:
+                    int numSpills = map.getSpills().size();
+                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                    alert2.setTitle("Oil Spills");
+                    alert2.setHeaderText(null);
+                    alert2.setContentText(new Integer(numSpills).toString());
+                    alert2.show();
+                    break;
                 case E:
                     if (!map.getShips().isEmpty() && !map.getMonsters().isEmpty()) {
                         PredatorPrey.step(map);
@@ -132,6 +140,7 @@ public class PortSimulation {
                 case F:  // Fullscreen Toggle (messes up if you use ESC to exit fullscreen
                     stage.setFullScreen(!fullscreen);
                     fullscreen = !fullscreen;
+                    break;
                 case Q:  // Fully closes the 3D Display
                     stage.close();
                     break;
@@ -325,12 +334,13 @@ public class PortSimulation {
         world.getChildren().add(dockGroup);
         dockGroup.setVisible(true);
     }
-    
+
     public void buildSpills() {
+        spillGroup = new Xform();
         for (OilSpill spill : map.getSpills()) {
             Xform spillModel = new Xform();
             File modelFile;
-            modelFile = new File("media\\models\\oilSpill.3ds");
+            modelFile = new File("media\\models\\oilSpill2.3ds");
             try {
                 importer.read(modelFile.toURI().toURL());
             } catch (Exception e) {
@@ -350,7 +360,7 @@ public class PortSimulation {
 
             spillGroup.getChildren().add(spillModel);
         }
-        world.getChildren().add(dockGroup);
-        dockGroup.setVisible(true);
+        world.getChildren().add(spillGroup);
+        spillGroup.setVisible(true);
     }
 }

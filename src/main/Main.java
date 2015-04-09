@@ -691,7 +691,7 @@ public class Main extends Application {
                             Random random = new Random();
                             int direction = random.nextInt(4);
                             g.setDirection(direction);
-                            
+
                             map.getMonsters().add(g);
                             try {
                                 checkMonsterCollision(g);
@@ -1548,12 +1548,13 @@ public class Main extends Application {
         if (map.isShip(monster.getRow(), monster.getCol())) {
             SoundManager.growl(monster);
             textArea.setText(monster.battleCry());
-            
+
             ArrayList toRemove = new ArrayList();
             for (CargoShip ship : map.getShips()) {
                 if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
-                    if(ship instanceof OilTanker)
-                        map.getSpills().add(new OilSpill(new Position(ship.getRow(),ship.getCol())));
+                    if (ship instanceof OilTanker) {
+                        map.getSpills().add(new OilSpill(new Position(ship.getRow(), ship.getCol())));
+                    }
                     toRemove.add(ship);
                     ship.removeModel();
                 }
@@ -1565,34 +1566,36 @@ public class Main extends Application {
 
         }
     }
-    
+
     public static void checkMonsterCollision(SeaMonster monster, PortSimulation ps) throws Exception {
         if (map.isShip(monster.getRow(), monster.getCol())) {
-            
+
             SoundManager.growl(monster);
             textArea.setText(monster.battleCry());
-            
+
             ArrayList toRemove = new ArrayList();
             for (CargoShip ship : map.getShips()) {
                 if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
-                    if(ship instanceof OilTanker)
-                        map.getSpills().add(new OilSpill(new Position(ship.getRow(),ship.getCol())));
+                    if (ship instanceof OilTanker) {
+                        map.getSpills().add(new OilSpill(new Position(ship.getRow(), ship.getCol())));
+                    }
                     toRemove.add(ship);
                     ship.removeModel();
                 }
             }
-            map.getShips().removeAll(toRemove);
-            toRemove.clear();
-            
-            if(map.getShipAt(monster.getRow(), monster.getCol()) instanceof OilTanker) {
+
+            if (map.getShipAt(monster.getRow(), monster.getCol()) instanceof OilTanker) {
                 ps.buildSpills();
             }
 
+            map.getShips().removeAll(toRemove);
+            toRemove.clear();
+
             refreshMap();
 
         }
     }
-    
+
     public boolean loadMapNotify() {
         if (!mapLoaded) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

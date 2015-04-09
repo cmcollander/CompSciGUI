@@ -1,17 +1,17 @@
 package main;
 
-
 public class OilSpill {
+
     private Position position;
-    
+
     public OilSpill() {
         position = new Position();
     }
-    
+
     public OilSpill(Position position) {
         this.position = position;
     }
-    
+
     public static OilSpill newOilSpill(Position position) {
         OilSpill ret = new OilSpill(position);
         return ret;
@@ -30,6 +30,5 @@ public class OilSpill {
     public void setPosition(Position position) {
         this.position = position;
     }
-    
-    
+
 }
