@@ -177,7 +177,7 @@ public class Main extends Application {
                     int col = (int) (event.getX() / 10);
                     int row = (int) (event.getY() / 10);
                     if (map.isShip(row, col)) {
-                        CargoShip currentShip = map.getShipAt(row,col);
+                        CargoShip currentShip = map.getShipAt(row, col);
                         updateShip(currentShip);
                         row = currentShip.getRow();
                         col = currentShip.getCol();
@@ -519,96 +519,93 @@ public class Main extends Application {
                 //Monster Menu
                 //Generate Monsters
                 if ("Generate Monsters".equalsIgnoreCase(text)) {
-                    
-                    if(mapLoaded==true){
-                    
-                    int numMonsters = 0;
 
-                    TextInputDialog openDialog = new TextInputDialog("10");
-                    openDialog.setTitle("Generate Monsters");
-                    openDialog.setHeaderText("Generate a Number of Monsters");
-                    openDialog.setContentText("Please enter the number of monsters:");
+                    if (mapLoaded == true) {
 
-                    Optional<String> result = openDialog.showAndWait();
-                    if (result.isPresent()) {
-                        try {
-                            numMonsters = Integer.parseInt(result.get());
-                        } catch (Exception ex) {
-                            if (ex instanceof NumberFormatException) {
-                                incorrectInput();
-                            } else {
-                                displayStackTrace(ex);
+                        int numMonsters = 0;
+
+                        TextInputDialog openDialog = new TextInputDialog("10");
+                        openDialog.setTitle("Generate Monsters");
+                        openDialog.setHeaderText("Generate a Number of Monsters");
+                        openDialog.setContentText("Please enter the number of monsters:");
+
+                        Optional<String> result = openDialog.showAndWait();
+                        if (result.isPresent()) {
+                            try {
+                                numMonsters = Integer.parseInt(result.get());
+                            } catch (Exception ex) {
+                                if (ex instanceof NumberFormatException) {
+                                    incorrectInput();
+                                } else {
+                                    displayStackTrace(ex);
+                                }
                             }
                         }
-                    }
-                    map.generateMonsters(numMonsters);
-                    checkMonsterCollision();
-                    refreshMap();
-                }else
-                    {    
+                        map.generateMonsters(numMonsters);
+                        checkMonsterCollision();
+                        refreshMap();
+                    } else {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("ERROR!");
                         alert.setHeaderText("Map not loaded.");
                         alert.setContentText("Please load map first in order to generate monsters.");
                         alert.showAndWait();
-                        
+
                     }
-                        
-                    
+
                 }
 
                 // Update Monsters MenuItem
                 if ("Update Monsters".equalsIgnoreCase(text)) {
-                    if (mapLoaded==true){
-                    ArrayList<String> choices = new ArrayList<>();
-                    map.getMonsters().stream().forEach((monster) -> {
-                        choices.add(monster.getType());
-                    });
+                    if (mapLoaded == true) {
+                        ArrayList<String> choices = new ArrayList<>();
+                        map.getMonsters().stream().forEach((monster) -> {
+                            choices.add(monster.getType());
+                        });
 
-                    if (choices.isEmpty()) {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("No monsters yet created");
-                        alert.setHeaderText("No monsters yet created");
-                        alert.setContentText("Please generate monsters before attempting to update one");
-                        alert.showAndWait();
-                    }
+                        if (choices.isEmpty()) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("No monsters yet created");
+                            alert.setHeaderText("No monsters yet created");
+                            alert.setContentText("Please generate monsters before attempting to update one");
+                            alert.showAndWait();
+                        }
 
-                    ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
-                    dialog.setTitle("Update Monster");
-                    dialog.setHeaderText("Update Monster");
-                    dialog.setContentText("Choose a Monster:");
+                        ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                        dialog.setTitle("Update Monster");
+                        dialog.setHeaderText("Update Monster");
+                        dialog.setContentText("Choose a Monster:");
 
-                    Optional<String> result = dialog.showAndWait();
-                    if (result.isPresent()) {
-                        // Find which dock is being updated and pass it to the updateDock function
-                        boolean found = false;
-                        for (SeaMonster monster : map.getMonsters()) {
-                            if (monster.getType().equals(result.get())) {
-                                found = true;
-                                updateMonster(monster);
-                                try {
-                                    checkMonsterCollision(monster);
-                                } catch (Exception ex) {
-                                    displayStackTrace(ex);
+                        Optional<String> result = dialog.showAndWait();
+                        if (result.isPresent()) {
+                            // Find which dock is being updated and pass it to the updateDock function
+                            boolean found = false;
+                            for (SeaMonster monster : map.getMonsters()) {
+                                if (monster.getType().equals(result.get())) {
+                                    found = true;
+                                    updateMonster(monster);
+                                    try {
+                                        checkMonsterCollision(monster);
+                                    } catch (Exception ex) {
+                                        displayStackTrace(ex);
+                                    }
                                 }
                             }
+                            if (!found) {
+                                // This shouldn't happen anymore, just a precaution
+                                incorrectInput();
+                            }
                         }
-                        if (!found) {
-                            // This shouldn't happen anymore, just a precaution
-                            incorrectInput();
-                        }
-                    }
-                    refreshMap();
-                }else
-                        {
+                        refreshMap();
+                    } else {
                         //System.out.println("map not loaded!");
-                        
+
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("ERROR!");
                         alert.setHeaderText("Map not loaded.");
                         alert.setContentText("Please load map first in order to generate and update monsters.");
                         alert.showAndWait();
-                        
+
                     }
                 }
 
@@ -629,13 +626,13 @@ public class Main extends Application {
                 if ("Summon Godzilla".equalsIgnoreCase(text)) {
                     // If there is already a Godzilla, remove him
                     /*
-                    map.getMonsters().stream().filter((monster) -> (monster instanceof Godzilla)).forEach((monster) -> {
-                        map.getMonsters().remove(monster);
-                    });
-                    */
-                    
-                    if (mapLoaded == true){
-                    
+                     map.getMonsters().stream().filter((monster) -> (monster instanceof Godzilla)).forEach((monster) -> {
+                     map.getMonsters().remove(monster);
+                     });
+                     */
+
+                    if (mapLoaded == true) {
+
                         ArrayList toRemove = new ArrayList();
                         for (SeaMonster monst : map.getMonsters()) {
                             if (monst instanceof Godzilla) {
@@ -644,7 +641,6 @@ public class Main extends Application {
                         }
                         map.getMonsters().removeAll(toRemove);
                         toRemove.clear();
-
 
                         Godzilla g = new Godzilla();
                         Position pos = new Position(0, 0);
@@ -657,19 +653,17 @@ public class Main extends Application {
                             displayStackTrace(ex);
                         }
                         refreshMap();
-                    }
-                    else 
-                    {
+                    } else {
                         //System.out.println("map not loaded!");
-                        
+
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("ERROR! Godzilla could not be summoned.");
                         alert.setHeaderText("Map not loaded.");
                         alert.setContentText("Please load map first in order to generate Godzilla.");
                         alert.showAndWait();
-                        
+
                     }
-                    
+
                 }
             }
         };
@@ -1007,16 +1001,16 @@ public class Main extends Application {
                         alert.showAndWait();
                     } else {
                         if (rowChanged) {
-                            pos.setRow(constrain(Integer.parseInt(row.getText()),0,35));
+                            pos.setRow(constrain(Integer.parseInt(row.getText()), 0, 35));
                         }
                         if (colChanged) {
-                            pos.setCol(constrain(Integer.parseInt(col.getText()),0,53));
+                            pos.setCol(constrain(Integer.parseInt(col.getText()), 0, 53));
                         }
                         if (latChanged) {
-                            pos.setLatitude(constrain(Double.parseDouble(latitude.getText()),MapConverter.row2lat(0),MapConverter.row2lat(35)));
+                            pos.setLatitude(constrain(Double.parseDouble(latitude.getText()), MapConverter.row2lat(0), MapConverter.row2lat(35)));
                         }
                         if (lonChanged) {
-                            pos.setLongitude(constrain(Double.parseDouble(longitude.getText()),MapConverter.col2lon(0),MapConverter.col2lon(53)));
+                            pos.setLongitude(constrain(Double.parseDouble(longitude.getText()), MapConverter.col2lon(0), MapConverter.col2lon(53)));
                         }
                     }
                 } catch (Exception ex) {
@@ -1092,16 +1086,16 @@ public class Main extends Application {
                         alert.showAndWait();
                     } else {
                         if (rowChanged) {
-                            pos.setRow(constrain(Integer.parseInt(row.getText()),0,35));
+                            pos.setRow(constrain(Integer.parseInt(row.getText()), 0, 35));
                         }
                         if (colChanged) {
-                            pos.setCol(constrain(Integer.parseInt(col.getText()),0,53));
+                            pos.setCol(constrain(Integer.parseInt(col.getText()), 0, 53));
                         }
                         if (latChanged) {
-                            pos.setLatitude(constrain(Double.parseDouble(latitude.getText()),MapConverter.row2lat(0),MapConverter.row2lat(35)));
+                            pos.setLatitude(constrain(Double.parseDouble(latitude.getText()), MapConverter.row2lat(0), MapConverter.row2lat(35)));
                         }
                         if (lonChanged) {
-                            pos.setLongitude(constrain(Double.parseDouble(longitude.getText()),MapConverter.col2lon(0),MapConverter.col2lon(53)));
+                            pos.setLongitude(constrain(Double.parseDouble(longitude.getText()), MapConverter.col2lon(0), MapConverter.col2lon(53)));
                         }
                     }
                 } catch (Exception ex) {
@@ -1418,7 +1412,7 @@ public class Main extends Application {
         }
         return val;
     }
-    
+
     /**
      * Constrain an integer between a minimum and a maximum value
      *
