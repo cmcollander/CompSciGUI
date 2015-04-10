@@ -42,6 +42,11 @@ public class CargoShip {
         model = new Xform();
     }
 
+    public void updateXform() {
+        model.setTranslateX(5 + getCol() * 10);
+        model.setTranslateZ(5 + getRow() * 10);
+    }
+
     public void removeModel() {
         model.setTranslateY(10000);
     }

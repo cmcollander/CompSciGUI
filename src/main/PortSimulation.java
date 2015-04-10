@@ -128,6 +128,9 @@ public class PortSimulation {
                         map.getMonsters().stream().forEach((mon) -> {
                             mon.updateXform();
                         });
+                        map.getShips().stream().forEach((ship) -> {
+                            ship.updateXform();
+                        });
                     }
                     break;
                 case R:
@@ -136,6 +139,9 @@ public class PortSimulation {
                         Main.checkMonsterCollision();
                         map.getMonsters().stream().forEach((mon) -> {
                             mon.updateXform();
+                        });
+                        map.getShips().stream().forEach((ship) -> {
+                            ship.updateXform();
                         });
                         PredatorPrey.delay();
                     }
