@@ -29,29 +29,6 @@ public class Port {
     }
 
     /**
-     * Unload a CargoShip into a dock Check for safety before running this
-     * method!
-     *
-     * @param ship The CargoShip to unload
-     */
-    public void unloadShip(CargoShip ship) throws NullPointerException {
-        // If there is no cargo on the ship, return without doing anything else.
-        if (ship.getCargo() == null) {
-            return;
-        }
-
-        // Find the corresponding Dock for the ship (if no dock found, will just return)
-        for (Dock dock : docks) {
-            if (ship.getRow() == dock.getRow() && ship.getCol() == dock.getCol()) {
-                // Add the ship's cargo to the port's cargo array, remove from ship.
-                cargos.add(ship.getCargo());
-                ship.setCargo(null);
-                return;
-            }
-        }
-    }
-
-    /**
      * Display all docks and cargos in this port
      */
     public void display() {
