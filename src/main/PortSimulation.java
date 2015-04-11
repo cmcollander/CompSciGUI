@@ -124,7 +124,9 @@ public class PortSimulation {
                     if (!map.getShips().isEmpty() && !map.getMonsters().isEmpty()) {
                         PredatorPrey.step(map);
                         Main.checkMonsterCollision();
-                        buildSpills();
+                        map.getSpills().stream().forEach((spill) -> {
+                            buildSpills();
+                        });
                         map.getMonsters().stream().forEach((mon) -> {
                             mon.updateXform();
                         });
@@ -347,7 +349,6 @@ public class PortSimulation {
     public void buildSpills() {
         spillGroup = new Xform();
         for (OilSpill spill : map.getSpills()) {
-            Xform spillModel = new Xform();
             File modelFile;
             modelFile = new File("media\\models\\oilSpill.3ds");
             try {
@@ -359,15 +360,16 @@ public class PortSimulation {
                 return;
             }
             Node[] spillNodes = importer.getImport();
-            spillModel.getChildren().addAll(spillNodes);
+            spill.getModel().getChildren().addAll(spillNodes);
 
             // Translation
-            spillModel.setRotateZ(180.0);
-            spillModel.setTranslateY(0.5);
-            spillModel.setTranslateX(5 + spill.getPosition().getCol() * 10);
-            spillModel.setTranslateZ(5 + spill.getPosition().getRow() * 10);
+            spill.getModel().setRotateZ(180.0);
+            spill.getModel().setRotateY(spill.getDirection() * 90);
+            spill.getModel().setTranslateY(0.5);
+            spill.getModel().setTranslateX(5 + spill.getPosition().getCol() * 10);
+            spill.getModel().setTranslateZ(5 + spill.getPosition().getRow() * 10);
 
-            spillGroup.getChildren().add(spillModel);
+            spillGroup.getChildren().add(spill.getModel());
         }
         world.getChildren().add(spillGroup);
         spillGroup.setVisible(true);

@@ -51,14 +51,14 @@ public class PredatorPrey {
             }
 
             // Lets add a step of randomness here!
-            dx = randStep(dx);
-            dy = randStep(dy);
+            int newRow = constrain(monster.getRow() + randStep(dy), 0, 35);
+            int newCol = constrain(monster.getCol() + randStep(dx), 0, 53);
 
             // If the monster will land on water or a dock, move
-            if (!map.isMonster(new Position(monster.getRow() + dy, monster.getCol() + dx))) {
-                if (map.getMatrix()[monster.getRow() + dy][monster.getCol() + dx] == '.' || map.isDock(monster.getRow() + dy, monster.getCol() + dx) || monster instanceof Godzilla) {
-                    monster.setCol(monster.getCol() + dx);
-                    monster.setRow(monster.getRow() + dy);
+            if (!map.isMonster(new Position(newRow, newCol))) {
+                if (map.getMatrix()[newRow][newCol] == '.' || map.isDock(newRow, newCol) || monster instanceof Godzilla) {
+                    monster.setCol(newCol);
+                    monster.setRow(newRow);
                 }
             }
 
@@ -94,17 +94,27 @@ public class PredatorPrey {
             }
 
             // Lets add a step of randomness here!
-            dx = randStep(dx);
-            dy = randStep(dy);
+            int newRow = constrain(ship.getRow() + randStep(dy), 0, 35);
+            int newCol = constrain(ship.getCol() + randStep(dx), 0, 53);
 
             // If the monster will land on water or a dock, move
-            if (!map.isShip(ship.getRow() + dy, ship.getCol() + dx)) {
-                if (map.getMatrix()[ship.getRow() + dy][ship.getCol() + dx] == '.' || map.isDock(ship.getRow() + dy, ship.getCol() + dx)) {
-                    ship.setCol(ship.getCol() + dx);
-                    ship.setRow(ship.getRow() + dy);
+            if (!map.isShip(newRow, newCol)) {
+                if (map.getMatrix()[newRow][newCol] == '.' || map.isDock(newRow, newCol)) {
+                    ship.setCol(newCol);
+                    ship.setRow(newRow);
                 }
             }
         }
+    }
+
+    private static int constrain(int val, int min, int max) {
+        if (val < min) {
+            return min;
+        }
+        if (val > max) {
+            return max;
+        }
+        return val;
     }
 
     public static int randStep(int d) {
