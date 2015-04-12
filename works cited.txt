@@ -1,0 +1,23 @@
+Sea Serpent sound
+	author:		jppi_Stu
+	website:	https://www.freesound.org/people/jppi_Stu/sounds/119636/
+	license link:	http://creativecommons.org/licenses/by/3.0/legalcode
+	changes:	Added a fade out to the last second of the file, converted to mp3
+
+Kraken sound
+	author:		Kirat
+	website:	https://www.freesound.org/people/Kirat/sounds/158687/
+	license link:	http://creativecommons.org/publicdomain/zero/1.0/legalcode
+	changes:	Converted to mp3
+
+Leviathan Sound
+	author:		daf024
+	website:	https://www.freesound.org/people/daf024/sounds/84609/
+	license link:	http://creativecommons.org/licenses/by/3.0/legalcode
+	changes:	Trimmed down to only "come to me" and converted to mp3
+
+Godzilla sound
+	author:		
+	website:	
+	license link:	
+	changes:	
