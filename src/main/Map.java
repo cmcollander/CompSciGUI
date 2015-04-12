@@ -36,22 +36,25 @@ public class Map {
         port = new Port();
         enterprise = null;
     }
-    
+
     public boolean hasGodzilla() {
         return monsters.stream().anyMatch((mon) -> (mon instanceof Godzilla));
     }
-    
+
     public Godzilla getGodzilla() {
-        if(!hasGodzilla())
+        if (!hasGodzilla()) {
             return null;
-        for(SeaMonster mon : monsters)
-            if(mon instanceof Godzilla)
-                return (Godzilla)mon;
+        }
+        for (SeaMonster mon : monsters) {
+            if (mon instanceof Godzilla) {
+                return (Godzilla) mon;
+            }
+        }
         return null;
     }
-    
+
     public boolean hasEnterprise() {
-        return getEnterprise()!=null;
+        return getEnterprise() != null;
     }
 
     /*

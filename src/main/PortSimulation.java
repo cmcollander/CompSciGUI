@@ -124,7 +124,7 @@ public class PortSimulation {
                     break;
                 case E:
                     PredatorPrey.step(map);
-                    Main.checkMonsterCollision();
+                    Main.checkCollisions();
                     buildSpills();
                     map.getMonsters().stream().forEach((mon) -> {
                         mon.updateXform();
@@ -132,20 +132,21 @@ public class PortSimulation {
                     map.getShips().stream().forEach((ship) -> {
                         ship.updateXform();
                     });
-                    if(map.hasEnterprise())
+                    if (map.hasEnterprise()) {
                         map.getEnterprise().updateXform();
+                    }
                     break;
                 case R:
                     while (!map.getShips().isEmpty()) {
                         PredatorPrey.step(map);
-                        Main.checkMonsterCollision();
+                        Main.checkCollisions();
                         map.getMonsters().stream().forEach((mon) -> {
                             mon.updateXform();
                         });
                         map.getShips().stream().forEach((ship) -> {
                             ship.updateXform();
                         });
-                        PredatorPrey.delay();
+                        // DELAY WOULD GO HERE
                     }
                     break;
                 case Y:
@@ -373,16 +374,16 @@ public class PortSimulation {
         world.getChildren().add(spillGroup);
         spillGroup.setVisible(true);
     }
-    
+
     public void buildEnterprise() {
         File modelFile = new File("media\\models\\Enterprise.3ds");
         try {
             importer.read(modelFile.toURI().toURL());
-        } catch(Exception e) {
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Error opening 3D model!");
-                alert.showAndWait();
-                return;
+            alert.setContentText("Error opening 3D model!");
+            alert.showAndWait();
+            return;
         }
         Node[] eNodes = importer.getImport();
         Xform model = new Xform();
@@ -393,7 +394,7 @@ public class PortSimulation {
         extraGroup.getChildren().add(model);
         world.getChildren().add(extraGroup);
         extraGroup.setVisible(true);
-        
+
     }
-    
+
 }

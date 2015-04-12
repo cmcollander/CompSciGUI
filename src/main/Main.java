@@ -180,14 +180,14 @@ public class Main extends Application {
                 if (map.isShip(row, col)) {
                     CargoShip currentShip = map.getShipAt(row, col);
                     updateShip(currentShip);
-                    checkMonsterCollision();
+                    checkCollisions();
                 }
                 if (map.isDock(row, col)) {
                     updateDock(map.getDockAt(row, col));
                 }
                 if (map.isMonster(row, col)) {
                     updateMonster(map.getMonsterAt(row, col));
-                    checkMonsterCollision();
+                    checkCollisions();
                 }
             }
         });
@@ -218,7 +218,7 @@ public class Main extends Application {
                 if (draggedShip != null) {
                     draggedShip.setRow(row);
                     draggedShip.setCol(col);
-                    checkMonsterCollision();
+                    checkCollisions();
 
                     if (map.isDock(row, col)) {
                         draggedShip.setDirection(map.getDockAt(row, col).getDirection());
@@ -230,7 +230,7 @@ public class Main extends Application {
                 if (draggedMonster != null) {
                     draggedMonster.setRow(row);
                     draggedMonster.setCol(col);
-                    checkMonsterCollision();
+                    checkCollisions();
 
                     draggedMonster = null;
                     refreshMap();
@@ -384,7 +384,7 @@ public class Main extends Application {
                     }
                 }
                 map.generateShips(numShips);
-                checkMonsterCollision();
+                checkCollisions();
 
                 refreshMap();
             }
@@ -415,7 +415,7 @@ public class Main extends Application {
                         for (CargoShip ship : map.getShips()) {
                             if (ship.getName().equals(result.get())) {
                                 updateShip(ship);
-                                checkMonsterCollision();
+                                checkCollisions();
                             }
                         }
                     }
@@ -530,7 +530,7 @@ public class Main extends Application {
                     }
                 }
                 map.generateMonsters(numMonsters);
-                checkMonsterCollision();
+                checkCollisions();
                 refreshMap();
 
             }
@@ -565,7 +565,7 @@ public class Main extends Application {
                         for (SeaMonster monster : map.getMonsters()) {
                             if (monster.getType().equals(result.get())) {
                                 updateMonster(monster);
-                                checkMonsterCollision();
+                                checkCollisions();
                             }
                         }
                     }
@@ -616,7 +616,7 @@ public class Main extends Application {
                     g.setDirection(direction);
 
                     map.getMonsters().add(g);
-                    checkMonsterCollision();
+                    checkCollisions();
 
                     try {
                         SoundManager.theme("thrill.mp3");
@@ -1439,32 +1439,57 @@ public class Main extends Application {
     }
 
     /**
-     * Checks to see if a monster has collided with a ship
+     * Checks to see if there are any collisions
      */
-    public static void checkMonsterCollision() {
-        map.getMonsters().stream().forEach((monster) -> {
+    public static void checkCollisions() {
+        // Handle all collisions here
+        // Handle Enterprise
+        if (map.hasEnterprise()) {
+            checkEnterprise();
+        }
+        // Handle Godzilla
+        if (map.hasGodzilla()) {
+            checkGodzilla();
+        }
+        // Handle Monsters
+        if (!map.getMonsters().isEmpty()) {
+            checkMonsters();
+        }
+        if (!map.getShips().isEmpty()) {
+            checkShips();
+        }
+        // Refresh the map
+        refreshMap();
+    }
+
+    public static void checkEnterprise() {
+        if (!map.hasGodzilla()) {
+            return;
+        }
+        Enterprise e = map.getEnterprise();
+        Godzilla g = map.getGodzilla();
+        if (PredatorPrey.distance(e.getPosition(), g.getPosition()) < 4) {
+            g.getModel().setTranslateY(10000);
+            g.setModel(null);
+            map.getMonsters().remove(g);
+            g = null;
+        }
+    }
+
+    public static void checkGodzilla() {
+        Godzilla g = map.getGodzilla();
+        // Godzilla eats ships
+        if (map.isShip(g.getRow(), g.getCol())) {
             try {
-                checkMonsterCollision(monster);
+                SoundManager.growl(g);
             } catch (Exception ex) {
                 displayStackTrace(ex);
             }
-        });
-    }
-
-    /**
-     * Checks to see if a monster has collided with a ship
-     *
-     * @param monster The monster to check
-     * @throws java.lang.Exception
-     */
-    public static void checkMonsterCollision(SeaMonster monster) throws Exception {
-        if (map.isShip(monster.getRow(), monster.getCol())) {
-            SoundManager.growl(monster);
-            textArea.setText(monster.battleCry());
+            textArea.setText(g.battleCry());
 
             ArrayList toRemove = new ArrayList();
             for (CargoShip ship : map.getShips()) {
-                if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
+                if (ship.getRow() == g.getRow() && ship.getCol() == g.getCol()) {
                     if (ship instanceof OilTanker) {
                         map.getSpills().add(new OilSpill(new Position(ship.getRow(), ship.getCol())));
                     }
@@ -1474,9 +1499,64 @@ public class Main extends Application {
             }
             map.getShips().removeAll(toRemove);
             toRemove.clear();
+        }
+        // And Godzilla eats monsters
+        if (map.isMonster(g.getPosition())) {
+            try {
+                SoundManager.growl(g);
+            } catch (Exception ex) {
+                displayStackTrace(ex);
+            }
+            textArea.setText(g.battleCry());
 
-            refreshMap();
+            ArrayList toRemove = new ArrayList();
+            for (SeaMonster monster : map.getMonsters()) {
+                if (!(monster instanceof Godzilla) && monster.getRow() == g.getRow() && monster.getCol() == g.getCol()) {
+                    toRemove.add(monster);
+                    monster.removeModel();
+                }
+            }
+            map.getMonsters().removeAll(toRemove);
+            toRemove.clear();
+        }
+    }
 
+    public static void checkMonsters() {
+
+        for (SeaMonster monster : map.getMonsters()) {
+            if (monster instanceof Godzilla) // Godzilla is handled in checkGodzilla, not checkMonsters
+            {
+                continue;
+            }
+            if (map.isShip(monster.getRow(), monster.getCol())) {
+                try {
+                    SoundManager.growl(monster);
+                } catch (Exception ex) {
+                    displayStackTrace(ex);
+                }
+                textArea.setText(monster.battleCry());
+
+                ArrayList toRemove = new ArrayList();
+                for (CargoShip ship : map.getShips()) {
+                    if (ship.getRow() == monster.getRow() && ship.getCol() == monster.getCol()) {
+                        if (ship instanceof OilTanker) {
+                            map.getSpills().add(new OilSpill(new Position(ship.getRow(), ship.getCol())));
+                        }
+                        toRemove.add(ship);
+                        ship.removeModel();
+                    }
+                }
+                map.getShips().removeAll(toRemove);
+                toRemove.clear();
+            }
+        }
+    }
+
+    public static void checkShips() {
+        for (CargoShip ship : map.getShips()) {
+            if (map.isDock(ship.getRow(), ship.getCol())) {
+                ship.setDirection(map.getDockAt(ship.getRow(), ship.getCol()).getDirection());
+            }
         }
     }
 
