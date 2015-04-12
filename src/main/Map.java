@@ -34,6 +34,19 @@ public class Map {
         spills = new ArrayList<>();
         port = new Port();
     }
+    
+    public boolean hasGodzilla() {
+        return monsters.stream().anyMatch((mon) -> (mon instanceof Godzilla));
+    }
+    
+    public Godzilla getGodzilla() {
+        if(!hasGodzilla())
+            return null;
+        for(SeaMonster mon : monsters)
+            if(mon instanceof Godzilla)
+                return (Godzilla)mon;
+        return null;
+    }
 
     /*
      * Method to determin if there is a monster at a specific grid position
