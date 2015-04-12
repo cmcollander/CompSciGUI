@@ -31,7 +31,7 @@ public class CargoShip {
      * Default Constructor for the Ship class
      */
     public CargoShip() {
-        this.direction = new Random().nextDouble()*4;
+        this.direction = new Random().nextDouble() * 4;
         this.name = "Zenda";
         this.countryOfRegistration = "Ruritania";
         this.transponderNumber = 0;
@@ -60,7 +60,7 @@ public class CargoShip {
      * @param line the string to parse for the new Ship
      */
     public CargoShip(String line) {
-        this.direction = new Random().nextDouble()*4;;
+        this.direction = new Random().nextDouble() * 4;;
         String[] parts = line.split(",");
         this.name = parts[0].trim();
         this.countryOfRegistration = parts[1].trim();

@@ -10,13 +10,13 @@ public class OilSpill {
 
     public OilSpill() {
         position = new Position();
-        direction = new Random().nextDouble()*4;
+        direction = new Random().nextDouble() * 4;
         model = new Xform();
     }
 
     public OilSpill(Position position) {
         this.position = position;
-        direction = new Random().nextDouble()*4;
+        direction = new Random().nextDouble() * 4;
         model = new Xform();
     }
 

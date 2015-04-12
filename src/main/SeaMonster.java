@@ -26,7 +26,7 @@ public abstract class SeaMonster {
 
     //Basic constructor
     public SeaMonster() {
-        this.direction = new Random().nextDouble()*4;
+        this.direction = new Random().nextDouble() * 4;
         this.position = new Position();
         this.type = "Sea Monster";
         this.model = new Xform();
@@ -137,5 +137,9 @@ public abstract class SeaMonster {
      */
     public void setDirection(double direction) {
         this.direction = direction;
+    }
+
+    public void removeModel() {
+        model.setTranslateY(10000);
     }
 }
