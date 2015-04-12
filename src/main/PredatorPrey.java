@@ -3,22 +3,11 @@ package main;
 import java.util.Random;
 
 public class PredatorPrey {
-
-    public static double distance(SeaMonster m, CargoShip s) {
-        return Math.sqrt((m.getRow() - s.getRow()) * (m.getRow() - s.getRow()) + (m.getCol() - s.getCol()) * (m.getCol() - s.getCol()));
-    }
-
-    //same concept as above but for ships and docks
-    public static double distance(CargoShip s, Dock d) {
-        return Math.sqrt((s.getRow() - d.getRow()) * (s.getRow() - d.getRow()) + (s.getCol() - d.getCol()) * (s.getCol() - d.getCol()));
-    }
-
-    public static void delay() {
-        try {
-            Thread.sleep(100);
-        } catch (Exception ex) {
-            System.out.println("Doesn't support Thread.sleep");
-        }
+    
+    public static double distance(Position a, Position b) {
+        int dr = b.getRow()-a.getRow();
+        int dc = b.getCol()-a.getCol();
+        return Math.hypot(dr, dc);
     }
 
     public static void step(Map map) {
@@ -69,8 +58,8 @@ public class PredatorPrey {
                 if (!map.getShips().isEmpty()) {
                     CargoShip closestShip = map.getShips().get(0); // Assume the first ship is the closest
                     for (CargoShip ship : map.getShips()) {
-                        double currDistance = distance(monster, ship);
-                        if (currDistance < distance(monster, closestShip)) {
+                        double currDistance = distance(monster.getPosition(), ship.getPosition());
+                        if (currDistance < distance(monster.getPosition(), closestShip.getPosition())) {
                             closestShip = ship;
                         }
                     }
@@ -119,8 +108,8 @@ public class PredatorPrey {
         for (CargoShip ship : map.getShips()) {
             Dock closestDock = map.getPort().getDocks().get(0);
             for (Dock dock : map.getPort().getDocks()) {
-                double currDistance = distance(ship, dock);
-                if (currDistance < distance(ship, closestDock)) {
+                double currDistance = distance(ship.getPosition(), dock.getPosition());
+                if (currDistance < distance(ship.getPosition(), closestDock.getPosition())) {
                     closestDock = dock;
                 }
             }
@@ -204,16 +193,12 @@ public class PredatorPrey {
         e.getPosition().setRow(newRow);
         e.getPosition().setCol(newCol);
 
-        if (distance(e, g) < 4) {
+        if (distance(e.getPosition(), g.getPosition()) < 4) {
             g.getModel().setTranslateY(10000);
             g.setModel(null);
             map.getMonsters().remove(g);
             g = null;
         }
 
-    }
-
-    private static int distance(Enterprise e, Godzilla g) {
-        return (int) Math.sqrt((e.getPosition().getCol() - g.getPosition().getCol()) * (e.getPosition().getCol() - g.getPosition().getCol()) + (e.getPosition().getRow() - g.getPosition().getRow()) * (e.getPosition().getRow() - g.getPosition().getRow()));
     }
 }

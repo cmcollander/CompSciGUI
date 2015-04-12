@@ -145,7 +145,7 @@ public class PortSimulation {
                         map.getShips().stream().forEach((ship) -> {
                             ship.updateXform();
                         });
-                        PredatorPrey.delay();
+                        // DELAY WOULD GO HERE
                     }
                     break;
                 case Y:
