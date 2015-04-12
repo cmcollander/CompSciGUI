@@ -8,6 +8,8 @@
  */
 package main;
 
+import java.util.Random;
+
 /**
  * The CargoShip class is used to create CargoShip objects
  */
@@ -22,14 +24,14 @@ public class CargoShip {
     protected double draft;
     protected Position position;
     protected Cargo cargo;
-    protected int direction;
+    protected double direction;
     protected Xform model;
 
     /**
      * Default Constructor for the Ship class
      */
     public CargoShip() {
-        this.direction = 0;
+        this.direction = new Random().nextDouble()*4;
         this.name = "Zenda";
         this.countryOfRegistration = "Ruritania";
         this.transponderNumber = 0;
@@ -45,6 +47,7 @@ public class CargoShip {
     public void updateXform() {
         model.setTranslateX(5 + getCol() * 10);
         model.setTranslateZ(5 + getRow() * 10);
+        model.setRotateY(direction * 90.0);
     }
 
     public void removeModel() {
@@ -57,7 +60,7 @@ public class CargoShip {
      * @param line the string to parse for the new Ship
      */
     public CargoShip(String line) {
-        this.direction = 0;
+        this.direction = new Random().nextDouble()*4;;
         String[] parts = line.split(",");
         this.name = parts[0].trim();
         this.countryOfRegistration = parts[1].trim();
@@ -341,14 +344,14 @@ public class CargoShip {
     /**
      * @return the direction
      */
-    public int getDirection() {
+    public double getDirection() {
         return direction;
     }
 
     /**
      * @param direction the direction to set
      */
-    public void setDirection(int direction) {
+    public void setDirection(double direction) {
         this.direction = direction;
     }
 

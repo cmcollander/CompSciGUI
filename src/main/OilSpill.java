@@ -5,24 +5,25 @@ import java.util.Random;
 public class OilSpill {
 
     private Position position;
-    private int direction;
+    private double direction;
     private Xform model;
 
     public OilSpill() {
         position = new Position();
-        direction = new Random().nextInt(4);
+        direction = new Random().nextDouble()*4;
         model = new Xform();
     }
 
     public OilSpill(Position position) {
         this.position = position;
-        direction = new Random().nextInt(4);
+        direction = new Random().nextDouble()*4;
         model = new Xform();
     }
 
     public void updateXform() {
         model.setTranslateX(5 + position.getCol() * 10);
         model.setTranslateZ(5 + position.getRow() * 10);
+        model.setRotateY(direction * 90.0);
     }
 
     /**
@@ -42,14 +43,14 @@ public class OilSpill {
     /**
      * @return the direction
      */
-    public int getDirection() {
+    public double getDirection() {
         return direction;
     }
 
     /**
      * @param direction the direction to set
      */
-    public void setDirection(int direction) {
+    public void setDirection(double direction) {
         this.direction = direction;
     }
 

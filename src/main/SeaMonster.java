@@ -8,6 +8,8 @@
  */
 package main;
 
+import java.util.Random;
+
 /**
  * The SeaMonster class is used as an abstract class for creating different
  * SeaMonsters.
@@ -18,13 +20,13 @@ public abstract class SeaMonster {
     protected Position position;
     protected String type;
     protected Xform model;
-    protected int direction;
+    protected double direction;
 
     public abstract String battleCry();
 
     //Basic constructor
     public SeaMonster() {
-        this.direction = 0;
+        this.direction = new Random().nextDouble()*4;
         this.position = new Position();
         this.type = "Sea Monster";
         this.model = new Xform();
@@ -33,6 +35,7 @@ public abstract class SeaMonster {
     public void updateXform() {
         model.setTranslateX(5 + getCol() * 10);
         model.setTranslateZ(5 + getRow() * 10);
+        model.setRotateY(direction * 90.0);
     }
 
     /**
@@ -125,14 +128,14 @@ public abstract class SeaMonster {
     /**
      * @return the direction
      */
-    public int getDirection() {
+    public double getDirection() {
         return direction;
     }
 
     /**
      * @param direction the direction to set
      */
-    public void setDirection(int direction) {
+    public void setDirection(double direction) {
         this.direction = direction;
     }
 }

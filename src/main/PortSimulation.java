@@ -123,19 +123,17 @@ public class PortSimulation {
                     alert2.show();
                     break;
                 case E:
-                    if (!map.getShips().isEmpty() && !map.getMonsters().isEmpty()) {
-                        PredatorPrey.step(map);
-                        Main.checkMonsterCollision();
-                        map.getSpills().stream().forEach((spill) -> {
-                            buildSpills();
-                        });
-                        map.getMonsters().stream().forEach((mon) -> {
-                            mon.updateXform();
-                        });
-                        map.getShips().stream().forEach((ship) -> {
-                            ship.updateXform();
-                        });
-                    }
+                    PredatorPrey.step(map);
+                    Main.checkMonsterCollision();
+                    buildSpills();
+                    map.getMonsters().stream().forEach((mon) -> {
+                        mon.updateXform();
+                    });
+                    map.getShips().stream().forEach((ship) -> {
+                        ship.updateXform();
+                    });
+                    if(map.hasEnterprise())
+                        map.getEnterprise().updateXform();
                     break;
                 case R:
                     while (!map.getShips().isEmpty()) {
@@ -240,9 +238,7 @@ public class PortSimulation {
 
             // Translation
             ship.getModel().setRotateZ(180.0);
-            ship.getModel().setRotateY(ship.getDirection() * 90);
-            ship.getModel().setTranslateX(5 + ship.getCol() * 10);
-            ship.getModel().setTranslateZ(5 + ship.getRow() * 10);
+            ship.updateXform();
 
             shipGroup.getChildren().add(ship.getModel());
         }
@@ -293,10 +289,8 @@ public class PortSimulation {
 
             // Translation
             monster.getModel().setRotateZ(180.0);
-            monster.getModel().setRotateY(monster.getDirection() * 90);
             monster.getModel().setTranslateY(mType == 0 ? ((map.getMatrix()[monster.getRow()][monster.getCol()] == '*') ? 2 : 0) : 0);
-            monster.getModel().setTranslateX(5 + monster.getCol() * 10);
-            monster.getModel().setTranslateZ(5 + monster.getRow() * 10);
+            monster.updateXform();
 
             monsterGroup.getChildren().add(monster.getModel());
         }
@@ -393,14 +387,13 @@ public class PortSimulation {
         Node[] eNodes = importer.getImport();
         Xform model = new Xform();
         model.getChildren().addAll(eNodes);
-        model.setScale(0.01);
-        model.setRotateZ(180.0);
-        model.setTranslateY(20);
-        model.setTranslateX(120);
-        model.setTranslateZ(50);
+        map.setEnterprise(new Enterprise());
+        map.getEnterprise().setModel(model);
+        map.getEnterprise().updateXform();
         extraGroup.getChildren().add(model);
         world.getChildren().add(extraGroup);
         extraGroup.setVisible(true);
+        
     }
     
 }

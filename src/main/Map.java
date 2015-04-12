@@ -22,6 +22,7 @@ public class Map {
     private ArrayList<SeaMonster> monsters;
     private ArrayList<OilSpill> spills;
     private Port port;
+    private Enterprise enterprise;
 
     /**
      * Default constructor for Map
@@ -33,6 +34,7 @@ public class Map {
         monsters = new ArrayList<>();
         spills = new ArrayList<>();
         port = new Port();
+        enterprise = null;
     }
     
     public boolean hasGodzilla() {
@@ -46,6 +48,10 @@ public class Map {
             if(mon instanceof Godzilla)
                 return (Godzilla)mon;
         return null;
+    }
+    
+    public boolean hasEnterprise() {
+        return getEnterprise()!=null;
     }
 
     /*
@@ -253,13 +259,9 @@ public class Map {
                     break;
             }
 
-            int direction = randomGenerator.nextInt(4);
-            currShip.setDirection(direction);
-
             boolean validLocation = false;
 
             int row = 0, col = 0;
-            double randLat = 0, randLong = 0;
 
             //Make sure the matrix is initialized
             if (matrix.length == 0 || matrix[0].length == 0) {
@@ -447,8 +449,6 @@ public class Map {
                     break;
             }
 
-            currMonster.setDirection(randomGenerator.nextInt(4));
-
             boolean validLocation = false;
 
             // Keep generating locations until a valid location is found
@@ -501,5 +501,19 @@ public class Map {
      */
     public void setSpills(ArrayList<OilSpill> spills) {
         this.spills = spills;
+    }
+
+    /**
+     * @return the enterprise
+     */
+    public Enterprise getEnterprise() {
+        return enterprise;
+    }
+
+    /**
+     * @param enterprise the enterprise to set
+     */
+    public void setEnterprise(Enterprise enterprise) {
+        this.enterprise = enterprise;
     }
 }
