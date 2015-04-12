@@ -81,7 +81,7 @@ public class PredatorPrey {
 
                 // Change the monster's actual direction based on dx and dy
                 if (dx != 0 || dy != 0) {
-                    monster.setDirection(Math.toDegrees(Math.atan2(-(double) dy, (double) dx)) / 90.0);
+                    monster.setDirection(todir(dx,dy));
                 }
                 
                 monster.setRow(newRow);
@@ -109,7 +109,7 @@ public class PredatorPrey {
 
                     // Change the monster's actual direction based on dx and dy
                     if (dx != 0 || dy != 0) {
-                        monster.setDirection(Math.toDegrees(Math.atan2(-(double) dy, (double) dx)) / 90.0);
+                        monster.setDirection(todir(dx,dy));
                     }
 
                     // If the monster will land on water or a dock, move
@@ -143,7 +143,7 @@ public class PredatorPrey {
 
             // Change the ship's actual direction based on dx and dy
             if (dx != 0 || dy != 0) {
-                ship.setDirection(Math.toDegrees(Math.atan2(-(double) dy, (double) dx)) / 90.0);
+                ship.setDirection(todir(dx,dy));
             }
 
             // If the monster will land on water or a dock, move
@@ -178,18 +178,15 @@ public class PredatorPrey {
 
         // Change the ship's actual direction based on dx and dy
         if (dx != 0 || dy != 0) {
-            e.setDirection(Math.toDegrees(Math.atan2(-(double) dy, (double) dx)) / 90.0);
+            e.setDirection(todir(dx,dy));
         }
         
         e.getPosition().setRow(newRow);
         e.getPosition().setCol(newCol);
-
-        // Moving all actual collision detection to main collisions method
-        /*if (distance(e.getPosition(), g.getPosition()) < 4) {
-         g.getModel().setTranslateY(10000);
-         g.setModel(null);
-         map.getMonsters().remove(g);
-         g = null;
-         }*/
+    }
+    
+    public static double todir(int dx, int dy) {
+        if(dx==0&&dy==0) return -1;
+        return Math.atan2(dx,-dy)*2.0/3.14159;
     }
 }
