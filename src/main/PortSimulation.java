@@ -38,12 +38,13 @@ public class PortSimulation {
     AdvancedCamera camera = new AdvancedCamera();
     private boolean fullscreen = true;
 
-    private final Xform world = new Xform();
-    private final Xform oceanGroup = new Xform();
-    private final Xform landGroup = new Xform();
-    private final Xform shipGroup = new Xform();
-    private final Xform monsterGroup = new Xform();
-    private final Xform dockGroup = new Xform();
+    private Xform world = new Xform();
+    private Xform oceanGroup = new Xform();
+    private Xform landGroup = new Xform();
+    private Xform shipGroup = new Xform();
+    private Xform monsterGroup = new Xform();
+    private Xform dockGroup = new Xform();
+    private Xform extraGroup = new Xform();
     private Xform spillGroup = new Xform();
 
     TdsModelImporter importer = new TdsModelImporter();
@@ -62,6 +63,7 @@ public class PortSimulation {
         buildMonsters();
         buildDocks();
         buildSpills();
+        extraGroup = new Xform();
 
         // Get yourself in the right position by repositioning the world... Kinda philosophical
         world.setRotateZ(180);
@@ -147,6 +149,9 @@ public class PortSimulation {
                         });
                         PredatorPrey.delay();
                     }
+                    break;
+                case Y:
+                    buildEnterprise();
                     break;
                 case F:  // Fullscreen Toggle (messes up if you use ESC to exit fullscreen
                     stage.setFullScreen(!fullscreen);
@@ -374,4 +379,28 @@ public class PortSimulation {
         world.getChildren().add(spillGroup);
         spillGroup.setVisible(true);
     }
+    
+    public void buildEnterprise() {
+        File modelFile = new File("media\\models\\Enterprise.3ds");
+        try {
+            importer.read(modelFile.toURI().toURL());
+        } catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error opening 3D model!");
+                alert.showAndWait();
+                return;
+        }
+        Node[] eNodes = importer.getImport();
+        Xform model = new Xform();
+        model.getChildren().addAll(eNodes);
+        model.setScale(0.01);
+        model.setRotateZ(180.0);
+        model.setTranslateY(20);
+        model.setTranslateX(120);
+        model.setTranslateZ(50);
+        extraGroup.getChildren().add(model);
+        world.getChildren().add(extraGroup);
+        extraGroup.setVisible(true);
+    }
+    
 }
