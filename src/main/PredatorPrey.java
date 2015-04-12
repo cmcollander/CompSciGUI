@@ -100,7 +100,7 @@ public class PredatorPrey {
 
                     // Change the monster's actual direction based on dx and dy
                     if (dx != 0 || dy != 0) {
-                        monster.setDirection(Math.toDegrees(Math.atan(-(double) dy / (double) dx)) / 90.0);
+                        monster.setDirection(Math.toDegrees(Math.atan2(-(double) dy , (double) dx)) / 90.0);
                     }
 
                     // If the monster will land on water or a dock, move
@@ -148,7 +148,7 @@ public class PredatorPrey {
 
             // Change the ship's actual direction based on dx and dy
             if (dx != 0 || dy != 0) {
-                ship.setDirection(Math.toDegrees(Math.atan(-(double) dy / (double) dx)) / 90.0);
+                ship.setDirection(Math.toDegrees(Math.atan2(-(double) dy , (double) dx)) / 90.0);
             }
 
             // If the monster will land on water or a dock, move
@@ -198,7 +198,7 @@ public class PredatorPrey {
 
         // Change the ship's actual direction based on dx and dy
         if (dx != 0 || dy != 0) {
-            e.setDirection(Math.toDegrees(Math.atan(-(double) dy / (double) dx)) / 90.0);
+            e.setDirection(Math.toDegrees(Math.atan2(-(double) dy , (double) dx)) / 90.0);
         }
 
         e.getPosition().setRow(newRow);
