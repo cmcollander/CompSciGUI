@@ -105,45 +105,53 @@ public class Map {
     }
 
     /**
-     * Is the ship at location row, col safe?
+     * Is the ship safe?
      *
-     * @param row The grid row
-     * @param col The grid col
+     * @param currShip the current ship
      * @return True if ship is safe, False otherwise
      */
-    public boolean isShipSafe(int row, int col) throws NullPointerException {
+    public boolean isShipSafe(CargoShip currShip) throws NullPointerException {
         // If there is no ship at this location, default to FALSE
-        if (!isShip(row, col)) {
+        if (!isShip(currShip.getRow(), currShip.getCol())) {
             return false;
         }
 
         // Is the ship on land
-        if (matrix[row][col] == '*' && !isDock(row, col)) {
+        if (matrix[currShip.getRow()][currShip.getCol()] == '*' && !isDock(currShip.getRow(), currShip.getCol())) {
             return false;
         }
 
         // Get a count of the number of ships at this location. If more than one, return FALSE
         int count = 0;
-        count = ships.stream().filter((ship) -> (ship.getRow() == row && ship.getCol() == col)).map((_item) -> 1).reduce(count, Integer::sum);
+        count = ships.stream().filter((ship) -> (ship.getRow() == currShip.getRow() && ship.getCol() == currShip.getCol())).map((_item) -> 1).reduce(count, Integer::sum);
         if (count > 1) {
             return false;
         }
-
-        // If is at dock
-        if (isDock(row, col)) {
-            Dock dock = getDockAt(row, col);
-            CargoShip ship = getShipAt(row, col);
+        
+        // If is at dock and fits into that dock, if it doesn't fit return FALSE
+        if (isDock(currShip.getRow(), currShip.getCol())) {
+            Dock dock = getDockAt(currShip.getRow(), currShip.getCol());
 
             // If the ship has cargo and is correct type
             boolean correctDockAndShip = false;
-            if (dock instanceof Pier && ship instanceof OilTanker) {
+            if (dock instanceof Pier && currShip instanceof OilTanker) {
                 correctDockAndShip = true;
             }
-            if (dock instanceof Crane && ship instanceof ContainerShip) {
+            if (dock instanceof Crane && currShip instanceof ContainerShip) {
                 correctDockAndShip = true;
             }
-            if (!(dock instanceof Pier) && !(dock instanceof Crane) && !(ship instanceof ContainerShip) && !(ship instanceof OilTanker)) {
+            if (!(dock instanceof Pier) && !(dock instanceof Crane) && !(currShip instanceof ContainerShip) && !(currShip instanceof OilTanker)) {
                 correctDockAndShip = true;
+            }
+            
+            // If in the correct type dock, checks size of the ship vs the dock
+            if(correctDockAndShip) {
+                if(currShip.getLength() > dock.getLength())
+                    return false;
+                else if(currShip.getBeam() > dock.getWidth())
+                    return false;
+                else if(currShip.getDraft() > dock.getDepth())
+                    return false;
             }
 
             if (!correctDockAndShip) {
@@ -153,7 +161,7 @@ public class Map {
 
         return true;
     }
-
+    
     /**
      * Obtain a CargoShip object at position row/col.
      *

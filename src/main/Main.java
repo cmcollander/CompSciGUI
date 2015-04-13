@@ -1277,7 +1277,7 @@ public class Main extends Application {
             }
 
             if (map.isDock(ship.getRow(), ship.getCol())) {
-                if (map.isShipSafe(ship.getRow(), ship.getCol())) {
+                if (map.isShipSafe(ship)) {
                     // Safely Docked
                     gc.setFill(Color.BLACK);
                     gc.fillRect(col, row - 10, 10, 10);
@@ -1285,7 +1285,7 @@ public class Main extends Application {
                     gc.fillText("$", col, row);
                 }
             }
-            if (!map.isShipSafe(ship.getRow(), ship.getCol())) {
+            if (!map.isShipSafe(ship)) {
                 gc.setFill(Color.YELLOW);
                 gc.fillRect(col, row - 10, 10, 10);
                 gc.setFill(Color.RED);
@@ -1405,7 +1405,7 @@ public class Main extends Application {
     private static void unloadShip() {
         ArrayList<String> choices = new ArrayList<>();
         for (CargoShip ship : map.getShips()) {
-            if (map.isShipSafe(ship.getRow(), ship.getCol()) && map.isDock(ship.getRow(), ship.getCol()) && ship.getCargo() != null) {
+            if (map.isShipSafe(ship) && map.isDock(ship.getRow(), ship.getCol()) && ship.getCargo() != null) {
                 choices.add(ship.getName());
             }
         }
