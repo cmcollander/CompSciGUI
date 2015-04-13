@@ -187,6 +187,6 @@ public class PredatorPrey {
     
     public static double todir(int dx, int dy) {
         if(dx==0&&dy==0) return -1;
-        return Math.atan2(dx,-dy)*2.0/3.14159;
+        return Math.atan2(dx,dy)*2.0/3.14159;
     }
 }

@@ -96,31 +96,8 @@ public class PortSimulation {
     private void handleKeyboard(Scene scene, final Node root) {
         scene.setOnKeyPressed((KeyEvent event) -> {
             switch (event.getCode()) {
-                case C:  // Debug Dialog
-                    String text = new String();
-                    text += "Current Camera Coordinates\n";
-                    double x = controller.affine.getTx();
-                    double y = controller.affine.getTy();
-                    double z = controller.affine.getTz();
-                    double rx = controller.rotateX.getAngle();
-                    double ry = controller.rotateY.getAngle();
-                    double rz = controller.rotateZ.getAngle();
-                    text += String.format("Pos = (%5.2f,%5.2f,%5.2f)", x, y, z);
-                    text += String.format("Rot = (%5.2f,%5.2f,%5.2f)", rx, ry, rz);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Camera Coordinates");
-                    alert.setHeaderText(null);
-                    alert.setContentText(text);
-                    alert.showAndWait();
-                    break;
-                case T:
-                    int numSpills = map.getSpills().size();
-                    int numSpillsGroup = spillGroup.getChildren().size();
-                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                    alert2.setTitle("Oil Spills");
-                    alert2.setHeaderText(null);
-                    alert2.setContentText(String.join(",", new Integer(numSpills).toString(), new Integer(numSpillsGroup).toString()));
-                    alert2.show();
+                case Z:
+                    setInitialCamera();
                     break;
                 case E:
                     PredatorPrey.step(map);

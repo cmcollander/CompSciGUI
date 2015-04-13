@@ -519,4 +519,14 @@ public class Map {
     public void setEnterprise(Enterprise enterprise) {
         this.enterprise = enterprise;
     }
+    
+    public boolean isMonsterOtherThanGodzilla(Position p) {
+        for(SeaMonster monster : monsters) {
+            if(monster instanceof Godzilla)
+                continue;
+            if(monster.getPosition().equals(p))
+                return true;
+        }
+        return false;
+    }
 }

@@ -17,7 +17,71 @@ Leviathan Sound
 	changes:	Trimmed down to only "come to me" and converted to mp3
 
 Godzilla sound
-	author:		
-	website:	
-	license link:	
-	changes:	
+	author:		flowfx
+	website:	http://www.freesfx.co.uk/sfx/growl
+	license link:	http://www.freesfx.co.uk/info/eula/
+	changes:	None
+
+	
+UpdateCargo Icon
+	author:		c55inator
+	website:	http://www.softicons.com/application-icons/mac-style-applications-icons-by-c55inator/crate-icon
+	license link:	http://creativecommons.org/licenses/by-nc-nd/3.0/
+	changes: None
+	
+UpdateShip Icon
+	author:		nsdapa
+	website:	http://www.clker.com/clipart-294729.html
+	license link:	http://creativecommons.org/licenses/by-nc-nd/3.0/
+	changes: None
+	
+UpdateLocation Icon
+	author:		Pixelkit
+	website:	http://findicons.com/icon/608516/location_pin
+	license:	Freeware
+	changes:	None
+	
+UpdateDock Icon
+	author:		interactimages
+	website:	http://pt.depositphotos.com/10630758/stock-illustration-island.html
+	license:	Unlisted
+	changes:	None
+	
+UpdateMonster Icon
+	author:		Ivan Caputo
+	website:	http://www.veryicon.com/icons/kids/scary-monsters/monster05.html
+	license link:	http://creativecommons.org/licenses/by/3.0/legalcode
+	changes:	None
+	
+
+Enterprise Model
+	author:		Andrew Smith
+	website:	http://www.axeman3d.com
+	license:	Unlisted
+	Changes:	Used pure 3ds file without textures or scene
+	
+FXYZ Library
+	author:		Birdasaur
+	website:	https://github.com/Birdasaur/FXyz
+	license:	Unlisted
+	Changes:	None
+	
+Model Importing Library
+	author:		InteractiveMesh
+	website:	http://www.interactivemesh.org/models/jfx3dimporter.html
+	license:	http://www.interactivemesh.org/impressum.html#
+	changes:	None
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

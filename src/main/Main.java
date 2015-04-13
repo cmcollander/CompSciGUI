@@ -1501,7 +1501,7 @@ public class Main extends Application {
             toRemove.clear();
         }
         // And Godzilla eats monsters
-        if (map.isMonster(g.getPosition())) {
+        if (map.isMonsterOtherThanGodzilla(g.getPosition())) {
             try {
                 SoundManager.growl(g);
             } catch (Exception ex) {
