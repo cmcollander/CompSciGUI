@@ -1346,7 +1346,7 @@ public class Main extends Application {
 
         aboutMessage += "Team {We never decided on a name}\n";
         aboutMessage += "CSE 1325-002\n";
-        aboutMessage += "April 2, 2015\n";
+        aboutMessage += "April 14, 2015\n";
         aboutMessage += "\tName: Chris Collander\n";
         aboutMessage += "\tID: 1001101078\n";
         aboutMessage += "\tName: Abdul Rafey Khan\n";
