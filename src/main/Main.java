@@ -1335,6 +1335,13 @@ public class Main extends Application {
                     break;
             }
         }
+        
+        // Enterprise Time
+        if(map.hasEnterprise()) {
+            Enterprise e = map.getEnterprise();
+            gc.setFill(Color.LIGHTGRAY);
+            gc.fillOval(10*e.getPosition().getCol(), 10*e.getPosition().getRow(), 12, 12);
+        }
     }
 
     /**
