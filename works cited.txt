@@ -60,6 +60,12 @@ Enterprise Model
 	license:	Unlisted
 	Changes:	Used pure 3ds file without textures or scene
 	
+Godzilla Model
+	author:		Tribalizer
+	website:	http://tf3dm.com/3d-model/godzilla-5370.html
+	license:	Unlisted
+	changes:	Scaled down, texture removed, converted to .3DS
+	
 FXYZ Library
 	author:		Birdasaur
 	website:	https://github.com/Birdasaur/FXyz
