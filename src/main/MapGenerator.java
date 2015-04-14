@@ -69,7 +69,7 @@ public class MapGenerator extends Application {
         mainView.setHgap(0);
         mainView.setVgap(0);
         mainView.setPadding(new Insets(0, 0, 0, 0));
-        
+
         // CANVAS
         EventHandler<MouseEvent> mouseAction = mouseEvent();
         mapView = new Canvas(540, 360);
@@ -123,12 +123,11 @@ public class MapGenerator extends Application {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     matrix[row][col] = matrix[row][col] == '.' ? '*' : '.';
                     refreshMap();
-                }
-                else {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);
                     alert.setTitle("Coordinates");
-                    String str = String.format("%d,%d:%2.6f,%2.6f",row,col,MapConverter.row2lat(row),MapConverter.col2lon(col));
+                    String str = String.format("%d,%d:%2.6f,%2.6f", row, col, MapConverter.row2lat(row), MapConverter.col2lon(col));
                     alert.setContentText(str);
                     alert.showAndWait();
                 }

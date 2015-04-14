@@ -207,9 +207,9 @@ public class Main extends Application {
                 if (!map.isShip(row, col) && map.isMonster(row, col)) {
                     draggedMonster = map.getMonsterAt(row, col);
                 }
-                
+
                 draggedEnterprise = null;
-                if(map.hasEnterprise() && map.getEnterprise().getPosition().equals(new Position(row,col))) {
+                if (map.hasEnterprise() && map.getEnterprise().getPosition().equals(new Position(row, col))) {
                     draggedEnterprise = map.getEnterprise();
                 }
             }
@@ -222,7 +222,13 @@ public class Main extends Application {
                 col = constrain(col, 0, 53);
                 row = constrain(row, 0, 35);
 
-                if (draggedShip != null) {
+                if (draggedEnterprise != null) {
+                    draggedEnterprise.getPosition().setRow(row);
+                    draggedEnterprise.getPosition().setCol(col);
+                    checkCollisions();
+                    draggedEnterprise = null;
+                    refreshMap();
+                } else if (draggedShip != null) {
                     draggedShip.setRow(row);
                     draggedShip.setCol(col);
                     checkCollisions();
@@ -233,20 +239,12 @@ public class Main extends Application {
 
                     draggedShip = null;
                     refreshMap();
-                }
-                if (draggedMonster != null) {
+                } else if (draggedMonster != null) {
                     draggedMonster.setRow(row);
                     draggedMonster.setCol(col);
                     checkCollisions();
 
                     draggedMonster = null;
-                    refreshMap();
-                }
-                if (draggedEnterprise != null) {
-                    draggedEnterprise.getPosition().setRow(row);
-                    draggedEnterprise.getPosition().setCol(col);
-                    checkCollisions();
-                    draggedEnterprise = null;
                     refreshMap();
                 }
             }
@@ -315,28 +313,32 @@ public class Main extends Application {
 
                         // Set the directions for the docks
                         for (Dock dock : map.getPort().getDocks()) {
-                            int row = dock.getRow();
-                            int col = dock.getCol();
+                            determineDirection(dock);
+                            /*
+                             int row = dock.getRow();
+                             int col = dock.getCol();
 
-                            dock.setDirection(1); // Default Direction, East
-                            // If land north, direction=0
-                            if (row != 0) {
-                                if (map.getMatrix()[row - 1][col] == '.') {
-                                    dock.setDirection(0);
-                                }
-                            }
-                            // If land south, direction=2
-                            if (row != 35) {
-                                if (map.getMatrix()[row + 1][col] == '.') {
-                                    dock.setDirection(2);
-                                }
-                            }
-                            // If land west, direction=1
-                            if (col != 0) {
-                                if (map.getMatrix()[row][col - 1] == '.') {
-                                    dock.setDirection(3);
-                                }
-                            }
+                             dock.setDirection(1);
+                             // Default Direction, East
+                             // If land north, direction=0
+                             if (row != 0) {
+                             if (map.getMatrix()[row - 1][col] == '.') {
+                             dock.setDirection(0);
+                             }
+                             }
+                             // If land south, direction=2
+                             if (row != 35) {
+                             if (map.getMatrix()[row + 1][col] == '.') {
+                             dock.setDirection(2);
+                             }
+                             }
+                             // If land west, direction=1
+                             if (col != 0) {
+                             if (map.getMatrix()[row][col - 1] == '.') {
+                             dock.setDirection(3);
+                             }
+                             }
+                             */
                         }
 
                         refreshMap();
@@ -1228,7 +1230,6 @@ public class Main extends Application {
         }
 
         //Iterate through the docks, ALSO CREATING LAND UNDERNEATH
-        // *Not all docks are placed on land. Some are on land, some are on water, at least in 'complex'
         for (Dock dock : map.getPort().getDocks()) {
             int dockType = 0;
             if (dock instanceof Crane) {
@@ -1327,9 +1328,6 @@ public class Main extends Application {
             int row = 10 * monster.getRow() + 10;
             int col = 10 * monster.getCol();
 
-            gc.setFill(Color.BLUE);
-            gc.fillRect(col, row - 10, 10, 10);
-
             switch (monsterType) {
                 case 0:
                     gc.setFill(Color.YELLOW);
@@ -1349,12 +1347,12 @@ public class Main extends Application {
                     break;
             }
         }
-        
+
         // Enterprise Time
-        if(map.hasEnterprise()) {
+        if (map.hasEnterprise()) {
             Enterprise e = map.getEnterprise();
             gc.setFill(Color.LIGHTGRAY);
-            gc.fillOval(10*e.getPosition().getCol(), 10*e.getPosition().getRow(), 12, 12);
+            gc.fillOval(10 * e.getPosition().getCol(), 10 * e.getPosition().getRow(), 12, 12);
         }
     }
 
@@ -1606,13 +1604,13 @@ public class Main extends Application {
             alert.showAndWait();
             return;
         }
-        
+
         try {
             SoundManager.theme("theme.mp3");
         } catch (Exception ex) {
             System.out.println("Error playing sound track.");
         }
-        
+
         String text = String.join("\n",
                 "Please be patient while the simulation loads...",
                 "I'll leave this for you to ponder over meanwhile",
@@ -1629,5 +1627,28 @@ public class Main extends Application {
         (new PortSimulation(map)).run();
 
         alert.close();
+    }
+
+    // This function should handle almost any ship/dock combo. The only thing that may confuse it is a dock on an end but that is a pure wildcard. It defaults to East just in case
+    public void determineDirection(Dock dock) {
+        int row = dock.getRow();
+        int col = dock.getCol();
+
+        // Default direction is East
+        dock.setDirection(1);
+
+        if (row != 0 && row != 35) {
+            if (map.getMatrix()[row - 1][col] == '.' && map.getMatrix()[row + 1][col] == '*' && !map.isDock(row + 1, col)) {
+                dock.setDirection(0);
+            } else if (map.getMatrix()[row - 1][col] == '*' && map.getMatrix()[row + 1][col] == '.' && !map.isDock(row - 1, col)) {
+                dock.setDirection(2);
+            }
+        } else if (col != 0 && col != 53) {
+            if (map.getMatrix()[row][col - 1] == '.' && map.getMatrix()[row][col + 1] == '*' && !map.isDock(row, col + 1)) {
+                dock.setDirection(3);
+            } else if (map.getMatrix()[row][col - 1] == '*' && map.getMatrix()[row][col + 1] == '.' && !map.isDock(row, col - 1)) {
+                dock.setDirection(1);
+            }
+        }
     }
 }

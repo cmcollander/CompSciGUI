@@ -128,7 +128,7 @@ public class PortSimulation {
                     }
                     break;
                 case Y:
-                    if(!map.hasEnterprise() && map.hasGodzilla()) {
+                    if (!map.hasEnterprise() && map.hasGodzilla()) {
                         map.setEnterprise(new Enterprise());
                         buildEnterprise();
                     }
@@ -358,9 +358,10 @@ public class PortSimulation {
     }
 
     public void buildEnterprise() {
-        if(!map.hasEnterprise())
+        if (!map.hasEnterprise()) {
             return;
-        
+        }
+
         File modelFile = new File("media\\models\\Enterprise.3ds");
         try {
             importer.read(modelFile.toURI().toURL());

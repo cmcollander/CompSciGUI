@@ -127,7 +127,7 @@ public class Map {
         if (count > 1) {
             return false;
         }
-        
+
         // If is at dock and fits into that dock, if it doesn't fit return FALSE
         if (isDock(currShip.getRow(), currShip.getCol())) {
             Dock dock = getDockAt(currShip.getRow(), currShip.getCol());
@@ -143,15 +143,16 @@ public class Map {
             if (!(dock instanceof Pier) && !(dock instanceof Crane) && !(currShip instanceof ContainerShip) && !(currShip instanceof OilTanker)) {
                 correctDockAndShip = true;
             }
-            
+
             // If in the correct type dock, checks size of the ship vs the dock
-            if(correctDockAndShip) {
-                if(currShip.getLength() > dock.getLength())
+            if (correctDockAndShip) {
+                if (currShip.getLength() > dock.getLength()) {
                     return false;
-                else if(currShip.getBeam() > dock.getWidth())
+                } else if (currShip.getBeam() > dock.getWidth()) {
                     return false;
-                else if(currShip.getDraft() > dock.getDepth())
+                } else if (currShip.getDraft() > dock.getDepth()) {
                     return false;
+                }
             }
 
             if (!correctDockAndShip) {
@@ -161,7 +162,7 @@ public class Map {
 
         return true;
     }
-    
+
     /**
      * Obtain a CargoShip object at position row/col.
      *
@@ -527,13 +528,15 @@ public class Map {
     public void setEnterprise(Enterprise enterprise) {
         this.enterprise = enterprise;
     }
-    
+
     public boolean isMonsterOtherThanGodzilla(Position p) {
-        for(SeaMonster monster : monsters) {
-            if(monster instanceof Godzilla)
+        for (SeaMonster monster : monsters) {
+            if (monster instanceof Godzilla) {
                 continue;
-            if(monster.getPosition().equals(p))
+            }
+            if (monster.getPosition().equals(p)) {
                 return true;
+            }
         }
         return false;
     }

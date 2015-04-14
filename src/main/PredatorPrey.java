@@ -3,20 +3,20 @@ package main;
 import java.util.Random;
 
 public class PredatorPrey {
-    
+
     public static double distance(Position a, Position b) {
         int dr = b.getRow() - a.getRow();
         int dc = b.getCol() - a.getCol();
         return Math.hypot(dr, dc);
     }
-    
+
     public static void step(Map map) {
         // Highest Predator First
         stepEnterprise(map);
         stepMonsters(map);
         stepShips(map);
     }
-    
+
     private static int constrain(int val, int min, int max) {
         if (val < min) {
             return min;
@@ -26,7 +26,7 @@ public class PredatorPrey {
         }
         return val;
     }
-    
+
     public static int randStep(int d) {
         Random rand = new Random();
         // 25% chance to change direction
@@ -41,10 +41,10 @@ public class PredatorPrey {
         if (rand.nextInt(100) < 15) {
             d *= 2;
         }
-        
+
         return d;
     }
-    
+
     public static void stepMonsters(Map map) {
         for (SeaMonster monster : map.getMonsters()) {
             // Godzilla code here!
@@ -54,7 +54,7 @@ public class PredatorPrey {
                 if (map.getShips().isEmpty() && map.getMonsters().size() == 1) {
                     return;
                 }
-                
+
                 Position closestPosition = new Position(500, 500);
                 for (CargoShip ship : map.getShips()) {
                     if (distance(monster.getPosition(), ship.getPosition()) < distance(monster.getPosition(), closestPosition)) {
@@ -70,19 +70,19 @@ public class PredatorPrey {
                         closestPosition = monster2.getPosition();
                     }
                 }
-                
+
                 int dx = randStep((int) Math.signum(closestPosition.getCol() - monster.getCol()));
                 int dy = randStep((int) Math.signum(closestPosition.getRow() - monster.getRow()));
-                
+
                 // Lets add a step of randomness here!
                 int newRow = constrain(monster.getRow() + dy, 0, 35);
                 int newCol = constrain(monster.getCol() + dx, 0, 53);
 
                 // Change the monster's actual direction based on dx and dy
                 if (dx != 0 || dy != 0) {
-                    monster.setDirection(todir(dx,dy));
+                    monster.setDirection(todir(dx, dy));
                 }
-                
+
                 monster.setRow(newRow);
                 monster.setCol(newCol);
 
@@ -98,7 +98,7 @@ public class PredatorPrey {
                             closestShip = ship;
                         }
                     }
-                    
+
                     int dx = randStep((int) Math.signum(closestShip.getCol() - monster.getCol()));
                     int dy = randStep((int) Math.signum(closestShip.getRow() - monster.getRow()));
 
@@ -108,7 +108,7 @@ public class PredatorPrey {
 
                     // Change the monster's actual direction based on dx and dy
                     if (dx != 0 || dy != 0) {
-                        monster.setDirection(todir(dx,dy));
+                        monster.setDirection(todir(dx, dy));
                     }
 
                     // If the monster will land on water or a dock, move
@@ -122,7 +122,7 @@ public class PredatorPrey {
             }
         }
     }
-    
+
     public static void stepShips(Map map) {
         for (CargoShip ship : map.getShips()) {
             Dock closestDock = map.getPort().getDocks().get(0);
@@ -132,7 +132,7 @@ public class PredatorPrey {
                     closestDock = dock;
                 }
             }
-            
+
             int dx = randStep((int) Math.signum(closestDock.getCol() - ship.getCol()));
             int dy = randStep((int) Math.signum(closestDock.getRow() - ship.getRow()));
 
@@ -142,7 +142,7 @@ public class PredatorPrey {
 
             // Change the ship's actual direction based on dx and dy
             if (dx != 0 || dy != 0) {
-                ship.setDirection(todir(dx,dy));
+                ship.setDirection(todir(dx, dy));
             }
 
             // If the monster will land on water or a dock, move
@@ -154,22 +154,22 @@ public class PredatorPrey {
             }
         }
     }
-    
+
     public static void stepEnterprise(Map map) {
         // Only need to step Enterprise if the map has both a godzilla and an enterprise
         if (!map.hasEnterprise() || !map.hasGodzilla()) {
             return;
         }
-        
+
         Enterprise e = map.getEnterprise();
         Godzilla g = map.getGodzilla();
-        
+
         int dx = (int) Math.signum(g.getCol() - e.getPosition().getCol());
         int dy = (int) Math.signum(g.getRow() - e.getPosition().getRow());
 
         // Enterprise goes twice as fast as any other entity on the map. GODZILLA CANT ESCAPE!!!
-        dx = randStep(dx*2);
-        dy = randStep(dy*2);
+        dx = randStep(dx * 2);
+        dy = randStep(dy * 2);
 
         // Lets add a step of randomness here!
         int newRow = constrain(e.getPosition().getRow() + dy, 0, 35);
@@ -177,15 +177,17 @@ public class PredatorPrey {
 
         // Change the ship's actual direction based on dx and dy
         if (dx != 0 || dy != 0) {
-            e.setDirection(todir(dx,dy));
+            e.setDirection(todir(-dx, dy));
         }
-        
+
         e.getPosition().setRow(newRow);
         e.getPosition().setCol(newCol);
     }
-    
+
     public static double todir(int dx, int dy) {
-        if(dx==0&&dy==0) return -1;
-        return Math.atan2(dx,dy)*2.0/3.14159;
+        if (dx == 0 && dy == 0) {
+            return -1;
+        }
+        return Math.atan2(-dx, dy) * 2.0 / 3.14159;
     }
 }
