@@ -128,7 +128,7 @@ public class PortSimulation {
                     }
                     break;
                 case Y:
-                    if (!map.hasEnterprise() && map.hasGodzilla()) {
+                    if (!map.hasEnterprise()) {
                         map.setEnterprise(new Enterprise());
                         buildEnterprise();
                     }

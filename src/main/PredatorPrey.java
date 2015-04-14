@@ -157,31 +157,62 @@ public class PredatorPrey {
 
     public static void stepEnterprise(Map map) {
         // Only need to step Enterprise if the map has both a godzilla and an enterprise
-        if (!map.hasEnterprise() || !map.hasGodzilla()) {
+        if (!map.hasEnterprise()) {
             return;
         }
 
         Enterprise e = map.getEnterprise();
-        Godzilla g = map.getGodzilla();
+        
+        if(map.hasGodzilla()) {
+            Godzilla g = map.getGodzilla();
 
-        int dx = (int) Math.signum(g.getCol() - e.getPosition().getCol());
-        int dy = (int) Math.signum(g.getRow() - e.getPosition().getRow());
+            int dx = (int) Math.signum(g.getCol() - e.getPosition().getCol());
+            int dy = (int) Math.signum(g.getRow() - e.getPosition().getRow());
 
-        // Enterprise goes twice as fast as any other entity on the map. GODZILLA CANT ESCAPE!!!
-        dx = randStep(dx * 2);
-        dy = randStep(dy * 2);
+            // Enterprise goes twice as fast as any other entity on the map. GODZILLA CANT ESCAPE!!!
+            dx = randStep(dx * 2);
+            dy = randStep(dy * 2);
 
-        // Lets add a step of randomness here!
-        int newRow = constrain(e.getPosition().getRow() + dy, 0, 35);
-        int newCol = constrain(e.getPosition().getCol() + dx, 0, 53);
+            // Lets add a step of randomness here!
+            int newRow = constrain(e.getPosition().getRow() + dy, 0, 35);
+            int newCol = constrain(e.getPosition().getCol() + dx, 0, 53);
 
-        // Change the ship's actual direction based on dx and dy
-        if (dx != 0 || dy != 0) {
-            e.setDirection(todir(-dx, dy));
+            // Change the ship's actual direction based on dx and dy
+            if (dx != 0 || dy != 0) {
+                e.setDirection(todir(-dx, dy));
+            }
+
+            e.getPosition().setRow(newRow);
+            e.getPosition().setCol(newCol);
         }
+        else {
+            // If there are no monsters, return
+            if (map.getMonsters().isEmpty()) {
+                return;
+            }
 
-        e.getPosition().setRow(newRow);
-        e.getPosition().setCol(newCol);
+            Position closestPosition = new Position(500, 500);
+            for (SeaMonster monster : map.getMonsters()) {
+                if (distance(monster.getPosition(), e.getPosition()) < distance(e.getPosition(), closestPosition)) {
+                    closestPosition = monster.getPosition();
+                }
+            }
+
+            int dx = randStep((int) Math.signum(closestPosition.getCol() - e.getPosition().getCol())*2);
+            int dy = randStep((int) Math.signum(closestPosition.getRow() - e.getPosition().getRow())*2);
+
+            // Lets add a step of randomness here!
+            int newRow = constrain(e.getPosition().getRow() + dy, 0, 35);
+            int newCol = constrain(e.getPosition().getCol() + dx, 0, 53);
+
+            // Change the monster's actual direction based on dx and dy
+            if (dx != 0 || dy != 0) {
+                e.setDirection(todir(-dx, dy));
+            }
+
+            e.getPosition().setRow(newRow);
+            e.getPosition().setCol(newCol);
+        }
     }
 
     public static double todir(int dx, int dy) {

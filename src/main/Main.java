@@ -1480,19 +1480,18 @@ public class Main extends Application {
         // Refresh the map
         refreshMap();
     }
-
+    
+    // Enterprise removes all monsters, including Godzilla, who is the primary target
     public static void checkEnterprise() {
-        if (!map.hasGodzilla()) {
-            return;
-        }
         Enterprise e = map.getEnterprise();
-        Godzilla g = map.getGodzilla();
-        if (PredatorPrey.distance(e.getPosition(), g.getPosition()) < 4) {
-            g.getModel().setTranslateY(10000);
-            g.setModel(null);
-            map.getMonsters().remove(g);
-            g = null;
+        ArrayList<SeaMonster> toRemove = new ArrayList<>();
+        for(SeaMonster monster : map.getMonsters()) {
+            if(PredatorPrey.distance(monster.getPosition(), e.getPosition())<4) {
+                toRemove.add(monster);
+                monster.removeModel();
+            }
         }
+        map.getMonsters().removeAll(toRemove);
     }
 
     public static void checkGodzilla() {

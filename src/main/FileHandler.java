@@ -91,7 +91,7 @@ public class FileHandler {
             parts = line.split(",");
 
             int row = Integer.parseInt(parts[1].trim());
-            int col = Integer.parseInt(parts[0].trim()); //TODO! Change based on Map.***_symbol varibles
+            int col = Integer.parseInt(parts[0].trim());
             char c = parts[2].trim().charAt(0);
 
             matrix[row][col] = c;
