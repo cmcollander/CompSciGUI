@@ -60,6 +60,7 @@ public class Main extends Application {
     private static boolean mapLoaded;
     private static CargoShip draggedShip;
     private static SeaMonster draggedMonster;
+    private static Enterprise draggedEnterprise;
 
     /**
      * Main method for the application.
@@ -70,6 +71,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         draggedShip = null;
         draggedMonster = null;
+        draggedEnterprise = null;
         stage = primaryStage;
         canvasWidth = 54 * 10;
         canvasHeight = 36 * 10;
@@ -205,6 +207,11 @@ public class Main extends Application {
                 if (!map.isShip(row, col) && map.isMonster(row, col)) {
                     draggedMonster = map.getMonsterAt(row, col);
                 }
+                
+                draggedEnterprise = null;
+                if(map.hasEnterprise() & map.getEnterprise().getPosition().equals(new Position(row,col))) {
+                    draggedEnterprise = map.getEnterprise();
+                }
             }
         });
         mapView.setOnMouseReleased((MouseEvent event) -> {
@@ -233,6 +240,13 @@ public class Main extends Application {
                     checkCollisions();
 
                     draggedMonster = null;
+                    refreshMap();
+                }
+                if (draggedEnterprise != null) {
+                    draggedEnterprise.getPosition().setRow(row);
+                    draggedEnterprise.getPosition().setCol(col);
+                    checkCollisions();
+                    draggedEnterprise = null;
                     refreshMap();
                 }
             }
