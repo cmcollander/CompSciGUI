@@ -301,7 +301,7 @@ public class Main extends Application {
             // File Menu
             // Open MenuItem
             if ("Open".equalsIgnoreCase(text)) {
-                TextInputDialog openDialog = new TextInputDialog("complex");
+                TextInputDialog openDialog = new TextInputDialog("chris1");
                 openDialog.setTitle("Open File");
                 openDialog.setHeaderText("Open File");
                 openDialog.setContentText("Please enter the tag for your file:");

@@ -21,6 +21,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -68,23 +69,7 @@ public class MapGenerator extends Application {
         mainView.setHgap(0);
         mainView.setVgap(0);
         mainView.setPadding(new Insets(0, 0, 0, 0));
-
-        // BUTTONS
-        /*
-         GridPane buttonView = new GridPane();
-         buttonView.setHgap(10);
-         buttonView.setVgap(0);
-         buttonView.setPadding(new Insets(0,0,0,0));
         
-         Button landButton = new Button("Toggle Land");
-         Button dockButton = new Button("Dock");
-         Button pierButton = new Button("Pier");
-         Button craneButton = new Button("Crane");
-         buttonView.add(landButton, 0,0);
-         buttonView.add(dockButton, 1, 0);
-         buttonView.add(pierButton, 2, 0);
-         buttonView.add(craneButton, 3, 0);
-         */
         // CANVAS
         EventHandler<MouseEvent> mouseAction = mouseEvent();
         mapView = new Canvas(540, 360);
@@ -135,8 +120,18 @@ public class MapGenerator extends Application {
             public void handle(MouseEvent event) {
                 int col = (int) (event.getX() / 10);
                 int row = (int) (event.getY() / 10);
-                matrix[row][col] = matrix[row][col] == '.' ? '*' : '.';
-                refreshMap();
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    matrix[row][col] = matrix[row][col] == '.' ? '*' : '.';
+                    refreshMap();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setTitle("Coordinates");
+                    String str = String.format("%d,%d:%2.6f,%2.6f",row,col,MapConverter.row2lat(row),MapConverter.col2lon(col));
+                    alert.setContentText(str);
+                    alert.showAndWait();
+                }
             }
         };
     }
