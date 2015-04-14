@@ -71,11 +71,9 @@ public class PredatorPrey {
                     }
                 }
                 
-                int dx = (int) Math.signum(closestPosition.getCol() - monster.getCol());
-                int dy = (int) Math.signum(closestPosition.getRow() - monster.getRow());
-                dx = randStep(dx);
-                dy = randStep(dy);
-
+                int dx = randStep((int) Math.signum(closestPosition.getCol() - monster.getCol()));
+                int dy = randStep((int) Math.signum(closestPosition.getRow() - monster.getRow()));
+                
                 // Lets add a step of randomness here!
                 int newRow = constrain(monster.getRow() + dy, 0, 35);
                 int newCol = constrain(monster.getCol() + dx, 0, 53);
@@ -101,12 +99,12 @@ public class PredatorPrey {
                         }
                     }
                     
-                    int dx = (int) Math.signum(closestShip.getCol() - monster.getCol());
-                    int dy = (int) Math.signum(closestShip.getRow() - monster.getRow());
+                    int dx = randStep((int) Math.signum(closestShip.getCol() - monster.getCol()));
+                    int dy = randStep((int) Math.signum(closestShip.getRow() - monster.getRow()));
 
                     // Lets add a step of randomness here!
-                    int newRow = constrain(monster.getRow() + randStep(dy), 0, 35);
-                    int newCol = constrain(monster.getCol() + randStep(dx), 0, 53);
+                    int newRow = constrain(monster.getRow() + dy, 0, 35);
+                    int newCol = constrain(monster.getCol() + dx, 0, 53);
 
                     // Change the monster's actual direction based on dx and dy
                     if (dx != 0 || dy != 0) {
@@ -135,12 +133,12 @@ public class PredatorPrey {
                 }
             }
             
-            int dx = (int) Math.signum(closestDock.getCol() - ship.getCol());
-            int dy = (int) Math.signum(closestDock.getRow() - ship.getRow());
+            int dx = randStep((int) Math.signum(closestDock.getCol() - ship.getCol()));
+            int dy = randStep((int) Math.signum(closestDock.getRow() - ship.getRow()));
 
             // Lets add a step of randomness here!
-            int newRow = constrain(ship.getRow() + randStep(dy), 0, 35);
-            int newCol = constrain(ship.getCol() + randStep(dx), 0, 53);
+            int newRow = constrain(ship.getRow() + dy, 0, 35);
+            int newCol = constrain(ship.getCol() + dx, 0, 53);
 
             // Change the ship's actual direction based on dx and dy
             if (dx != 0 || dy != 0) {
@@ -170,12 +168,12 @@ public class PredatorPrey {
         int dy = (int) Math.signum(g.getRow() - e.getPosition().getRow());
 
         // Enterprise goes twice as fast as any other entity on the map. GODZILLA CANT ESCAPE!!!
-        dx *= 2;
-        dy *= 2;
+        dx = randStep(dx*2);
+        dy = randStep(dy*2);
 
         // Lets add a step of randomness here!
-        int newRow = constrain(e.getPosition().getRow() + randStep(dy), 0, 35);
-        int newCol = constrain(e.getPosition().getCol() + randStep(dx), 0, 53);
+        int newRow = constrain(e.getPosition().getRow() + dy, 0, 35);
+        int newCol = constrain(e.getPosition().getCol() + dx, 0, 53);
 
         // Change the ship's actual direction based on dx and dy
         if (dx != 0 || dy != 0) {
