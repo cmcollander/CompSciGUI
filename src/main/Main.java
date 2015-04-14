@@ -1643,7 +1643,8 @@ public class Main extends Application {
             } else if (map.getMatrix()[row - 1][col] == '*' && map.getMatrix()[row + 1][col] == '.' && !map.isDock(row - 1, col)) {
                 dock.setDirection(2);
             }
-        } else if (col != 0 && col != 53) {
+        }
+        if (col != 0 && col != 53) {
             if (map.getMatrix()[row][col - 1] == '.' && map.getMatrix()[row][col + 1] == '*' && !map.isDock(row, col + 1)) {
                 dock.setDirection(3);
             } else if (map.getMatrix()[row][col - 1] == '*' && map.getMatrix()[row][col + 1] == '.' && !map.isDock(row, col - 1)) {
