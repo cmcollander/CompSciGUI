@@ -114,19 +114,6 @@ public class PortSimulation {
                     }
                     Main.refreshMap();
                     break;
-                case R:
-                    while (!map.getShips().isEmpty()) {
-                        PredatorPrey.step(map);
-                        Main.checkCollisions();
-                        map.getMonsters().stream().forEach((mon) -> {
-                            mon.updateXform();
-                        });
-                        map.getShips().stream().forEach((ship) -> {
-                            ship.updateXform();
-                        });
-                        // DELAY WOULD GO HERE
-                    }
-                    break;
                 case Y:
                     if (!map.hasEnterprise()) {
                         map.setEnterprise(new Enterprise());
