@@ -209,7 +209,7 @@ public class Main extends Application {
                 }
                 
                 draggedEnterprise = null;
-                if(map.hasEnterprise() & map.getEnterprise().getPosition().equals(new Position(row,col))) {
+                if(map.hasEnterprise() && map.getEnterprise().getPosition().equals(new Position(row,col))) {
                     draggedEnterprise = map.getEnterprise();
                 }
             }

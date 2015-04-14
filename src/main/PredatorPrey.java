@@ -31,8 +31,7 @@ public class PredatorPrey {
         Random rand = new Random();
         // 25% chance to change direction
         if (rand.nextInt(100) < 25) {
-            int num = rand.nextInt(3);
-            d = 1 - num;
+            d = 1 - rand.nextInt(3);
         }
         // 15% chance to stop
         if (rand.nextInt(100) < 15) {
@@ -74,10 +73,12 @@ public class PredatorPrey {
                 
                 int dx = (int) Math.signum(closestPosition.getCol() - monster.getCol());
                 int dy = (int) Math.signum(closestPosition.getRow() - monster.getRow());
+                dx = randStep(dx);
+                dy = randStep(dy);
 
                 // Lets add a step of randomness here!
-                int newRow = constrain(monster.getRow() + randStep(dy), 0, 35);
-                int newCol = constrain(monster.getCol() + randStep(dx), 0, 53);
+                int newRow = constrain(monster.getRow() + dy, 0, 35);
+                int newCol = constrain(monster.getCol() + dx, 0, 53);
 
                 // Change the monster's actual direction based on dx and dy
                 if (dx != 0 || dy != 0) {
