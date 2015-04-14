@@ -112,6 +112,7 @@ public class PortSimulation {
                     if (map.hasEnterprise()) {
                         map.getEnterprise().updateXform();
                     }
+                    Main.refreshMap();
                     break;
                 case R:
                     while (!map.getShips().isEmpty()) {
@@ -138,6 +139,7 @@ public class PortSimulation {
                     break;
                 case Q:  // Fully closes the 3D Display
                     stage.close();
+                    Main.refreshMap();
                     break;
             }
         });
