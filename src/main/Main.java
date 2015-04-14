@@ -1592,14 +1592,14 @@ public class Main extends Application {
             alert.showAndWait();
             return;
         }
-
+        /*
         try {
             SoundManager.theme("theme.mp3");
         } catch (Exception ex) {
             System.out.println("Error playing sound track.");
             //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        */
         String text = String.join("\n",
                 "Please be patient while the simulation loads...",
                 "I'll leave this for you to ponder over meanwhile",

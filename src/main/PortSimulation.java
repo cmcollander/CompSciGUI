@@ -63,6 +63,7 @@ public class PortSimulation {
         buildMonsters();
         buildDocks();
         buildSpills();
+        if (map.hasEnterprise()) {buildEnterprise();}
         extraGroup = new Xform();
 
         // Get yourself in the right position by repositioning the world... Kinda philosophical
@@ -112,6 +113,7 @@ public class PortSimulation {
                     if (map.hasEnterprise()) {
                         map.getEnterprise().updateXform();
                     }
+                    Main.refreshMap();
                     break;
                 case R:
                     while (!map.getShips().isEmpty()) {
@@ -127,7 +129,7 @@ public class PortSimulation {
                     }
                     break;
                 case Y:
-                    buildEnterprise();
+                    if(!map.hasEnterprise()){buildEnterprise();}
                     break;
                 case F:  // Fullscreen Toggle (messes up if you use ESC to exit fullscreen
                     stage.setFullScreen(!fullscreen);
@@ -135,6 +137,7 @@ public class PortSimulation {
                     break;
                 case Q:  // Fully closes the 3D Display
                     stage.close();
+                    Main.refreshMap();
                     break;
             }
         });
@@ -365,7 +368,7 @@ public class PortSimulation {
         Node[] eNodes = importer.getImport();
         Xform model = new Xform();
         model.getChildren().addAll(eNodes);
-        map.setEnterprise(new Enterprise());
+        if (!map.hasEnterprise()) {map.setEnterprise(new Enterprise());}
         map.getEnterprise().setModel(model);
         map.getEnterprise().updateXform();
         extraGroup.getChildren().add(model);
