@@ -44,7 +44,7 @@ public class PortSimulation {
     private Xform shipGroup = new Xform();
     private Xform monsterGroup = new Xform();
     private Xform dockGroup = new Xform();
-    private Xform extraGroup = new Xform();
+    private Xform enterpriseGroup = new Xform();
     private Xform spillGroup = new Xform();
 
     TdsModelImporter importer = new TdsModelImporter();
@@ -63,7 +63,7 @@ public class PortSimulation {
         buildMonsters();
         buildDocks();
         buildSpills();
-        extraGroup = new Xform();
+        buildEnterprise();
 
         // Get yourself in the right position by repositioning the world... Kinda philosophical
         world.setRotateZ(180);
@@ -127,7 +127,10 @@ public class PortSimulation {
                     }
                     break;
                 case Y:
-                    buildEnterprise();
+                    if(!map.hasEnterprise() && map.hasGodzilla()) {
+                        map.setEnterprise(new Enterprise());
+                        buildEnterprise();
+                    }
                     break;
                 case F:  // Fullscreen Toggle (messes up if you use ESC to exit fullscreen
                     stage.setFullScreen(!fullscreen);
@@ -353,6 +356,9 @@ public class PortSimulation {
     }
 
     public void buildEnterprise() {
+        if(!map.hasEnterprise())
+            return;
+        
         File modelFile = new File("media\\models\\Enterprise.3ds");
         try {
             importer.read(modelFile.toURI().toURL());
@@ -365,13 +371,12 @@ public class PortSimulation {
         Node[] eNodes = importer.getImport();
         Xform model = new Xform();
         model.getChildren().addAll(eNodes);
-        map.setEnterprise(new Enterprise());
         map.getEnterprise().setModel(model);
         map.getEnterprise().updateXform();
-        extraGroup.getChildren().add(model);
-        world.getChildren().add(extraGroup);
-        extraGroup.setVisible(true);
-
+        enterpriseGroup.getChildren().clear();
+        enterpriseGroup.getChildren().add(model);
+        world.getChildren().add(enterpriseGroup);
+        enterpriseGroup.setVisible(true);
     }
 
 }
