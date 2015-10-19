@@ -345,6 +345,7 @@ public class PortSimulation {
     }
 
     public void buildEnterprise() {
+        // Only build an Enterprise if there is not one currently. The choice to require a Godzilla or not is up to the client-code.
         if (!map.hasEnterprise()) {
             return;
         }
